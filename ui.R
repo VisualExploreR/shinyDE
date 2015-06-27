@@ -79,20 +79,41 @@ shinyUI(pageWithSidebar(
       fluidRow(
         column(6,
                uiOutput('colCtrl')               
-        )#, 
-#         column(6, 
-#                uiOutput('facetWrapCtrl')
-#         )
-      )
-
+        )
+      ),
+      
+      fluidRow(
+        column(6, 
+               uiOutput('sizeCtrl')
+        ),
+        column(6,
+               uiOutput('shapeCtrl')
+        )
+      ),
+      
+      fluidRow(
+        column(6, 
+               uiOutput('jitCtrl')
+        ),
+        column(6,
+               uiOutput('smthCtrl')
+        )
+      ),
+      
+      uiOutput('alphaCtrl')
+      
+      #         column(6,
+      #                uiOutput('facetWrapCtrl')
+      #         )
+      
     )  # end of conditionalPanel for plot options
   ),  # end of sidebarPanel
   
   mainPanel(
-    tabsetPanel(type = "tabs", 
+    tabsetPanel(type = "tabs",                 
                 tabPanel("Plot", 
                          br(),
-                         uiOutput('dlBtnPlot'),
+                         uiOutput('dlBtnPlot'), 
                          br(),
                          plotOutput("plot"),
                          value='plotTab'

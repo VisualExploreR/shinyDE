@@ -50,14 +50,14 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   dots <- lapply(aggBy, as.symbol)
 
   ## group data
-  grp <- group_by_(df, .dots=dots)
+  grp <- dplyr::group_by_(df, .dots=dots)
 
   ## perform non-count aggregation by column
-  agg <- summarise_each(grp, funs_(nonCntAggMeth))
+  agg <- dplyr::summarise_each(grp, funs_(nonCntAggMeth))
 
   ## attach aggregate counts if requested
   if (cntInAggMeth) {
-    cnt <- summarise(grp, count=n())
+    cnt <- dplyr::summarise(grp, count=n())
     agg$count <- cnt$count
   }
     

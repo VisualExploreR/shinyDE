@@ -60,3 +60,28 @@ getNumericVarNames <- function(df) {
   return(numericVars)
 }
 
+
+## this function grabs the names variables of whose number of unique values does not exceed 
+## a specified threshold (LOE: less than or equal to)
+getVarNamesUniqValsCntLOE <- function(df, n=100) {
+  vars <- colnames(df)[sapply(df, function(x) {length(unique(x)) <= n})]
+  return(vars)
+}
+
+
+## this function gets all variable names of data frame objects that are loaded into memory
+getLoadedDataFrameNames <- function(env=.GlobalEnv) {
+  objNames <- ls(env)
+  dfNames <- c()
+  for (objName in objNames) {
+    obj <- get(objName)
+    if(class(obj)=='data.frame') {
+      dfNames <- c(dfNames, objName)
+    } 
+  }
+  return(dfNames)
+}
+
+
+
+

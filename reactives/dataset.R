@@ -1,22 +1,3 @@
-## reactive variable for preload dataset (OLD IMPLEMENTATION)
-# preloadDataset <- reactive({
-#   if (is.null(input$dataset)) {return(NULL)}
-#   switch(input$dataset,
-#          "rock" = rock,
-#          "pressure" = pressure,
-#          "cars" = cars)
-# })
-
-## reactive variable for raw dataset (OLD IMPLEMENTATION)
-# raw <- reactive({
-#   preloadDataset <- preloadDataset()
-#   customDataset <- customDataset()
-#   if (is.null(customDataset)) {
-#     preloadDataset  
-#   } else {
-#     customDataset
-#   }
-# })
 
 ## FOR DEVELOPMENT ONLY ##
 mtcars$cyl <- as.factor(mtcars$cyl)
@@ -50,7 +31,9 @@ customDatasetName <- reactive({
 
 ## reactive variable for raw dataset names
 rawDatasetNames <- reactive({
-  c("mtcars", "rock", "pressure", customDatasetName())
+  c("mtcars", "rock", "pressure", "diamonds", 
+    customDatasetName(),
+    getLoadedDataFrameNames())
 })
 
 ## reactive variable for raw dataset
@@ -59,10 +42,7 @@ rawDataset <- reactive({
 
   ## if no dataset was uploaded, then set one of the preloaded datasets as raw dataset
   if (is.null(input$file)) {
-    switch(input$dataset,
-           "rock" = rock,
-           "pressure" = pressure,
-           "mtcars" = mtcars)
+    get(input$dataset)
   }
   
   ## if custom dataset was uploaded
@@ -74,10 +54,7 @@ rawDataset <- reactive({
     
     ## if custom dataset was not selected, then set one of the preloaded datasets as raw dataset
     else {
-      switch(input$dataset,
-             "rock" = rock,
-             "pressure" = pressure,
-             "mtcars" = mtcars)
+      get(input$dataset)
     }
   }
 })
@@ -87,7 +64,7 @@ manAggDataset <- reactive({
   ## if all fields for manual aggregation are filled in
   if (!is.null(input$aggBy) & !is.null(input$aggTarget) & !is.null(input$aggMeth)) {
     ## return manually aggregated dataset
-    aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)    
+    aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)
   } 
   
   ## else, return raw dataset  
@@ -97,44 +74,68 @@ manAggDataset <- reactive({
 })
 
 ## semi-manually aggregated dataset
-semiManAggDataset <- reactive({
-  ## if plot aggregation is specified
-  if (input$plotAggMeth != 'None') {
-    aggBy <- c(input$x)
-    
-    if (input$facetRow != 'None') aggBy <- c(aggBy, input$facetRow)
-    if (input$facetColumn != 'None') aggBy <- c(aggBy, input$facetColumn)
-    if (input$color != 'None') aggBy <- c(aggBy, input$color)
-    
-    aggregate(rawDataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
-  } 
-
-  ## else, return raw dataset
-  else {
-    rawDataset()
-  }
-})
+# semiManAggDataset <- reactive({
+#   ## if plot aggregation is specified
+#   if (input$plotAggMeth != 'None') {
+#     aggBy <- c(input$x)
+#     
+#     if (input$facetRow != 'None') aggBy <- c(aggBy, input$facetRow)
+#     if (input$facetColumn != 'None') aggBy <- c(aggBy, input$facetColumn)
+#     if (input$color != 'None') aggBy <- c(aggBy, input$color)
+#     
+#     aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+#   } 
+# 
+#   ## else, return raw dataset
+#   else {
+#     dataset()
+#   }
+# })
 
 ## raw or aggregated dataset
 dataset <- reactive({
+  if (is.null(input$rawVsManAgg)) {return(NULL)}
+
   ## raw dataset
-  if (is.null(input$aggBy) | is.null(input$aggTarget) | is.null(input$aggMeth)) {
+  if (input$rawVsManAgg == 'raw') {
     dataset <- rawDataset()
-  }
-  
+  } 
+
   ## aggregated dataset
-  else {
-    dataset <- aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)    
+  else if (input$rawVsManAgg=='manAgg') {
+    dataset <- manAggDataset()
   }
   
-  ## return dataset
   dataset
 })
 
-
 ## reactive variable for final dataset
-finalDF <- reactive({
-  dataset()
+finalDF <- reactive({  
+  if (is.null(input$semiAutoAgg)) {return(NULL)}
+  
+  ## semi-automatic aggregation (if enabled)
+  if (input$semiAutoAgg=='allowed') {
+    ## if plot aggregation is specified
+    if (input$plotAggMeth != 'None') {
+      aggBy <- input$x
+      aggTarget <- input$y
+      aggMeth <- input$plotAggMeth
+            
+      ## append to aggBy
+      if (!is.null(input$facetRow) & input$facetRow != '.') 
+        aggBy <- c(aggBy, input$facetRow)
+      if (!is.null(input$facetCol) & input$facetCol != '.') 
+        aggBy <- c(aggBy, input$facetCol)
+      if (!is.null(input$color) & input$color != 'None') 
+        aggBy <- c(aggBy, input$color)
+            
+      aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+    } 
+  } 
+  
+  else if (input$semiAutoAgg=='disabled') {
+    dataset()
+  }  
 })
 
 
