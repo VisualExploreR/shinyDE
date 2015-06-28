@@ -73,25 +73,6 @@ manAggDataset <- reactive({
   }
 })
 
-## semi-manually aggregated dataset
-# semiManAggDataset <- reactive({
-#   ## if plot aggregation is specified
-#   if (input$plotAggMeth != 'None') {
-#     aggBy <- c(input$x)
-#     
-#     if (input$facetRow != 'None') aggBy <- c(aggBy, input$facetRow)
-#     if (input$facetColumn != 'None') aggBy <- c(aggBy, input$facetColumn)
-#     if (input$color != 'None') aggBy <- c(aggBy, input$color)
-#     
-#     aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
-#   } 
-# 
-#   ## else, return raw dataset
-#   else {
-#     dataset()
-#   }
-# })
-
 ## raw or aggregated dataset
 dataset <- reactive({
   if (is.null(input$rawVsManAgg)) {return(NULL)}
@@ -139,6 +120,25 @@ finalDF <- reactive({
 })
 
 
+## semi-manually aggregated dataset
+# semiManAggDataset <- reactive({
+#   ## if plot aggregation is specified
+#   if (input$plotAggMeth != 'None') {
+#     aggBy <- c(input$x)
+#     
+#     if (input$facetRow != 'None') aggBy <- c(aggBy, input$facetRow)
+#     if (input$facetColumn != 'None') aggBy <- c(aggBy, input$facetColumn)
+#     if (input$color != 'None') aggBy <- c(aggBy, input$color)
+#     
+#     aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+#   } 
+# 
+#   ## else, return raw dataset
+#   else {
+#     dataset()
+#   }
+# })
+
 ## final dataset
 # finalDF <- reactive({
 #   dataset <- dataset()
@@ -147,4 +147,16 @@ finalDF <- reactive({
 #       dataset <- calcShare(dataset, input$shareOf, input$shareTarget)
 #   dataset
 # })
+
+## construct server-side datatable (buggy; suspected cause: deprecated implementation for DT library)
+#   datatable <- reactive({
+#     dataset <- manAggDataset(); if(is.null(dataset)) {return(NULL)}
+#     DT::datatable(dataset, 
+#                   filter = 'bottom',
+#                   server = TRUE,
+#                   options = list(ajax = list(url = action()),
+#                                  lengthChange = TRUE,
+#                                  lengthMenu = list(c(10, 25, 100, -1), c('10', '25', '100', 'All'))))
+#   })
+
 

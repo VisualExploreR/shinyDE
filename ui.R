@@ -65,7 +65,8 @@ shinyUI(pageWithSidebar(
                uiOutput('xCtrl')             
         ),
         column(6,
-               uiOutput('yCtrl')             
+               uiOutput('yCtrl'),
+               uiOutput('binWidthCtrl')
         )
       ),
       fluidRow(
@@ -100,7 +101,9 @@ shinyUI(pageWithSidebar(
         )
       ),
       
-      uiOutput('alphaCtrl')
+      uiOutput('alphaCtrl'),
+      
+      uiOutput('coordFlipCtrl')
       
       #         column(6,
       #                uiOutput('facetWrapCtrl')

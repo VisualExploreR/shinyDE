@@ -10,6 +10,13 @@
 # http://stackoverflow.com/questions/25749749/shiny-ui-save-the-changes-in-the-inputs
 # https://github.com/trestletech/shinyStore/blob/master/inst/examples/01-persist/ui.R
 
+## datatable
+# http://rstudio.github.io/DT/server.html
+
+## progress bar
+# http://shiny.rstudio.com/articles/progress.html
+
+
 
 
 ## this function renames column names of aggregate df
