@@ -258,7 +258,7 @@ plotInput <- reactive({
       wgtCtrls <- c('shape', 'size', 'jitter', 'smooth')
       wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
       if (!wgtsLoaded) return()
-      #p <- plotPointsOverlay(p, color, size, alpha)
+      p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
     }
   }
   
@@ -304,8 +304,7 @@ plotInput <- reactive({
       wgtCtrls <- c('shape', 'size')
       wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
       if (!wgtsLoaded) return()
-      #p <- plotPath(dataset, x, y, color, shape, size, alpha)
-      next
+      p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
     }
   }
 

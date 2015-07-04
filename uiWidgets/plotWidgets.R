@@ -112,7 +112,7 @@ output$sizeMagCtrl <- renderUI({
   if (is.null(displaySizeCond())) return()
   if (displaySizeCond()) 
     sliderInput("sizeMag", label="Size Magnifier",
-                min=1, max=25, value=2, step=1)
+                min=1, max=25, value=4, step=1)
 })
 
 ## shape options

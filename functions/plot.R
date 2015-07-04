@@ -47,12 +47,7 @@ plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeM
   size <- convertNoneToNULL(size)
   jitter <- convertNoneToNULL(jitter)
   smooth <- convertNoneToNULL(smooth)
-  
-#   ## original (without sizeMag)
-#   p <- ggplot(dataset, aes_string(x=x, y=y)) + 
-#     geom_point(aes_string(shape=shape, size=size), 
-#                alpha=alpha, position=jitter)
-  
+
   ## 
   if (!is.null(size)) {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
@@ -75,8 +70,31 @@ plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeM
 }
 
 ## function for points overlay
-plotPointsOverlay <- function(plot, color, shape, size, alpha, jitter, smooth, sizeMag) {
+plotPointsOverlay <- function(plot, shape, size, alpha, jitter, smooth, sizeMag) {
+  shape <- convertNoneToNULL(shape)
+  size <- convertNoneToNULL(size)
+  jitter <- convertNoneToNULL(jitter)
+  smooth <- convertNoneToNULL(smooth)
   
+  ## 
+  if (!is.null(size)) {
+    p <- plot + 
+      geom_point(aes_string(shape=shape, size=size), 
+                 alpha=alpha, position=jitter) + 
+      scale_size(range = c(1, sizeMag))
+    #scale_size_area(max_size=sizeMag)
+    #scale_size_continuous(range = c(1, sizeMag))
+  } else {
+    p <- plot + 
+      geom_point(aes_string(shape=shape), 
+                 alpha=alpha, position=jitter, size=sizeMag)
+  }
+  
+  if (!is.null(smooth)) {
+    p <- p + stat_smooth(method=smooth)
+  }
+  
+  return(p)
 }
 
 
