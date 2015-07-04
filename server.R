@@ -7,6 +7,7 @@ library(stringr)
 
 
 ## import functions
+source('./functions/plot.R')
 source('./functions/aggregate.R')
 source('./functions/helper.R')
 
@@ -24,9 +25,9 @@ shinyServer(function(input, output, session) {
   source('./reactives/plot.R', local=TRUE)  # plot-related reactives
   
   ## UI controls
-  source('./uiControls/fileUIControls.R', local=TRUE)
-  source('./uiControls/aggUIControls.R', local=TRUE)
-  source('./uiControls/plotUIControls.R', local=TRUE)
+  source('./uiWidgets/fileWidgets.R', local=TRUE)
+  source('./uiWidgets/aggWidgets.R', local=TRUE)
+  source('./uiWidgets/plotWidgets.R', local=TRUE)
   
   ## download handlers
   source('./reactives/download.R', local=TRUE)

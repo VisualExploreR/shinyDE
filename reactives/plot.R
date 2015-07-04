@@ -1,6 +1,6 @@
 ## x options reactive
 xOpts <- reactive({
-  dataset <- dataset(); if (is.null(dataset)) {return(NULL)}
+  dataset <- dataset(); if (is.null(dataset)) return()
   xOpts <- names(dataset)
   #    if (!is.null(input$plotType)) 
   #      if (input$plotType=='line') 
@@ -10,7 +10,7 @@ xOpts <- reactive({
 
 ## y options reactive
 yOpts <- reactive({
-  dataset <- dataset(); if (is.null(dataset)) {return(NULL)}
+  dataset <- dataset(); if (is.null(dataset)) return()
   yOpts <- names(dataset)
   #    if (!is.null(input$plotType)) 
   #      if (input$plotType=='line') 
@@ -20,7 +20,7 @@ yOpts <- reactive({
 
 ## color options reactive
 colOpts <- reactive({
-  dataset <- dataset(); if (is.null(dataset)) {return(NULL)}
+  dataset <- dataset(); if (is.null(dataset)) return()
   colOpts <- c('None', factorVars())
   #     if (!is.null(input$plotType)) 
   #       if (input$plotType=='line') 
@@ -28,9 +28,16 @@ colOpts <- reactive({
   colOpts
 })
 
+## fill options reactive
+fillOpts <- reactive({
+  dataset <- dataset(); if (is.null(dataset)) return()
+  fillOpts <- c('None', factorVars())
+  fillOpts      
+})
+
 ## facet options reactive
 facetOpts <- reactive({
-  dataset <- dataset(); if (is.null(dataset)) {return(NULL)}
+  dataset <- dataset(); if (is.null(dataset)) return()
   facetOpts <- c(None='.', factorVars())
   #     if (!is.null(input$plotType)) 
   #       if (input$plotType=='line')
@@ -48,148 +55,258 @@ shapeOpts <- reactive({
   c('None', factorVars())
 })
 
+## histogram max bin width reactive
+histMaxBinWidth <- reactive({
+  dataset <- dataset(); if (is.null(dataset)) return()
+  maxBinWidth <- round(diff(range(dataset[[input$x]], na.rm=TRUE)))
+  maxBinWidth
+})
 
+## display y condition reactive
+displayYCond <- reactive({
+  if (is.null(input$plotType)) return()  
+  display <- TRUE
+  return (!(input$plotType %in% c('histogram', 'density')))
+})
+  
+## display color condition reactive
+displayColCond <- reactive({
+  if (is.null(input$plotType)) return()
+  return (any(input$plotType %in% c('line', 'scatter'))) 
+})
+
+## display fill condition reactive
+displayFillCond <- reactive({
+  if (is.null(input$plotType)) return()
+  return (any(input$plotType %in% c('box', 'histogram', 'bar', 'density')))
+})
+
+
+## display position condition reactive
+displayPosCond <- reactive({
+  if (is.null(input$plotType)) return()
+  return (any(input$plotType %in% c('histogram', 'bar')))
+})
+
+## display facet wrap condition reactive
+displayFacetWrapCond <- reactive({
+  #if (is.null(input$facetRow) | is.null(input$facetCol)) return()  
+  #if (all(c(input$facetRow, input$facetCol) %in% '.')) {
+  TRUE
+})
+
+## display facet scale condition reactive
+displayFacetScaleCond <- reactive({
+  #if (is.null(input$facetRow) | is.null(input$facetCol) | is.null(input$facetWrap)) return()
+  #if (!all(c(input$facetRow, input$facetCol, input$facetWrap) %in% '.')) {
+  TRUE
+})
+
+## display size magnifier condition reactive
+displaySizeMag <- reactive({
+  if (is.null(input$plotType)) return()  
+  display <- FALSE
+  if (input$plotType=='scatter') {
+    display <- TRUE
+  } else if (any(input$plotType %in% c('line', 'path'))) {    
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) display <- TRUE
+  }
+  display
+})
+
+## display shape condition reactive
+displayShapeCond <- reactive({
+  if (is.null(input$plotType)) return()  
+  display <- FALSE
+  if (input$plotType=='scatter') {
+    display <- TRUE
+  } else if (any(input$plotType %in% c('line', 'path'))) {
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) display <- TRUE
+  }
+  display
+})
+
+## display size condition reactive
+displaySizeCond <- reactive({
+  if (is.null(input$plotType)) return()  
+  display <- FALSE
+  if (input$plotType=='scatter') {
+    display <- TRUE
+  } else if (any(input$plotType %in% c('line', 'path'))) {
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) display <- TRUE
+  }
+  display
+})
+
+## display jitter condition reactive
+displayJitCond <- reactive({
+  if (is.null(input$plotType)) return()  
+  display <- FALSE
+  if (input$plotType=='scatter') {
+    display <- TRUE
+  } else if (input$plotType=='line') {
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) display <- TRUE
+  }
+  display
+})
+
+## display smooth condition reactive
+displaySmthCond <- reactive({
+  if (is.null(input$plotType)) return()  
+  display <- FALSE
+  if (input$plotType=='scatter') {
+    display <- TRUE
+  } else if (input$plotType=='line') {
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) display <- TRUE
+  }
+  display  
+})
+
+## display bin width condition reactive
+displayBinWidthCond <- reactive({
+  if (is.null(input$plotType)) return() 
+  if (is.null(input$x)) return()
+  return (input$plotType=='histogram')
+})
+
+## display density blakc line condition reactive
+displayDensBlkLineCond <- reactive({
+  if (is.null(input$plotType)) return()
+  return (input$plotType=='density')
+})
+
+## display points overlay checkbox condition reactive
+displayPtsOverlayCond <- reactive({
+  if (is.null(input$plotType)) return()
+  return (input$plotType %in% c('line', 'path'))
+})
 
 # 1. xlim, slim (sliders, with limits set by current maxima)
-# 2. "scales" argument in facet_grid/wrap : it can be "none" (default), "free_x", "free_y" and "none"
+# 2. "scales" argument in facet_grid/wrap : it can be "none" (default), "free_x", "free_y"
 # 6. For box plot : X variables have an "as.factor" applied, and a new field created in a temporary data frame that is a factor version of the original field.
 # Incidentally, there should be a "factorise" option for "colour" in case a numeric is selected, but you want to see it as factor colours instead of a gradient, which you would for a small number of values.
 # 100 or less unique values
-# 7. geom_path
-# 9. fill option
-# 10. binwidth for histogram
 # 11. size magnifier
+# - Also geom_smooth on diamonds fails due to a memory allocation error (only in Shiny) 
+# - Stability issues around size, shape, facets, colour all selected at once with 
+# aggregation on - maybe you are trying to aggregate twice when the same field appears
+# in two or more aggregation options like facet or colour ?
 
-## COMPLETED ITEMS
-# shapes, sizes, alpha, jitter, geom_smooth
-# dynamic plot control options
-# coord_flip option
-# graph plot type
-
+## COMPLETED
+# 1. import options in import tab
+# 2. confidence interval (used stat_smooth instead of geom_smooth) for linear fit
+# 3. box, density and histogram really do need "fill"
+# 7. geom_path
+# 10. binwidth for histogram
+# - density does not work at all; density with transparent fill is a "must have".
 
 ## plot reactive
 plotInput <- reactive({
-  dataset <- finalDF(); if (is.null(dataset)) {return(NULL)}
+  dataset <- finalDF(); if (is.null(dataset)) return()
 
-  ## general control variables
-  x <- input$x; y <- input$y
-  facetRow <- input$facetRow; facetCol <- input$facetCol
-  facetWrap <- input$facetWrap
-  color <- input$color
+  ## control variables
   plotType <- input$plotType
+  x <- input$x
+  y <- input$y
+  facetRow <- input$facetRow
+  facetCol <- input$facetCol
+  facetWrap <- input$facetWrap
+  facetScale <- input$facetScale
+  color <- input$color
+  fill <- input$fill
   alpha <- input$alpha
   coordFlip <- input$coordFlip
-  
-  ## control variables specific to scatter and line plots
   shape <- input$shape
   size <- input$size
+  sizeMag <- input$sizeMag
   jitter <- input$jitter
   smooth <- input$smooth
-  
-  ## control variables specific to histogram
+  position <- input$position
   binWidth <- input$binWidth
+  densBlkLineCond <- input$densBlkLineCond
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
-  if (is.null(x) | is.null(y)) {return(NULL)}
-  if (!(x %in% xOpts()) | !(y %in% yOpts())) {return(NULL)}
-  if (is.null(facetRow) | is.null(facetCol)) {return(NULL)}
-  if (is.null(color) | is.null(plotType)) {return(NULL)}
-  if (is.null(alpha) | is.null(coordFlip)) {return(NULL)}
+  if (is.null(x) | is.null(y)) return()
+  if (!(x %in% xOpts()) | !(y %in% yOpts())) return()
+  if (is.null(facetRow) | is.null(facetCol)) return()
+  if (is.null(color) | is.null(plotType)) return()
+  if (is.null(alpha) | is.null(coordFlip)) return()
   
-  ## modify y (measure variable) for semi-automatic aggregation dataset
-  if (!(y %in% colnames(dataset))) {
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
-    y <- colnames(dataset)[grepl(y, colnames(dataset))]
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='count'
-    if (length(y)==0L & 'count' %in% colnames(dataset)) {
-      y <- 'count' 
-    }
+  ## ensure proper y variable name (in case of semi-automatic aggregation)
+  y <- ensureProperYVarName(dataset, y)
+  
+  ## scatter plot
+  if (plotType=='scatter') {
+    wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag')
+    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+    if (!wgtsLoaded) return()
+    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag)
   }
   
-  ## scatter, graph plots
-  if (plotType %in% c('scatter', 'graph')) {
-    if (is.null(shape) | is.null(size)) {return(NULL)}
-    if (is.null(jitter) | is.null(smooth)) {return(NULL)}
-    
-    ## scatter plot
-    p <- ggplot(dataset, aes_string(x=x, y=y))
-
-    ## add shape, size, and alpha
-    if (shape=='None') {
-      shape <- 'NULL'
-    } else {
-      p <- p + guides(shape=guide_legend(title=shape))
-      shape <- paste0('as.factor(', shape, ')')
-    }
-    if (size=='None') {
-      size <- 'NULL'
-    }
-    p <- p + geom_point(aes_string(shape=shape, size=size), alpha=alpha)
-    
-    ## add jitter
-    if (jitter=='jitter') {
-      p <- p + geom_jitter()
-    }
-    
-    ## add smoothing
-    if (smooth != 'None') {
-      p <- p + geom_smooth(method=smooth)
-    }
-    
-    ## graph plot
-    if (plotType=='graph') {
-      if (x==color | color=='None') {
-        p <- p + geom_line(aes(group=1), alpha=alpha)
-      }
-      else {
-        p <- p + geom_line(aes_string(group=color), alpha=alpha)
-      }
-    }
-  }
-
   ## line plot
   else if (plotType=='line') {
-    p <- ggplot(dataset, aes_string(x=x, y=y))
-    if (x==color | color=='None') {
-      p <- p + geom_line(aes(group=1), alpha=alpha)
-    }
-    else {
-      p <- p + geom_line(aes_string(group=color), alpha=alpha)
+    p <- plotLine(dataset=dataset, x=x, y=y, color=color, alpha=alpha)
+
+    ## line plot with points overlay
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) {
+      wgtCtrls <- c('shape', 'size', 'jitter', 'smooth')
+      wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+      if (!wgtsLoaded) return()
+      #p <- plotPointsOverlay(p, color, size, alpha)
     }
   }
   
   ## bar plot
   else if (plotType=='bar') {
-    p <- ggplot(dataset, aes_string(x=x, y=y)) +
-      geom_bar(stat='identity', alpha=alpha)
-    
-    if (color != 'None') {
-      p <- p + aes_string(fill=color)
-    }
+    wgtCtrls <- c('fill', 'position')
+    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+    if (!wgtsLoaded) return()
+    p <- plotBar(dataset, x, y, fill, position, alpha)
   }
   
   ## histogram
   else if (plotType=='histogram') {
-    p <- ggplot(dataset, aes_string(x=x)) + 
-      geom_histogram(alpha=alpha)
+    wgtCtrls <- c('fill', 'position', 'binWidth')
+    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+    if (!wgtsLoaded) return()
+    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha)
   }
-  
+    
   ## density plot
   else if (plotType=='density') {
-  }
+    wgtCtrls <- c('fill', 'color', 'densBlkLineCond')
+    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+    if (!wgtsLoaded) return()
+    p <- plotDensity(dataset, x, fill, alpha, densBlkLineCond)
+  }    
   
   ## box plot
   else if (plotType=='box') {
-    p <- ggplot(dataset, aes_string(x=x, y=y)) + 
-      geom_boxplot(alpha=alpha)
+    wgtCtrls <- c('fill')
+    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+    if (!wgtsLoaded) return()
+    p <- plotBox(dataset, x, y, fill, alpha)
   }
   
   ## path plot
   else if (plotType=='path') {
-    p <- ggplot(dataset, aes_string(x=x, y=y)) +
-      geom_path()
+    p <- plotPath(dataset, x, y, alpha)
+    
+    ## path plot with points overlay
+    if (is.null(input$ptsOverlayCond)) return()
+    if (input$ptsOverlayCond) {
+      wgtCtrls <- c('shape', 'size')
+      wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+      if (!wgtsLoaded) return()
+      #p <- plotPath(dataset, x, y, color, shape, size, alpha)
+      next
+    }
   }
 
   ## plot colors
@@ -209,25 +326,12 @@ plotInput <- reactive({
   if (coordFlip) {
     p <- p + coord_flip()
   }
-  
-  #     df <- mtcars
-  #     aggBy <- 'cyl'
-  #     aggTarget <- 'mpg'
-  #     aggMeth <- 'mean'
-  #     tuck <- aggregate(df, aggBy, aggTarget, aggMeth)
-  
-  #     ggplot(tuck, aes(x=aggBy, y=mpg_mean)) + 
-  #       geom_point() +
-  #       geom_line(aes(group=1)) + 
-  #       facetWrap(~cyl)
-  
-  # 
-  #     if (facetWrap != '~ .')
-  #       p <- p + facetWrap(facetWrap)
-  
+    
   ## return
   p
 })
+
+
 
 
 

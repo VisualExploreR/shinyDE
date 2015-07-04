@@ -18,16 +18,16 @@ output$aggMethCtrl <- renderUI({
 
 ## dataset type options (raw vs. manually aggregated)
 output$rawVsManAggCtrl <- renderUI({
-  radioButtons("rawVsManAgg", label = tags$strong(h5("Dataset Type")),
-               choices = list("Raw Dataset" = 'raw', "Manually Aggregated Dataset" = 'manAgg'), 
-               selected = 'raw', inline=TRUE)
+  radioButtons("rawVsManAgg", label = "Dataset Type",
+               choices = list("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'), 
+               selected = 'raw', inline=F)
 })
 
-## raw vs. semi-automatic aggregation 
+## raw vs. semi-automatic aggregation
 output$semiAutoAggCtrl <- renderUI({
-  radioButtons('semiAutoAgg', label = tags$strong(h5("Semi-auto Aggregation")),
+  radioButtons('semiAutoAgg', label = "Semi-auto Aggregation",
                choices = list("Allowed" = 'allowed', "Disabled" = 'disabled'),
-               selected = 'disabled', inline = TRUE)
+               selected = 'disabled', inline = F)
 })
 
 ## aggregation share of

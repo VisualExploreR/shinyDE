@@ -20,6 +20,7 @@ customDatasetFileInfo <- reactive({
 customDataset <- reactive({
   fileInfo <- customDatasetFileInfo()
   if (is.null(fileInfo)) {return(NULL)}
+  if (is.null(input$header) | is.null(input$sep) | is.null(input$quote)) {return(NULL)}
   read.csv(fileInfo$datapath, header = as.logical(input$header),
            sep = input$sep, quote = input$quote)
 })
@@ -31,6 +32,13 @@ customDatasetName <- reactive({
 
 ## reactive variable for raw dataset names
 rawDatasetNames <- reactive({
+## USE THIS TO DEBUG "class(obj)=='data.frame' has length > 1" ERROR MESSAGE
+#   print('yo')
+#   a <- customDatasetName()
+#   print('bro')
+#   b <- getLoadedDataFrameNames()
+#   print('ho')
+  
   c("mtcars", "rock", "pressure", "diamonds", 
     customDatasetName(),
     getLoadedDataFrameNames())
@@ -39,7 +47,7 @@ rawDatasetNames <- reactive({
 ## reactive variable for raw dataset
 rawDataset <- reactive({
   if (is.null(input$dataset)) {return(NULL)} 
-
+  
   ## if no dataset was uploaded, then set one of the preloaded datasets as raw dataset
   if (is.null(input$file)) {
     get(input$dataset)
