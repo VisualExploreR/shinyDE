@@ -191,19 +191,12 @@ displayPtsOverlayCond <- reactive({
 # 6. For box plot : X variables have an "as.factor" applied, and a new field created in a temporary data frame that is a factor version of the original field.
 # Incidentally, there should be a "factorise" option for "colour" in case a numeric is selected, but you want to see it as factor colours instead of a gradient, which you would for a small number of values.
 # 100 or less unique values
-# 11. size magnifier
 # - Also geom_smooth on diamonds fails due to a memory allocation error (only in Shiny) 
 # - Stability issues around size, shape, facets, colour all selected at once with 
 # aggregation on - maybe you are trying to aggregate twice when the same field appears
 # in two or more aggregation options like facet or colour ?
 
-## COMPLETED
-# 1. import options in import tab
-# 2. confidence interval (used stat_smooth instead of geom_smooth) for linear fit
-# 3. box, density and histogram really do need "fill"
-# 7. geom_path
-# 10. binwidth for histogram
-# - density does not work at all; density with transparent fill is a "must have".
+
 
 ## plot reactive
 plotInput <- reactive({

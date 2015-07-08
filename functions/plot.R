@@ -31,7 +31,7 @@ checkWidgetsLoaded <- function(input, widgets) {
 
 ## function for line plot
 plotLine <- function(dataset, x, y, color, alpha) {
-  p <- ggplot(df, aes_string(x=x, y=y))
+  p <- ggplot(dataset, aes_string(x=x, y=y))
   if (x==color | color=='None') {
     p <- p + geom_line(aes(group=1), alpha=alpha)
   }
