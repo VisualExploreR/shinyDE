@@ -42,7 +42,7 @@ plotLine <- function(dataset, x, y, color, alpha) {
 }
 
 ## function for scatter plot
-plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag) {
+plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, nrows) {
   shape <- convertNoneToNULL(shape)
   size <- convertNoneToNULL(size)
   jitter <- convertNoneToNULL(jitter)
@@ -63,7 +63,16 @@ plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeM
   }
   
   if (!is.null(smooth)) {
-    p <- p + stat_smooth(method=smooth)
+    if (nrows > 30000) {
+      span <- 1 / nrows * 5000
+      p <- p + stat_smooth(method=smooth, span=span)
+      #https://groups.google.com/forum/#!topic/ggplot2/enavD18MmkY
+      #https://groups.google.com/forum/#!msg/ggplot2/8oxbx95Hnwg/UwCKj7xUADAJ
+    }
+    
+    else {
+      p <- p + stat_smooth(method=smooth)
+    }
   }
   
   return(p)
@@ -147,7 +156,6 @@ plotPath <- function(dataset, x, y, alpha) {
     geom_path(alpha=alpha)
   return(p)
 }
-
 
 
 ###### FACET WRAP RESEARCH

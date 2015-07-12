@@ -1,10 +1,4 @@
 
-## FOR DEVELOPMENT ONLY ##
-mtcars$cyl <- as.factor(mtcars$cyl)
-mtcars$am <- as.factor(mtcars$am)
-mtcars$gear <- as.factor(mtcars$gear)
-## FOR DEVELOPMENT ONLY ## 
-
 
 ## reactive variable for custom (uploadable) dataset file info
 customDatasetFileInfo <- reactive({
@@ -100,12 +94,21 @@ dataset <- reactive({
   dataset
 })
 
-## reactive for semi-automatic aggregate by
-semiAutoAggBy <- reactive({
+
+## reactive for base semi-automatic aggregate-by fields 
+## (that are NOT in the "additional aggregate-by" fields)
+plotSemiAutoAggByBase <- reactive({
   aggBy <- c(input$x, input$color, input$size, input$shape, input$fill, input$facetRow, input$facetCol, input$facetWrap)
-  aggBy <- unique(aggBy)
-  nonAggBy <- c('None', 'none', '.')
-  aggBy <- setdiff(aggBy, nonAggBy)
+  aggBy <- cleanAggBy(aggBy)
+  aggBy
+})
+
+
+## reactive for semi-automatic aggregate by
+## base + additional aggregate-by fields
+plotSemiAutoAggBy <- reactive({
+  aggBy <- c(plotSemiAutoAggByBase(), input$plotAddAggBy)
+  aggBy <- cleanAggBy(aggBy)
   aggBy
 })
 
@@ -118,7 +121,7 @@ semiAutoAggDF <- reactive({
     ## if plot aggregation is specified (e.g. sum, mean, max, min)
     if (input$plotAggMeth != 'None') {
       #aggBy <- input$x
-      aggBy <- semiAutoAggBy()
+      aggBy <- plotSemiAutoAggBy()
       aggTarget <- input$y
       aggMeth <- input$plotAggMeth
       aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
@@ -142,3 +145,9 @@ finalDF <- reactive({
 })
 
 
+
+## number of rows
+nrows <- reactive({
+  if (is.null(finalDF())) return()
+  nrow(finalDF())
+})

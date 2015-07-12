@@ -149,3 +149,14 @@ output$ptsOverlayCondCtrl <- renderUI({
   if (displayPtsOverlayCond())
     checkboxInput('ptsOverlayCond', 'Points Overlay', value=FALSE)
 })
+
+## additional aggregation by options
+output$plotAddAggByCtrl <- renderUI({
+  if (is.null(displayPlotAddAggBy())) return()
+  if (displayPlotAddAggBy())
+    selectInput('plotAddAggBy', 'Additional Aggregation Variables', 
+                choices=plotAddAggByOpts(), multiple=T)
+})
+
+
+

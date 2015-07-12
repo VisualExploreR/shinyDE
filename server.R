@@ -12,6 +12,16 @@ source('./functions/aggregate.R')
 source('./functions/helper.R')
 
 
+## FOR DEVELOPMENT ONLY ##
+mtcars$cyl <- as.factor(mtcars$cyl)
+mtcars$am <- as.factor(mtcars$am)
+mtcars$gear <- as.factor(mtcars$gear)
+
+#df <- read.csv('')
+## FOR DEVELOPMENT ONLY ## 
+
+
+
 ## file size options
 # by default, the file size limit is 5MB. It can be changed by
 # setting this option. Here we'll raise limit to 10GB.

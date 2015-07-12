@@ -76,6 +76,8 @@ verticalLayout(
            uiOutput('facetScaleCtrl')       
     )
   ),
+  
+  uiOutput('plotAddAggByCtrl'),
   uiOutput('binWidthCtrl'),
   uiOutput('alphaCtrl'),
   uiOutput('sizeMagCtrl'),

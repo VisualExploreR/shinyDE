@@ -82,3 +82,14 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
   return(dfNames)
 }
 
+
+## function for cleaning (removing duplicates or "None" values, etc.)
+cleanAggBy <- function(aggBy) {
+  aggBy <- unique(aggBy)
+  nonAggBy <- c('None', 'none', '.')
+  aggBy <- setdiff(aggBy, nonAggBy)
+  return(aggBy)
+}
+  
+  
+

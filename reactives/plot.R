@@ -66,6 +66,15 @@ histMaxBinWidth <- reactive({
   maxBinWidth
 })
 
+## additional aggregation options reactive
+plotAddAggByOpts <- reactive({
+  dataset <- dataset(); if (is.null(dataset)) return()
+  setdiff(origVars(), plotSemiAutoAggByBase())
+})
+
+
+
+#### display conditional reactives
 ## display y condition reactive
 displayYCond <- reactive({
   if (is.null(input$plotType)) return()  
@@ -190,6 +199,14 @@ displayPtsOverlayCond <- reactive({
   return (input$plotType %in% c('line', 'path'))
 })
 
+## display additional aggregation select field condition reactive
+displayPlotAddAggBy <- reactive({
+  if (is.null(input$semiAutoAgg)) return()
+  return (input$semiAutoAgg=='allowed')
+})
+
+
+
 ## plot reactive
 plotInput <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
@@ -229,8 +246,8 @@ plotInput <- reactive({
   if (plotType=='scatter') {
     wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag')
     wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-    if (!wgtsLoaded) return()    
-    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag)
+    if (!wgtsLoaded) return()
+    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, nrows())
   }
   
   ## line plot
