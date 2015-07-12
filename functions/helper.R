@@ -82,6 +82,3 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
   return(dfNames)
 }
 
-
-
-

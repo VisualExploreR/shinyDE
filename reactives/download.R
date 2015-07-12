@@ -5,7 +5,8 @@ output$dlCSV <- downloadHandler(
     paste0('output_', ts, '.csv') 
   },
   content = function(file) {
-    write.csv(dataset(), file, row.names=F)
+    write.csv(finalDF(), file, row.names=F)
+    #write.csv(dataset(), file, row.names=F)
   }
 )
 

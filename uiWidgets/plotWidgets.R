@@ -66,10 +66,11 @@ output$facetScaleCtrl <- renderUI({
 ## plot type options
 output$plotTypeCtrl <- renderUI({
   selectInput(inputId = "plotType", label = "Plot Type", 
-              choices = c('Line'='line', 'Scatter'='scatter',
+              choices = c('Scatter'='scatter', 'Line'='line',
                           'Bar'='bar', 'Histogram'='histogram', 
                           'Density'='density', 'Box'='box',
-                          'Path'='path'),
+                          'Path'='path', 'Violin'='violin', 
+                          'Image'='image', '2-Density', 'density2d'),
               multiple = FALSE)
 })
 

@@ -51,7 +51,12 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
 
   ## conditional to perform count later
   cntInAggMeth <- 'count' %in% aggMeth
-  nonCntAggMeth <- setdiff(aggMeth, 'count')
+  
+  ## conditional to perform median later
+  medInAggMeth <- 'median' %in% aggMeth
+  
+  ## select non-problematic aggregation methods
+  aggMeth <- setdiff(aggMeth, c('count', 'median'))
   
   ## convert character vector to list of symbols
   dots <- lapply(aggBy, as.symbol)
@@ -59,21 +64,30 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   ## group data
   grp <- dplyr::group_by_(df, .dots=dots)
 
-  ## perform non-count aggregation by column
-  agg <- dplyr::summarise_each(grp, funs_(nonCntAggMeth))
+  ## perform non-problematic aggregation by column
+  agg <- dplyr::summarise_each(grp, funs_(aggMeth))
+
+  ## convert to data frame
+  agg <- as.data.frame(agg)
+  
+  ## rename column names
+  agg <- renameAggColNames(agg, aggBy, aggTarget, aggMeth)
 
   ## attach aggregate counts if requested
   if (cntInAggMeth) {
     cnt <- dplyr::summarise(grp, count=n())
     agg$count <- cnt$count
   }
-    
-  ## convert to data frame
-  agg <- as.data.frame(agg)
   
-  ## rename column names
-  agg <- renameAggColNames(agg, aggBy, aggTarget, aggMeth)
-  
+  ## perform median aggregation by column
+  if (medInAggMeth) {
+    medAgg <- dplyr::summarise_each(grp, ~ median)
+    nMedAggCol <- length(aggBy)
+    ncol <- ncol(medAgg)
+    colnames(medAgg) <- c(aggBy, paste0(colnames(medAgg)[(nMedAggCol+1):ncol], '_median'))
+    agg <- merge(agg, medAgg, by=aggBy)
+  }
+
   ## find numeric columns and round
   numericVars <- getNumericVarNames(agg)
   #agg[numericVars] <- sapply(agg[numericVars], function(x) {round(x, nRndDeci)})
@@ -85,7 +99,6 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   ## return
   agg
 }
-
 
 ## this function calculates share percentage (or relative frequency)
 calcShare <- function(df, shareOf, shareTarget, nRndDeci=2, displayPerc=TRUE) {
