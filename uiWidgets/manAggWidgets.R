@@ -23,12 +23,6 @@ output$rawVsManAggCtrl <- renderUI({
                selected = 'raw', inline=F)
 })
 
-## raw vs. semi-automatic aggregation
-output$semiAutoAggCtrl <- renderUI({
-  radioButtons('semiAutoAgg', label = "Semi-auto Aggregation",
-               choices = list("Allowed" = 'allowed', "Disabled" = 'disabled'),
-               selected = 'disabled', inline = F)
-})
 
 ## aggregation share of
 # output$shareOfCtrl <- renderUI({

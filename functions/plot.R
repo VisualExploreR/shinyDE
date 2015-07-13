@@ -1,34 +1,3 @@
-## this function modifies and ensures proper y (measure variable)
-## for semi-automatic aggregation dataset
-ensureProperYVarName <- function(dataset, y) {
-  if (!(y %in% colnames(dataset))) {
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
-    y <- colnames(dataset)[grepl(y, colnames(dataset))]
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='count'
-    if (length(y)==0L & 'count' %in% colnames(dataset)) {
-      y <- 'count' 
-    }
-  }
-  return(y)
-}
-
-## function to convert 'None' to NULL
-convertNoneToNULL <- function(var) {
-  if (tolower(var)=='none') {var <- NULL}; return(var)
-}
-
-## function to check if specified widgets are loaded on shiny UI
-checkWidgetsLoaded <- function(input, widgets) {
-  for (widget in widgets) {
-    if (is.null(input[[widget]])) {
-      return(FALSE)
-    }
-  }
-  return(TRUE)
-}
-
 ## function for line plot
 plotLine <- function(dataset, x, y, color, alpha) {
   p <- ggplot(dataset, aes_string(x=x, y=y))
@@ -40,6 +9,7 @@ plotLine <- function(dataset, x, y, color, alpha) {
   }
   return(p)
 }
+
 
 ## function for scatter plot
 plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, nrows) {
@@ -77,6 +47,7 @@ plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeM
   
   return(p)
 }
+
 
 ## function for points overlay
 plotPointsOverlay <- function(plot, shape, size, alpha, jitter, smooth, sizeMag) {
@@ -131,6 +102,7 @@ plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond) {
   return(p)
 }
 
+
 ## function for bar plot
 plotBar <- function(dataset, x, y, fill, position, alpha) {
   fill <- convertNoneToNULL(fill)
@@ -141,6 +113,7 @@ plotBar <- function(dataset, x, y, fill, position, alpha) {
   return(p)
 }
 
+
 ## function for box plot
 plotBox <- function(dataset, x, y, fill, alpha) {
   fill <- convertNoneToNULL(fill)
@@ -149,6 +122,7 @@ plotBox <- function(dataset, x, y, fill, alpha) {
     aes_string(fill=fill)
   return(p)
 }
+
 
 ## function for path plot
 plotPath <- function(dataset, x, y, alpha) {

@@ -150,6 +150,13 @@ output$ptsOverlayCondCtrl <- renderUI({
     checkboxInput('ptsOverlayCond', 'Points Overlay', value=FALSE)
 })
 
+## semi-automatic aggregation option
+output$semiAutoAggCtrl <- renderUI({
+  radioButtons('semiAutoAgg', label = "Semi-auto Aggregation",
+               choices = list("Allowed" = 'allowed', "Disabled" = 'disabled'),
+               selected = 'disabled', inline = F)
+})
+
 ## additional aggregation by options
 output$plotAddAggByCtrl <- renderUI({
   if (is.null(displayPlotAddAggBy())) return()

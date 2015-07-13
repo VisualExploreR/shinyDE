@@ -212,6 +212,7 @@ plotInput <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
 
   ## control variables
+  semiAutoAggSet <- input$semiAutoAgg=='allowed'
   plotType <- input$plotType
   x <- input$x
   y <- input$y
@@ -233,14 +234,21 @@ plotInput <- reactive({
   densBlkLineCond <- input$densBlkLineCond
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
-  if (is.null(x) | is.null(y)) return()
+  wgtCtrls <- c('x', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip')
+  wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
+  if (!wgtsLoaded) return()
   if (!(x %in% xOpts()) | !(y %in% yOpts())) return()
-  if (is.null(facetRow) | is.null(facetCol)) return()
-  if (is.null(color) | is.null(plotType)) return()
-  if (is.null(alpha) | is.null(coordFlip)) return()
   
   ## ensure proper y variable name (in case of semi-automatic aggregation)
+  #print(y)
   y <- ensureProperYVarName(dataset, y)
+  #print(y)
+
+#   print('----')
+#   names(dataset)
+#   print(color)
+#   color <- ensureProperYVarName(dataset, color)
+#   print(color)
   
   ## scatter plot
   if (plotType=='scatter') {

@@ -83,13 +83,50 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
 }
 
 
+## this function modifies and ensures proper y (measure variable)
+## for semi-automatic aggregation dataset
+ensureProperYVarName <- function(dataset, y) {
+  if (!(y %in% colnames(dataset))) {
+    
+    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
+    y <- colnames(dataset)[grepl(y, colnames(dataset))]
+    
+    ## this step will do the following: e.g. y=='mpg' to y=='count'
+    if (length(y)==0L & 'count' %in% colnames(dataset)) {
+      y <- 'count' 
+    }
+  }
+  return(y)
+}
+
+
+## function to convert 'None' to NULL
+convertNoneToNULL <- function(var) {
+  if (tolower(var)=='none') {var <- NULL}; return(var)
+}
+
+
+## function to check if specified widgets are loaded on shiny UI
+checkWidgetsLoaded <- function(input, widgets) {
+  for (widget in widgets) {
+    if (is.null(input[[widget]])) {
+      return(FALSE)
+    }
+  }
+  return(TRUE)
+}
+
+
 ## function for cleaning (removing duplicates or "None" values, etc.)
-cleanAggBy <- function(aggBy) {
+cleanPlotAggBy <- function(x, y, aggBy) {
+  aggBy <- c(x, aggBy)
   aggBy <- unique(aggBy)
   nonAggBy <- c('None', 'none', '.')
   aggBy <- setdiff(aggBy, nonAggBy)
+  
+  if (x != y)
+    aggBy <- setdiff(aggBy, y)
+  
   return(aggBy)
 }
-  
-  
 

@@ -17,7 +17,10 @@ mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$am <- as.factor(mtcars$am)
 mtcars$gear <- as.factor(mtcars$gear)
 
-#df <- read.csv('')
+# df <- read.csv('./data/diamonds_missing_vals.csv', stringsAsFactors=F)
+# df$cut <- as.factor(df$cut)
+# df$color <- as.factor(df$color)
+# df$clarity <- as.factor(df$clarity)
 ## FOR DEVELOPMENT ONLY ## 
 
 
@@ -36,7 +39,7 @@ shinyServer(function(input, output, session) {
   
   ## UI controls
   source('./uiWidgets/fileWidgets.R', local=TRUE)
-  source('./uiWidgets/aggWidgets.R', local=TRUE)
+  source('./uiWidgets/manAggWidgets.R', local=TRUE)
   source('./uiWidgets/plotWidgets.R', local=TRUE)
   
   ## download handlers

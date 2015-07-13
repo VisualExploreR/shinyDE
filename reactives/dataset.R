@@ -99,16 +99,15 @@ dataset <- reactive({
 ## (that are NOT in the "additional aggregate-by" fields)
 plotSemiAutoAggByBase <- reactive({
   aggBy <- c(input$x, input$color, input$size, input$shape, input$fill, input$facetRow, input$facetCol, input$facetWrap)
-  aggBy <- cleanAggBy(aggBy)
+  aggBy <- cleanPlotAggBy(input$x, input$y, aggBy)
   aggBy
 })
-
 
 ## reactive for semi-automatic aggregate by
 ## base + additional aggregate-by fields
 plotSemiAutoAggBy <- reactive({
   aggBy <- c(plotSemiAutoAggByBase(), input$plotAddAggBy)
-  aggBy <- cleanAggBy(aggBy)
+  aggBy <- cleanPlotAggBy(input$x, input$y, aggBy)
   aggBy
 })
 
@@ -124,7 +123,12 @@ semiAutoAggDF <- reactive({
       aggBy <- plotSemiAutoAggBy()
       aggTarget <- input$y
       aggMeth <- input$plotAggMeth
-      aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+      semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+      #print('-----')
+      #print(paste0('aggBy: ', paste0(aggBy, collapse=', ')))
+      #print(paste0('nrow: ', nrow(semiAutoAggDF)))
+      
+      semiAutoAggDF
     } 
   }
 })
