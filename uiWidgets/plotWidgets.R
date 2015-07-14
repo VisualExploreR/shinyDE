@@ -48,6 +48,9 @@ output$facetColCtrl <- renderUI({
   selectInput('facetCol', 'Facet Column', facetOpts())
 })
 
+## facet-grid options
+output$facetGridCtrls <- 
+
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({
   if (is.null(displayFacetWrapCond())) return()

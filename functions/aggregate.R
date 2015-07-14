@@ -95,7 +95,7 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   for (numericVar in numericVars) {
     agg[[numericVar]] <- round(agg[[numericVar]], nRndDeci)
   }
-    
+  
   ## return
   agg
 }

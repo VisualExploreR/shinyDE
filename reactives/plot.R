@@ -21,10 +21,14 @@ yOpts <- reactive({
 ## color options reactive
 colOpts <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  colOpts <- c('None', factorVars())
-  #     if (!is.null(input$plotType)) 
-  #       if (input$plotType=='line') 
-  #         colOpts <- setdiff(colOpts, input$x)
+  if (is.null(input$plotType)) return()
+  
+  if (input$plotType=='scatter') {
+    colOpts <- c('None', names(dataset()))
+  } else if (input$plotType %in% c('line', 'path')) {
+    colOpts <- c('None', factorVars())
+  }
+
   colOpts
 })
 
@@ -99,6 +103,12 @@ displayFillCond <- reactive({
 displayPosCond <- reactive({
   if (is.null(input$plotType)) return()
   return (any(input$plotType %in% c('histogram', 'bar')))
+})
+
+## display facet grid condition reactive
+displayFacetGrid <- reactive({
+  if (is.null(input$facetWrap)) return()
+  return 
 })
 
 ## display facet wrap condition reactive
@@ -239,16 +249,11 @@ plotInput <- reactive({
   if (!wgtsLoaded) return()
   if (!(x %in% xOpts()) | !(y %in% yOpts())) return()
   
-  ## ensure proper y variable name (in case of semi-automatic aggregation)
+  ## ensure proper variable names (in case of semi-automatic aggregation)
   y <- ensureProperVarName(colnames(dataset), y)
   color <- ensureProperVarName(colnames(dataset), color)
   size <- ensureProperVarName(colnames(dataset), size)
-  
-#   print('-----')
-#   print(names(dataset))
-#   print(color)
-
-  
+    
   ## scatter plot
   if (plotType=='scatter') {
     wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag')
