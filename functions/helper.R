@@ -83,21 +83,46 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
 }
 
 
-## this function modifies and ensures proper y (measure variable)
-## for semi-automatic aggregation dataset
-ensureProperYVarName <- function(dataset, y) {
-  if (!(y %in% colnames(dataset))) {
+## this function modifies and ensures proper variable name
+## for semi-automatic aggregation dataset column names
+## FIX THIS FUNCTION HERE!!!!XXXXXXXXX
+
+#colnames <- colnames(diamonds)
+#origVar <- 'None'
+
+ensureProperVarName <- function(colnames, var) {
+  origVar <- var
+  
+  ## only if original variable is not found in dataset's column names
+  if (!(var %in% colnames)) {
     
-    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
-    y <- colnames(dataset)[grepl(y, colnames(dataset))]
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='count'
-    if (length(y)==0L & 'count' %in% colnames(dataset)) {
-      y <- 'count' 
+    ## this step will do the following: e.g. v=='mpg' to y=='mpg_mean'
+    var <- colnames[grepl(var, colnames)]
+
+    ## if no match found
+    if (length(var)==0L) {
+      
+      ## select count column name
+      if ('count' %in% colnames) {
+        var <- 'count'
+      }
+      
+      ## return the original column name
+      else {
+        var <- origVar
+      }
     }
   }
-  return(y)
+  return(var)
 }
+
+
+# ensureProperVarName(colnames(diamonds), 'mpg')
+# colnames(dataset)[grepl(y, colnames(dataset))]
+# y <- 'None'
+# dataset <- diamonds
+# y
+
 
 
 ## function to convert 'None' to NULL
