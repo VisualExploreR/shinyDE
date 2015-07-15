@@ -40,6 +40,42 @@ renameAggColNames <- function(df, aggBy, aggTarget, aggMeth) {
   return(df)
 }
 
+## custom median function to work around a bug in dplyr's summarise function
+Median <- function(vector) {
+  vector <- vector[!is.na(vector)]
+  vector <- sort(vector) * 1.0
+  n <- length(vector)
+  isEven <- n %% 2 == 0
+  k <- n %/% 2 
+  if (isEven) {
+    median <- (vector[k] + vector[k+1]) / 2
+  } else {
+    median <- vector[k+1] 
+  }
+  median
+}
+
+
+
+## COME BACK TO THIS FUNCTION!!
+## case 1:
+# aggBy <- 'price'
+# colnames <- c('price', 'price.1')
+# colnames <- c('price', 'price.1_median')
+
+## case 2:
+# aggBy <- c('price', 'cut')
+# colnames <- c('price', 'cut', 'price.1', 'carat')
+# colnames <- c('price', 'cut', 'price.1_median', 'carat_median')
+
+fixMedianAggColname <- function(colnames, aggBy) {
+  nMedAggCol <- length(aggBy)
+  ncol <- length(colnames)
+  colnames <- c(aggBy, paste0(colnames[(nMedAggCol+1):ncol], '_median'))
+  colnames
+}
+
+
 ## this function aggregates raw data using functions from dplyr
 aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   
@@ -57,7 +93,7 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   
   ## select non-problematic aggregation methods
   aggMeth <- setdiff(aggMeth, c('count', 'median'))
-  
+
   ## convert character vector to list of symbols
   dots <- lapply(aggBy, as.symbol)
 
@@ -69,7 +105,7 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
 
   ## convert to data frame
   agg <- as.data.frame(agg)
-  
+
   ## rename column names
   agg <- renameAggColNames(agg, aggBy, aggTarget, aggMeth)
 
@@ -78,13 +114,14 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
     cnt <- dplyr::summarise(grp, count=n())
     agg$count <- cnt$count
   }
-  
+
   ## perform median aggregation by column
-  if (medInAggMeth) {
-    medAgg <- dplyr::summarise_each(grp, ~ median)
-    nMedAggCol <- length(aggBy)
-    ncol <- ncol(medAgg)
-    colnames(medAgg) <- c(aggBy, paste0(colnames(medAgg)[(nMedAggCol+1):ncol], '_median'))
+  if (medInAggMeth) {    
+    medAgg <- dplyr::summarise_each(grp, ~ Median)
+    print('--')
+    print(colnames(medAgg))
+    colnames(medAgg) <- fixMedianAggColname(colnames(medAgg), aggBy)
+    print(colnames(medAgg))
     agg <- merge(agg, medAgg, by=aggBy)
   }
 
@@ -99,6 +136,18 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   ## return
   agg
 }
+
+
+
+## MEDIAN RESEARCH
+#     df <- diamonds
+#     aggBy <- 'price'
+#     aggTarget <- 'price'
+#     aggMeth <- 'median'
+#     grp <- dplyr::group_by_(df, aggBy)
+#     medAgg <- summarise(grp, Median(price))
+#     head(medAgg)
+
 
 ## this function calculates share percentage (or relative frequency)
 calcShare <- function(df, shareOf, shareTarget, nRndDeci=2, displayPerc=TRUE) {

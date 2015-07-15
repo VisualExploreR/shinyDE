@@ -7,9 +7,10 @@ library(stringr)
 
 
 ## import functions
+source('./functions/helper.R')
 source('./functions/plot.R')
 source('./functions/aggregate.R')
-source('./functions/helper.R')
+
 
 
 ## FOR DEVELOPMENT ONLY ##
