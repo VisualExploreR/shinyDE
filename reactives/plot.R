@@ -250,10 +250,16 @@ plotInput <- reactive({
   if (!(x %in% xOpts()) | !(y %in% yOpts())) return()
   
   ## ensure proper variable names (in case of semi-automatic aggregation)
-  y <- ensureProperVarName(colnames(dataset), y)
-  color <- ensureProperVarName(colnames(dataset), color)
-  size <- ensureProperVarName(colnames(dataset), size)
-    
+  y <- ensureProperVarName(colnames(dataset), var=y, y=y)
+  color <- ensureProperVarName(colnames(dataset), var=color, y=y)
+  size <- ensureProperVarName(colnames(dataset), var=size, y=y)
+  
+#   print('----')
+#   print(names(dataset))
+#   print(y)
+#   print(color)
+#   print(size)
+  
   ## scatter plot
   if (plotType=='scatter') {
     wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag')
