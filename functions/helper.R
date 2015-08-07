@@ -86,6 +86,7 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
 ## this function modifies and ensures proper variable name
 ## for semi-automatic aggregation dataset column names
 ensureProperVarName <- function(colnames, var, y) {  
+  if (var==y) ensureProperYVarName(colnames, y)
   if (tolower(var) %in% c('none', '.')) return(var)
   origVar <- var
   
