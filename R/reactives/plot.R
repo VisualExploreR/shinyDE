@@ -217,6 +217,57 @@ displayPlotAddAggBy <- reactive({
 
 
 
+#### widgets loaded conditional reactives
+generalWidgetsLoaded <- reactive({
+  wgtCtrls <- c('x', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+scatterWidgetsLoaded <- reactive({
+  wgtCtrls <- c('y', 'shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+lineWidgetsLoaded <- reactive({
+  checkWidgetsLoaded(input, 'y')
+})
+
+linePtsOverlayWidgetsLoaded <- reactive({
+  wgtCtrls <- c('shape', 'size', 'jitter', 'smooth', 'ptsOverlayCond')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+barWidgetsLoaded <- reactive({
+  wgtCtrls <- c('y', 'fill', 'position')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+histogramWidgetsLoaded <- reactive({
+  wgtCtrls <- c('fill', 'position', 'binWidth')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+densityWidgetsLoaded <- reactive({
+  wgtCtrls <- c('fill', 'color', 'densBlkLineCond')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+boxWidgetsLoaded <- reactive({
+  wgtCtrls <- c('y', 'fill')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
+
+pathWidgetsLoaded <- reactive({
+  checkWidgetsLoaded(input, 'y')
+})
+
+pathPtsOverlayWidgetsLoaded <- reactive({
+  wgtCtrls <- c('shape', 'size', 'ptsOverlayCond')
+  checkWidgetsLoaded(input, wgtCtrls)    
+})
+
+
+
 ## plot reactive
 plotInput <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
@@ -242,13 +293,12 @@ plotInput <- reactive({
   position <- input$position
   binWidth <- input$binWidth
   densBlkLineCond <- input$densBlkLineCond
+  ptsOverlayCond <- input$ptsOverlayCond
   xlim <- input$xlim
   ylim <- input$ylim  
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
-  wgtCtrls <- c('x', 'y', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip')
-  wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-  if (!wgtsLoaded) return()
+  if (!generalWidgetsLoaded()) return() 
   if (!(x %in% xOpts()) | !(y %in% yOpts())) return()
   
   ## ensure proper variable names (in case of semi-automatic aggregation)
@@ -257,69 +307,55 @@ plotInput <- reactive({
   size <- ensureProperVarName(colnames(dataset), var=size, y=y)
     
   ## scatter plot
-  if (plotType=='scatter') {
-    wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
-    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-    if (!wgtsLoaded) return()
-    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag)
+  if (plotType=='scatter')  {
+    if (!scatterWidgetsLoaded()) return()
+    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag)    
   }
-  
+
   ## line plot
   else if (plotType=='line') {
+    if (!lineWidgetsLoaded()) return()
     p <- plotLine(dataset=dataset, x=x, y=y, color=color, alpha=alpha)
 
     ## line plot with points overlay
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) {
-      wgtCtrls <- c('shape', 'size', 'jitter', 'smooth')
-      wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-      if (!wgtsLoaded) return()
+    if (!linePtsOverlayWidgetsLoaded()) return()
+    if (ptsOverlayCond) {
       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
     }
   }
   
   ## bar plot
   else if (plotType=='bar') {
-    wgtCtrls <- c('fill', 'position')
-    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-    if (!wgtsLoaded) return()
+    if (!barWidgetsLoaded()) return()
     p <- plotBar(dataset, x, y, fill, position, alpha)
   }
   
   ## histogram
   else if (plotType=='histogram') {
-    wgtCtrls <- c('fill', 'position', 'binWidth')
-    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-    if (!wgtsLoaded) return()
+    if (!histogramWidgetsLoaded()) return()
     p <- plotHistogram(dataset, x, fill, position, binWidth, alpha)
   }
     
   ## density plot
   else if (plotType=='density') {
-    wgtCtrls <- c('fill', 'color', 'densBlkLineCond')
-    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-    if (!wgtsLoaded) return()
+    if (!densityWidgetsLoaded()) return()
     p <- plotDensity(dataset, x, fill, alpha, densBlkLineCond)
   }    
   
   ## box plot
   else if (plotType=='box') {
-    wgtCtrls <- c('fill')
-    wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-    if (!wgtsLoaded) return()
+    if (!boxWidgetsLoaded()) return()
     p <- plotBox(dataset, x, y, fill, alpha)
   }
   
   ## path plot
   else if (plotType=='path') {
+    if (!pathWidgetsLoaded()) return()
     p <- plotPath(dataset, x, y, alpha)
     
     ## path plot with points overlay
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) {
-      wgtCtrls <- c('shape', 'size')
-      wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
-      if (!wgtsLoaded) return()
+    if (!pathPtsOverlayWidgetsLoaded()) return()
+    if (ptsOverlayCond) {      
       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
     }
   }
@@ -345,8 +381,4 @@ plotInput <- reactive({
   ## return
   p
 })
-
-
-
-
 
