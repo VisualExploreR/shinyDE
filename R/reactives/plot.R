@@ -224,44 +224,53 @@ generalWidgetsLoaded <- reactive({
 })
 
 scatterWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('y', 'shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 lineWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   checkWidgetsLoaded(input, 'y')
 })
 
 linePtsOverlayWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('shape', 'size', 'jitter', 'smooth', 'ptsOverlayCond')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 barWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('y', 'fill', 'position')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 histogramWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('fill', 'position', 'binWidth')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 densityWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('fill', 'color', 'densBlkLineCond')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 boxWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('y', 'fill')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 pathWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   checkWidgetsLoaded(input, 'y')
 })
 
 pathPtsOverlayWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
   wgtCtrls <- c('shape', 'size', 'ptsOverlayCond')
   checkWidgetsLoaded(input, wgtCtrls)    
 })
@@ -299,7 +308,7 @@ plotInput <- reactive({
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
   if (!generalWidgetsLoaded()) return() 
-  if (!(x %in% xOpts()) | !(y %in% yOpts())) return()
+  if (!(x %in% xOpts())) return()
   
   ## ensure proper variable names (in case of semi-automatic aggregation)
   y <- ensureProperVarName(colnames(dataset), var=y, y=y)
@@ -309,55 +318,58 @@ plotInput <- reactive({
   ## scatter plot
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
-    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag)    
+    if (!(y %in% yOpts())) return()
+    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
 
   ## line plot
   else if (plotType=='line') {
     if (!lineWidgetsLoaded()) return()
-    p <- plotLine(dataset=dataset, x=x, y=y, color=color, alpha=alpha)
+    if (!(y %in% yOpts())) return()
+    p <- plotLine(dataset, x, y, color, alpha, xlim, ylim)
 
     ## line plot with points overlay
     if (!linePtsOverlayWidgetsLoaded()) return()
-    if (ptsOverlayCond) {
+    if (ptsOverlayCond)
       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
-    }
   }
   
   ## bar plot
   else if (plotType=='bar') {
     if (!barWidgetsLoaded()) return()
-    p <- plotBar(dataset, x, y, fill, position, alpha)
+    if (!(y %in% yOpts())) return()
+    p <- plotBar(dataset, x, y, fill, position, alpha, xlim, ylim)
   }
   
   ## histogram
   else if (plotType=='histogram') {
     if (!histogramWidgetsLoaded()) return()
-    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha)
+    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha, xlim)
   }
     
   ## density plot
   else if (plotType=='density') {
     if (!densityWidgetsLoaded()) return()
-    p <- plotDensity(dataset, x, fill, alpha, densBlkLineCond)
+    p <- plotDensity(dataset, x, fill, alpha, densBlkLineCond, xlim)
   }    
   
   ## box plot
   else if (plotType=='box') {
     if (!boxWidgetsLoaded()) return()
-    p <- plotBox(dataset, x, y, fill, alpha)
+    if (!(y %in% yOpts())) return()
+    p <- plotBox(dataset, x, y, fill, alpha, xlim, ylim)
   }
   
   ## path plot
   else if (plotType=='path') {
     if (!pathWidgetsLoaded()) return()
-    p <- plotPath(dataset, x, y, alpha)
+    if (!(y %in% yOpts())) return()
+    p <- plotPath(dataset, x, y, alpha, xlim, ylim)
     
     ## path plot with points overlay
     if (!pathPtsOverlayWidgetsLoaded()) return()
-    if (ptsOverlayCond) {      
+    if (ptsOverlayCond)
       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
-    }
   }
 
   ## plot colors

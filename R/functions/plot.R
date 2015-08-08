@@ -1,5 +1,5 @@
 ## function for line plot
-plotLine <- function(dataset, x, y, color, alpha) {
+plotLine <- function(dataset, x, y, color, alpha, xlim, ylim) {
   p <- ggplot(dataset, aes_string(x=x, y=y))
   if (x==color | color=='None') {
     p <- p + geom_line(aes(group=1), alpha=alpha)
@@ -7,12 +7,15 @@ plotLine <- function(dataset, x, y, color, alpha) {
   else {
     p <- p + geom_line(aes_string(group=color), alpha=alpha)
   }
+  
+  p <- p + xlim(xlim) + ylim(ylim)
+  
   return(p)
 }
 
 
 ## function for scatter plot
-plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag) {
+plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim) {
   shape <- convertNoneToNULL(shape)
   size <- convertNoneToNULL(size)
   jitter <- convertNoneToNULL(jitter)
@@ -35,6 +38,8 @@ plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeM
   if (!is.null(smooth)) {
     p <- p + stat_smooth(method=smooth)
   }
+  
+  p <- p + xlim(xlim) + ylim(ylim)
   
   return(p)
 }
@@ -68,57 +73,59 @@ plotPointsOverlay <- function(plot, shape, size, alpha, jitter, smooth, sizeMag)
   return(p)
 }
 
-
 ## function for histogram
-plotHistogram <- function(dataset, x, fill, position, binWidth, alpha) {
+plotHistogram <- function(dataset, x, fill, position, binWidth, alpha, xlim) {
   fill <- convertNoneToNULL(fill)
   position <- convertNoneToNULL(position)
   p <- ggplot(dataset, aes_string(x=x)) + 
     geom_histogram(alpha=alpha, position=position, binwidth=binWidth) + 
     aes_string(fill=fill)
+  p <- p + xlim(xlim)
   return(p)
 }
 
 ## function for density plot 
-plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond) {
+plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond, xlim) {
   fill <- convertNoneToNULL(fill)
   p <- ggplot(dataset, aes_string(x=x)) 
-  
   if (densBlkLineCond) {
-    p <- p + geom_density(aes_string(group=fill, fill=fill), alpha=alpha)     
+    p <- p + geom_density(aes_string(group=fill, fill=fill), alpha=alpha)
   } else {
-    p <- p + geom_density(aes_string(group=fill, color=fill, fill=fill), alpha=alpha) 
+    p <- p + geom_density(aes_string(group=fill, color=fill, fill=fill), alpha=alpha)
   }
-
+  p <- p + xlim(xlim)
   return(p)
 }
 
 
 ## function for bar plot
-plotBar <- function(dataset, x, y, fill, position, alpha) {
+plotBar <- function(dataset, x, y, fill, position, alpha, xlim, ylim) {
   fill <- convertNoneToNULL(fill)
   position <- convertNoneToNULL(position)
   p <- ggplot(dataset, aes_string(x=x, y=y)) +
     geom_bar(stat='identity', position=position, alpha=alpha) + 
     aes_string(fill=fill)
+  #p <- p + xlim(xlim) + ylim(ylim)
   return(p)
 }
 
 
 ## function for box plot
-plotBox <- function(dataset, x, y, fill, alpha) {
+plotBox <- function(dataset, x, y, fill, alpha, xlim, ylim) {
   fill <- convertNoneToNULL(fill)
   p <- ggplot(dataset, aes_string(x=x, y=y)) + 
     geom_boxplot(alpha=alpha) + 
     aes_string(fill=fill)
+  p <- p + xlim(xlim) + ylim(ylim)
   return(p)
 }
 
 
 ## function for path plot
-plotPath <- function(dataset, x, y, alpha) {
+plotPath <- function(dataset, x, y, alpha, xlim, ylim) {
   p <- ggplot(dataset, aes_string(x=x, y=y)) +
     geom_path(alpha=alpha)
+  p <- p + xlim(xlim) + ylim(ylim)
   return(p)
 }
 
