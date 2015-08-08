@@ -71,9 +71,12 @@ output$plotTypeCtrl <- renderUI({
   selectInput(inputId = "plotType", label = "Plot Type", 
               choices = c('Scatter'='scatter', 'Line'='line',
                           'Bar'='bar', 'Histogram'='histogram', 
-                          'Density'='density', 'Box'='box',
-                          'Path'='path', 'Violin'='violin', 
-                          'Image'='image', '2-Density', 'density2d'),
+                          'Density'='density', 'Box'='box'
+                          #'Path'='path', 
+                          #'Violin'='violin', 
+                          #'Image'='image', 
+                          #'2-Density', 'density2d'
+                          ),
               multiple = FALSE)
 })
 
@@ -99,7 +102,7 @@ output$smthCtrl <- renderUI({
   if (displaySmthCond()) {
     if (all(c(input$x, input$y) %in% numericVars())) {
       selectInput('smooth', 'Smoothing Effect', 
-                  c('None'='None', 'Linear'='lm', 'Loess'='loess'))
+                  c('None'='None', 'Linear'='lm', 'Auto'='auto'))
     }
   } 
 })
@@ -168,5 +171,33 @@ output$plotAddAggByCtrl <- renderUI({
                 choices=plotAddAggByOpts(), multiple=T)
 })
 
+## xlim control
+output$xlimCtrl <- renderUI({
+  if (is.null(input$x)) return()
+  if (input$x %in% finalDFNumericVars()) {
+    if (is.null(xRange())) return()
+    sliderInput("xlim", label="X Limits",
+                min=xRange()[1], max=xRange()[2], value=xRange())    
+  } else if (input$x %in% finalDFFactorVars()) {    
+    selectInput('xlim', label='X Limits', 
+                choices=c('a', 'b', 'c'), multiple=T)
+  }
+})
+
+## ylim control
+## note: ylim() is NOT applicable to histograms
+output$ylimCtrl <- renderUI({
+  if (is.null(input$y) | is.null(input$plotType)) return()
+  if (input$plotType=='histogram') return()
+
+  if (input$y %in% finalDFNumericVars()) {
+    if (is.null(yRange())) return()
+    sliderInput("ylim", label="Y Limits",
+                min=yRange()[1], max =yRange()[2], value=yRange())    
+  } else if (input$y %in% finalDFFactorVars()) {
+    selectInput('ylim', label='Y Limits',
+                choices=c('a', 'b', 'c'), multiple=T)
+  }
+})
 
 

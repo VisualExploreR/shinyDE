@@ -242,6 +242,8 @@ plotInput <- reactive({
   position <- input$position
   binWidth <- input$binWidth
   densBlkLineCond <- input$densBlkLineCond
+  xlim <- input$xlim
+  ylim <- input$ylim  
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
   wgtCtrls <- c('x', 'y', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip')
@@ -253,19 +255,13 @@ plotInput <- reactive({
   y <- ensureProperVarName(colnames(dataset), var=y, y=y)
   color <- ensureProperVarName(colnames(dataset), var=color, y=y)
   size <- ensureProperVarName(colnames(dataset), var=size, y=y)
-  
-#   print('----')
-#   print(names(dataset))
-#   print(y)
-#   print(color)
-#   print(size)
-  
+    
   ## scatter plot
   if (plotType=='scatter') {
-    wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag')
+    wgtCtrls <- c('shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
     wgtsLoaded <- checkWidgetsLoaded(input, wgtCtrls)
     if (!wgtsLoaded) return()
-    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, nrows())
+    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag)
   }
   
   ## line plot

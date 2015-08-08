@@ -147,11 +147,3 @@ finalDF <- reactive({
     dataset()
   }  
 })
-
-
-
-## number of rows
-nrows <- reactive({
-  if (is.null(finalDF())) return()
-  nrow(finalDF())
-})

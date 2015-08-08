@@ -34,8 +34,8 @@ options(shiny.maxRequestSize = 10000*1024^2)
 
 shinyServer(function(input, output, session) {
   ## reactive variables
+  source('./reactives/reactives.R', local=TRUE)  # general/miscellaneous
   source('./reactives/dataset.R', local=TRUE)  # dataset variables
-  source('./reactives/varNames.R', local=TRUE)  # variable name variables
   source('./reactives/plot.R', local=TRUE)  # plot-related reactives
   
   ## UI controls

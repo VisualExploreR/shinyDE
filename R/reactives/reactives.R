@@ -39,16 +39,60 @@ numericVars <- reactive({
 ## processed dataset variables with less than or equal to N unique values
 varsUniqValsCntLOEN <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  #dataset <- finalDF(); if (is.null(dataset)) return()
   n <- input$nUniqValsCntThres; if (is.null(n)) return()
   getVarNamesUniqValsCntLOEN(dataset, n)
 })
 
 
 
-#### variables for finalDF() -- may not be useful (after the talk with Eugene on 5/12/2015)
+#### variables for finalDF()
+finalDF <- reactive({  
+  if (is.null(input$semiAutoAgg)) return()
+  
+  ## semi-automatic aggregation (if enabled)
+  if (input$semiAutoAgg=='allowed') {
+    semiAutoAggDF()
+  } 
+  
+  ## natural dataset (raw or manually aggregated dataset)
+  else if (input$semiAutoAgg=='disabled') {
+    dataset()
+  }  
+})
 
+## number of rows
+nrows <- reactive({
+  if (is.null(finalDF())) return()
+  nrow(finalDF())
+})
 
+finalDFFactorVars <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  getFactorVarNames(dataset)
+})
+
+finalDFNumericVars <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  getNumericVarNames(dataset)
+})
+
+xRange <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  if (is.null(input$x)) return()
+  if (input$x %in% finalDFNumericVars())
+    range(dataset[input$x], na.rm=TRUE)
+})
+
+yRange <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  if (is.null(input$y)) return()
+  if (input$y %in% finalDFNumericVars())
+    range(dataset[input$y], na.rm=TRUE)
+})
+
+finalDFSelectedFactorVarVals <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+})
 
 
 

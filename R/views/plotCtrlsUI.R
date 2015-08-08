@@ -81,6 +81,9 @@ verticalLayout(
   uiOutput('binWidthCtrl'),
   uiOutput('alphaCtrl'),
   uiOutput('sizeMagCtrl'),
+  uiOutput('xlimCtrl'),
+  uiOutput('ylimCtrl'),
+
   uiOutput('densBlkLineCondCtrl'),
   uiOutput('coordFlipCtrl')
 )
