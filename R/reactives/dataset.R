@@ -27,13 +27,6 @@ customDatasetName <- reactive({
 
 ## reactive variable for raw dataset names
 rawDatasetNames <- reactive({
-## USE THIS TO DEBUG "class(obj)=='data.frame' has length > 1" ERROR MESSAGE
-#   print('yo')
-#   a <- customDatasetName()
-#   print('bro')
-#   b <- getLoadedDataFrameNames()
-#   print('ho')
-  
   c("diamonds", "mtcars", "rock", "pressure", 
     customDatasetName(),
     getLoadedDataFrameNames())
@@ -147,3 +140,6 @@ finalDF <- reactive({
     dataset()
   }  
 })
+
+
+

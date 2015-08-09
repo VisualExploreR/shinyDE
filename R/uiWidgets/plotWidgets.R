@@ -24,6 +24,11 @@ output$colCtrl <- renderUI({
     selectInput('color', 'Color', colOpts())    
 })
 
+## treat-as-a-factor-variable option for color
+output$treatAsFacVarColCtrl <- renderUI({
+  
+})
+
 ## fill control options
 output$fillCtrl <- renderUI({
   if (is.null(displayFillCond())) return()

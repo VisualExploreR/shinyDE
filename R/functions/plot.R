@@ -17,22 +17,27 @@ plotLine <- function(dataset, x, y, color, alpha, xlim, ylim) {
 ## function for scatter plot
 plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim) {
   shape <- convertNoneToNULL(shape)
+  shapeAsFactor <- varNameAsFactorOrNULL(shape)
   size <- convertNoneToNULL(size)
   jitter <- convertNoneToNULL(jitter)
   smooth <- convertNoneToNULL(smooth)
-
-  ## 
+  
   if (!is.null(size)) {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
-      geom_point(aes_string(shape=shape, size=size), 
+      geom_point(aes_string(shape=shapeAsFactor, size=size), 
                  alpha=alpha, position=jitter) + 
       scale_size(range = c(1, sizeMag))
       #scale_size_area(max_size=sizeMag)
       #scale_size_continuous(range = c(1, sizeMag))
   } else {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
-      geom_point(aes_string(shape=shape), 
+      geom_point(aes_string(shape=shapeAsFactor), 
                  alpha=alpha, position=jitter, size=sizeMag)
+  }
+  
+  ## 
+  if (!is.null(shape)) {
+    p <- p + guides(shape = guide_legend(title=shape))
   }
   
   if (!is.null(smooth)) {

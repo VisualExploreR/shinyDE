@@ -90,21 +90,11 @@ yRange <- reactive({
     range(dataset[input$y], na.rm=TRUE)
 })
 
-# xRangeStepSize <- reactive({
-#   if (is.null(xRange())) return()
-#   next
-# })
-# 
-# yRangeStepSize <- reactive({
-#   if (is.null(yRange())) return()
-#   next
-# })
-
 xFactorVarUniqVals <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (is.null(input$x)) return()
   if (input$x %in% finalDFFactorVars()) {
-    unique(dataset[[input$x]])
+    unique(as.character(dataset[[input$x]]))
   }
 })
 
@@ -112,7 +102,8 @@ yFactorVarUniqVals <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (is.null(input$y)) return()
   if (input$y %in% finalDFFactorVars()) {
-    unique(dataset[[input$y]])
+    unique(as.character(dataset[[input$y]]))
   }
 })
+
 

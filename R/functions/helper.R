@@ -114,6 +114,17 @@ convertNoneToNULL <- function(var) {
 }
 
 
+varNameAsFactorOrNULL <- function(var) {
+  if (!is.null(var)) 
+    ret <- paste0('as.factor(', var, ')')
+  else
+    ret <- NULL
+  return(ret)
+}
+
+
+
+
 ## function to check if specified widgets are loaded on shiny UI
 checkWidgetsLoaded <- function(input, widgets) {
   for (widget in widgets) {

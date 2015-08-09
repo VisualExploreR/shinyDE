@@ -1,5 +1,6 @@
 verticalLayout(
   uiOutput('fileInputSelectCtrl'),
+  
   fluidRow(
     column(4,
            uiOutput('fileInputHeaderCtrl')
@@ -10,5 +11,5 @@ verticalLayout(
     column(4,
            uiOutput('fileInputSepCtrl')
     )
-  )   # end of fluidRow for data import options        
+  )  # end of fluidRow for data import options   
 )

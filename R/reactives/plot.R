@@ -56,11 +56,11 @@ sizeOpts <- reactive({
 
 ## shape options reactive
 shapeOpts <- reactive({
-  #c('None', factorVars())
   dataset <- dataset(); if (is.null(dataset)) return()
   varsUniqValsCntLOE6 <- getVarNamesUniqValsCntLOEN(dataset, 6)  
-  vars <- setdiff(varsUniqValsCntLOE6, numericVars())
-  c('None', vars)
+  #vars <- setdiff(varsUniqValsCntLOE6, numericVars())
+  #c('None', vars)
+  c('None', varsUniqValsCntLOE6)
 })
 
 ## histogram max bin width reactive

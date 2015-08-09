@@ -52,3 +52,13 @@ output$dlBtnCSV <- renderUI({
 output$dlBtnPlot <- renderUI({
   downloadButton('dlPlot', 'Export Plot')
 })
+
+
+## user-defined factor variables control options
+# output$usrDefFacVarsCtrl <- renderUI({
+#   if (is.null(dataset()) | is.null(factorVars())) return()  
+#   selectInput('usrDefFacVars', 'User-Defined Factor Variables',
+#               choices=colnames(dataset()), 
+#               selected=factorVars(),
+#               multiple=T)
+# })
