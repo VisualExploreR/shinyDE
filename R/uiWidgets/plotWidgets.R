@@ -26,7 +26,9 @@ output$colCtrl <- renderUI({
 
 ## treat-as-a-factor-variable option for color
 output$treatAsFacVarColCtrl <- renderUI({
-  
+  if (is.null(displayTreatAsFacVarColCond())) return()
+  if (displayTreatAsFacVarColCond())
+    checkboxInput('treatAsFacVarCol', 'Treat as a factor variable.', value=FALSE)
 })
 
 ## fill control options
@@ -76,8 +78,8 @@ output$plotTypeCtrl <- renderUI({
   selectInput(inputId = "plotType", label = "Plot Type", 
               choices = c('Scatter'='scatter', 'Line'='line',
                           'Bar'='bar', 'Histogram'='histogram', 
-                          'Density'='density', 'Box'='box'
-                          #'Path'='path', 
+                          'Density'='density', 'Box'='box',
+                          'Path'='path'
                           #'Violin'='violin', 
                           #'Image'='image', 
                           #'2-Density', 'density2d'

@@ -92,6 +92,12 @@ displayColCond <- reactive({
   return (any(input$plotType %in% c('line', 'scatter', 'path'))) 
 })
 
+## display treat-as-a-factor-variable (for color) condition reactive
+displayTreatAsFacVarColCond <- reactive({
+  if (is.null(input$plotType)) return()
+  return (any(input$plotType %in% c('scatter'))) 
+})
+
 ## display fill condition reactive
 displayFillCond <- reactive({
   if (is.null(input$plotType)) return()
@@ -225,13 +231,14 @@ generalWidgetsLoaded <- reactive({
 
 scatterWidgetsLoaded <- reactive({
   if (!generalWidgetsLoaded()) return(FALSE)
-  wgtCtrls <- c('y', 'shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
+  wgtCtrls <- c('y', 'color', 'treatAsFacVarCol', 'shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
 lineWidgetsLoaded <- reactive({
   if (!generalWidgetsLoaded()) return(FALSE)
-  checkWidgetsLoaded(input, 'y')
+  wgtCtrls <- c('y', 'color')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
 linePtsOverlayWidgetsLoaded <- reactive({
@@ -304,7 +311,8 @@ plotInput <- reactive({
   densBlkLineCond <- input$densBlkLineCond
   ptsOverlayCond <- input$ptsOverlayCond
   xlim <- input$xlim
-  ylim <- input$ylim  
+  ylim <- input$ylim
+  treatAsFacVarCol <- input$treatAsFacVarCol
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
   if (!generalWidgetsLoaded()) return() 
@@ -319,7 +327,7 @@ plotInput <- reactive({
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
     if (!(y %in% yOpts())) return()
-    p <- plotScatter(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
+    p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
 
   ## line plot
@@ -373,9 +381,25 @@ plotInput <- reactive({
   }
 
   ## plot colors
-  if (color != 'None') {
-    p <- p + aes_string(color=color)      
-  }
+#   color <- convertNoneToNULL(color)
+#   colorAsFactor <- varNameAsFactorOrNULL(color)
+#   if (plotType=='scatter') {
+#     if (is.null(treatAsFacVarCol)) return()
+#     if (treatAsFacVarCol) {
+#       p <- p + aes_string(color=colorAsFactor)
+#       p <- p + guides(color = guide_legend(title=color))
+#     } else {
+#       p <- p + aes_string(color=color)
+#     }
+#   } else {
+#     p <- p + aes_string(color) 
+#   }
+  
+#   if (color != 'None') {  
+#     p <- p + aes_string(color=color)
+#   }
+  
+  
   
   ## facet grids
   facetGrids <- paste(facetRow, '~', facetCol)

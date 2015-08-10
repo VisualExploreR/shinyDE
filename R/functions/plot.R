@@ -10,12 +10,18 @@ plotLine <- function(dataset, x, y, color, alpha, xlim, ylim) {
   
   p <- p + xlim(xlim) + ylim(ylim)
   
+  if (color != 'None') {
+    p <- p + aes_string(color=color)  
+  }
+  
   return(p)
 }
 
 
 ## function for scatter plot
-plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim) {
+plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim) {
+  color <- convertNoneToNULL(color)
+  colorAsFactor <- varNameAsFactorOrNULL(color)  
   shape <- convertNoneToNULL(shape)
   shapeAsFactor <- varNameAsFactorOrNULL(shape)
   size <- convertNoneToNULL(size)
@@ -35,15 +41,25 @@ plotScatter <- function(dataset, x, y, shape, size, alpha, jitter, smooth, sizeM
                  alpha=alpha, position=jitter, size=sizeMag)
   }
   
-  ## 
+  ## coloring points
+  if (treatAsFacVarCol) {
+    p <- p + aes_string(color=colorAsFactor)
+    p <- p + guides(color = guide_legend(title=color))
+  } else {
+    p <- p + aes_string(color=color)
+  }
+  
+  ## shaping points
   if (!is.null(shape)) {
     p <- p + guides(shape = guide_legend(title=shape))
   }
   
+  ## line smoothing
   if (!is.null(smooth)) {
     p <- p + stat_smooth(method=smooth)
   }
   
+  ## limiting x and y values
   p <- p + xlim(xlim) + ylim(ylim)
   
   return(p)

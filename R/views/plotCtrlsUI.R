@@ -28,7 +28,8 @@ verticalLayout(
   
   fluidRow(
     column(6,
-           uiOutput('colCtrl')               
+           uiOutput('colCtrl'),
+           uiOutput('treatAsFacVarColCtrl')
     )
   ),
   
