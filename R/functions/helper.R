@@ -85,15 +85,14 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
 
 ## this function modifies and ensures proper variable name
 ## for semi-automatic aggregation dataset column names
-ensureProperVarName <- function(colnames, var, y) {  
-  #if (var==y) ensureProperYVarName(colnames, y)
+ensureProperVarName <- function(colnames, var, y) {
   if (tolower(var) %in% c('none', '.')) return(var)
   origVar <- var
   
   ## only if original variable is not found in dataset's column names
   if (!(var %in% colnames)) {
     
-    ## this step will do the following: e.g. v=='mpg' to y=='mpg_mean'
+    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
     var <- colnames[grepl(var, colnames)]
 
     ## if no match found
@@ -106,6 +105,27 @@ ensureProperVarName <- function(colnames, var, y) {
   }
   return(var)
 }
+
+
+## second version of ensureProperVarName()
+ensureProperVarName2 <- function(var, aggMeth, semiAutoAggOn) {
+  if (tolower(var) %in% c('none', '.')) return(var)
+  
+  ## if semi-automatic aggregation is turned on
+  if (semiAutoAggOn) {
+    if (aggMeth=='count')
+      return('count')
+    else
+      return(paste0(var, '_', aggMeth))
+  } 
+  
+  ## if semi-automatic aggregation is NOT turned on
+  else {
+    return(var)
+  }
+}
+
+
 
 
 ## function to convert 'None' to NULL

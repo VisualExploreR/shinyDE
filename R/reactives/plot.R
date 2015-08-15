@@ -225,7 +225,7 @@ displayPlotAddAggBy <- reactive({
 
 #### widgets loaded conditional reactives
 generalWidgetsLoaded <- reactive({
-  wgtCtrls <- c('x', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip')
+  wgtCtrls <- c('x', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip', 'semiAutoAgg', 'plotAggMeth')
   checkWidgetsLoaded(input, wgtCtrls)
 })
 
@@ -313,20 +313,31 @@ plotInput <- reactive({
   xlim <- input$xlim
   ylim <- input$ylim
   treatAsFacVarCol <- input$treatAsFacVarCol
+  semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
+  plotAggMeth <- input$plotAggMeth
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
   if (!generalWidgetsLoaded()) return() 
   if (!(x %in% xOpts())) return()
   
   ## ensure proper variable names (in case of semi-automatic aggregation)
-  y <- ensureProperVarName(colnames(dataset), var=y, y=y)
+  #y <- ensureProperVarName(colnames(dataset), var=y, y=y)
+  yOrig <- y
+  y <- y()
+
+#   print(dataset)
+#   print(paste('x:', x))
+#   print(paste('original y:', yOrig))
+#   print(paste('new y:', y))
+#   print('----')
+  
   color <- ensureProperVarName(colnames(dataset), var=color, y=y)
   size <- ensureProperVarName(colnames(dataset), var=size, y=y)
-    
+  
   ## scatter plot
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
-    if (!(y %in% yOpts())) return()
+    if (!(yOrig %in% yOpts())) return()
     p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
 
@@ -379,27 +390,6 @@ plotInput <- reactive({
     if (ptsOverlayCond)
       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
   }
-
-  ## plot colors
-#   color <- convertNoneToNULL(color)
-#   colorAsFactor <- varNameAsFactorOrNULL(color)
-#   if (plotType=='scatter') {
-#     if (is.null(treatAsFacVarCol)) return()
-#     if (treatAsFacVarCol) {
-#       p <- p + aes_string(color=colorAsFactor)
-#       p <- p + guides(color = guide_legend(title=color))
-#     } else {
-#       p <- p + aes_string(color=color)
-#     }
-#   } else {
-#     p <- p + aes_string(color) 
-#   }
-  
-#   if (color != 'None') {  
-#     p <- p + aes_string(color=color)
-#   }
-  
-  
   
   ## facet grids
   facetGrids <- paste(facetRow, '~', facetCol)

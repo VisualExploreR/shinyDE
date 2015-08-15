@@ -11,7 +11,7 @@ plotLine <- function(dataset, x, y, color, alpha, xlim, ylim) {
   p <- p + xlim(xlim) + ylim(ylim)
   
   if (color != 'None') {
-    p <- p + aes_string(color=color)  
+    p <- p + aes_string(color=color)
   }
   
   return(p)
@@ -27,7 +27,7 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
   size <- convertNoneToNULL(size)
   jitter <- convertNoneToNULL(jitter)
   smooth <- convertNoneToNULL(smooth)
-  
+    
   if (!is.null(size)) {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
       geom_point(aes_string(shape=shapeAsFactor, size=size), 

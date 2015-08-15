@@ -112,7 +112,6 @@ semiAutoAggDF <- reactive({
   if (input$semiAutoAgg=='allowed') {  
     ## if plot aggregation is specified (e.g. sum, mean, max, min)
     if (input$plotAggMeth != 'None') {
-      #aggBy <- input$x
       aggBy <- plotSemiAutoAggBy()
       aggTarget <- input$y
       aggMeth <- input$plotAggMeth
@@ -121,6 +120,7 @@ semiAutoAggDF <- reactive({
       #print(paste0('aggBy: ', paste0(aggBy, collapse=', ')))
       #print(paste0('nrow: ', nrow(semiAutoAggDF)))
       
+      #print(head(semiAutoAggDF))
       semiAutoAggDF
     } 
   }

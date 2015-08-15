@@ -83,11 +83,19 @@ xRange <- reactive({
     range(dataset[input$x], na.rm=TRUE)
 })
 
+# yRange <- reactive({
+#   dataset <- finalDF(); if (is.null(dataset)) return()
+#   if (is.null(input$y)) return()
+#   if (input$y %in% finalDFNumericVars())
+#     range(dataset[input$y], na.rm=TRUE)
+# })
+
 yRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  if (is.null(input$y)) return()
-  if (input$y %in% finalDFNumericVars())
-    range(dataset[input$y], na.rm=TRUE)
+  y <- y()
+  if (is.null(y)) return()
+  if (y %in% finalDFNumericVars())
+    range(dataset[[y]], na.rm=TRUE)
 })
 
 xFactorVarUniqVals <- reactive({
@@ -98,12 +106,29 @@ xFactorVarUniqVals <- reactive({
   }
 })
 
+# yFactorVarUniqVals <- reactive({
+#   dataset <- finalDF(); if (is.null(dataset)) return()
+#   if (is.null(input$y)) return()
+#   if (input$y %in% finalDFFactorVars()) {
+#     unique(as.character(dataset[[input$y]]))
+#   }
+# })
+
 yFactorVarUniqVals <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  if (is.null(input$y)) return()
-  if (input$y %in% finalDFFactorVars()) {
-    unique(as.character(dataset[[input$y]]))
+  y <- y()
+  if (is.null(y)) return()
+  if (y %in% finalDFFactorVars()) {
+    unique(as.character(dataset[[y]]))
   }
 })
 
-
+y <- reactive({
+  if (is.null(input$y)) return()
+  if (is.null(input$semiAutoAgg)) return()
+  if (is.null(input$plotAggMeth)) return()
+  
+  semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
+  y <- ensureProperVarName2(var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  y
+})

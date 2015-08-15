@@ -12,20 +12,6 @@ source('./functions/plot.R')
 source('./functions/aggregate.R')
 
 
-
-## FOR DEVELOPMENT ONLY ##
-mtcars$cyl <- as.factor(mtcars$cyl)
-mtcars$am <- as.factor(mtcars$am)
-mtcars$gear <- as.factor(mtcars$gear)
-
-# df <- read.csv('./data/diamonds_missing_vals.csv', stringsAsFactors=F)
-# df$cut <- as.factor(df$cut)
-# df$color <- as.factor(df$color)
-# df$clarity <- as.factor(df$clarity)
-## FOR DEVELOPMENT ONLY ## 
-
-
-
 ## file size options
 # by default, the file size limit is 5MB. It can be changed by
 # setting this option. Here we'll raise limit to 10GB.

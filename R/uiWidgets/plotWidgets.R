@@ -181,6 +181,8 @@ output$plotAddAggByCtrl <- renderUI({
 ## xlim control
 output$xlimCtrl <- renderUI({
   if (is.null(input$x)) return()
+  if (is.null(dataset())) return()  # optional?
+  if (is.null(input$semiAutoAgg)) return()  # optional?
   if (input$x %in% finalDFNumericVars()) {
     if (is.null(xRange())) return()
     sliderInput("xlim", label="X Range Filter",
@@ -196,19 +198,23 @@ output$xlimCtrl <- renderUI({
 ## ylim control
 ## note: ylim() is NOT applicable to histograms
 output$ylimCtrl <- renderUI({
-  if (is.null(input$y) | is.null(input$plotType)) return()
+  if (is.null(y())) return()
+  if (is.null(dataset())) return()
+  if (is.null(input$semiAutoAgg)) return()
+  
+  if (is.null(input$plotType)) return()  
   if (input$plotType=='histogram') return()
 
-  if (input$y %in% finalDFNumericVars()) {
+  y <- y()
+  
+  if (y %in% finalDFNumericVars()) {
     if (is.null(yRange())) return()
     sliderInput("ylim", label="Y Range Filter",
                 min=yRange()[1], max =yRange()[2], value=yRange())
-  } else if (input$y %in% finalDFFactorVars()) {
+  } else if (y %in% finalDFFactorVars()) {
     selectInput('ylim', label='Y Value Filter',
                 choices=yFactorVarUniqVals(), 
                 selected=yFactorVarUniqVals(),
                 multiple=T)
   }
 })
-
-
