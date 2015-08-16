@@ -144,6 +144,7 @@ output$coordFlipCtrl <- renderUI({
 ## histogram binwidth options
 output$binWidthCtrl <- renderUI({
   if (is.null(displayBinWidthCond())) return()
+  if (is.null(histMaxBinWidth())) return()
   if (displayBinWidthCond())
     sliderInput('binWidth', label = "Bin Width",
                 min=1, max=histMaxBinWidth(), value=1, step=1)
@@ -180,10 +181,11 @@ output$plotAddAggByCtrl <- renderUI({
 
 ## xlim control
 output$xlimCtrl <- renderUI({
+  if (is.null(dataset())) return()
   if (is.null(input$x)) return()
   if (is.null(y())) return()
-  if (is.null(dataset())) return()  # optional?
-  if (is.null(input$semiAutoAgg)) return()  # optional?
+  if (is.null(input$semiAutoAgg)) return()
+  
   if (input$x %in% finalDFNumericVars()) {
     if (is.null(xRange())) return()
     sliderInput("xlim", label="X Range Filter",
@@ -199,9 +201,9 @@ output$xlimCtrl <- renderUI({
 ## ylim control
 ## note: ylim() is NOT applicable to histograms
 output$ylimCtrl <- renderUI({
+  if (is.null(dataset())) return()
   if (is.null(input$x)) return()
   if (is.null(y())) return()
-  if (is.null(dataset())) return()
   if (is.null(input$semiAutoAgg)) return()
   
   if (is.null(input$plotType)) return()  

@@ -57,9 +57,11 @@ shapeOpts <- reactive({
 
 ## histogram max bin width reactive
 histMaxBinWidth <- reactive({
+  if (is.null(input$x)) return()
   dataset <- dataset(); if (is.null(dataset)) return()
+  if (!(input$x %in% colnames(dataset))) return()
   maxBinWidth <- round(diff(range(dataset[[input$x]], na.rm=TRUE)))
-  maxBinWidth
+  maxBinWidth 
 })
 
 ## additional aggregation options reactive
@@ -346,7 +348,12 @@ plotInput <- reactive({
   ## histogram
   else if (plotType=='histogram') {
     if (!histogramWidgetsLoaded()) return()
-    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha, xlim)
+
+    range1 <- range(dataset[[x]], na.rm=TRUE)
+    range2 <- xlim
+    
+    if (checkTwoRangesOverlap(range1, range2))
+      p <- plotHistogram(dataset, x, fill, position, binWidth, alpha, xlim)
   }
     
   ## density plot

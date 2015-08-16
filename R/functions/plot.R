@@ -60,6 +60,11 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
   }
   
   ## limiting x and y values
+#   print(x)
+#   print(xlim)
+#   print(y)
+#   print(ylim)
+#   print('----')
   p <- p + xlim(xlim) + ylim(ylim)
   
   return(p)
@@ -105,6 +110,7 @@ plotHistogram <- function(dataset, x, fill, position, binWidth, alpha, xlim) {
   return(p)
 }
 
+
 ## function for density plot 
 plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond, xlim) {
   fill <- convertNoneToNULL(fill)
@@ -114,7 +120,7 @@ plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond, xlim) {
   } else {
     p <- p + geom_density(aes_string(group=fill, color=fill, fill=fill), alpha=alpha)
   }
-  p <- p + xlim(xlim)
+  #p <- p + xlim(xlim)
   return(p)
 }
 

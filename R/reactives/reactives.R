@@ -81,11 +81,22 @@ finalDFNumericVars <- reactive({
   getNumericVarNames(dataset)
 })
 
+# xRange <- reactive({
+#   dataset <- finalDF(); if (is.null(dataset)) return()
+#   if (is.null(input$x)) return()
+#   if (input$x %in% finalDFNumericVars())
+#     range(dataset[input$x], na.rm=TRUE)
+# })
+
+## work-around for round error in sliderInput (for consistency w/ yRange())
 xRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (is.null(input$x)) return()
   if (input$x %in% finalDFNumericVars())
-    range(dataset[input$x], na.rm=TRUE)
+    range <- range(dataset[input$x], na.rm=TRUE)
+  range[1] <- range[1] - 1
+  range[2] <- range[2] + 1
+  range
 })
 
 # yRange <- reactive({
@@ -96,7 +107,7 @@ xRange <- reactive({
 #     range(dataset[[y]], na.rm=TRUE)
 # })
 
-## work-around for sliderInput rounding mal-function
+## work-around for round error in sliderInput
 yRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   y <- y()
@@ -121,7 +132,7 @@ yFactorVarUniqVals <- reactive({
   y <- y()
   if (is.null(y)) return()
   if (y %in% finalDFFactorVars()) {
-    unique(as.character(dataset[[y]]))
+    levels(dataset[[y]])
   }
 })
 
@@ -134,3 +145,4 @@ y <- reactive({
   y <- ensureProperVarName2(var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn)
   y
 })
+

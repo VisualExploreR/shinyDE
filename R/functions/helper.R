@@ -171,3 +171,14 @@ cleanPlotAggBy <- function(x, y, aggBy) {
   return(aggBy)
 }
 
+
+## this function takes two numeric ranges and returns TRUE if the two ranges overlap;
+## it is used to ensure that numeric xlim range has been updated for new dataset and x variables
+## when plot type is set to histogram (to prevent an error message)
+checkTwoRangesOverlap <- function(range1, range2) {
+  lowerRange1 <- range1[1]
+  upperRange1 <- range1[2]
+  lowerRange2 <- range2[1]
+  upperRange2 <- range2[2]
+  return(upperRange1 >= lowerRange2 & lowerRange1 <= upperRange2)
+}
