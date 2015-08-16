@@ -98,7 +98,7 @@ plotSemiAutoAggByBase <- reactive({
 
 ## reactive for semi-automatic aggregate by
 ## base + additional aggregate-by fields
-plotSemiAutoAggBy <- reactive({
+plotSemiAutoAggBy <- reactive({  
   aggBy <- c(plotSemiAutoAggByBase(), input$plotAddAggBy)
   aggBy <- cleanPlotAggBy(input$x, input$y, aggBy)
   aggBy
@@ -107,7 +107,7 @@ plotSemiAutoAggBy <- reactive({
 ## reactive for semi-automatic aggregated dataset
 semiAutoAggDF <- reactive({
   if (is.null(input$semiAutoAgg)) return()
-  if (is.null(dataset())) return()  
+  if (is.null(dataset())) return()
   
   if (input$semiAutoAgg=='allowed') {  
     ## if plot aggregation is specified (e.g. sum, mean, max, min)
@@ -115,13 +115,12 @@ semiAutoAggDF <- reactive({
       aggBy <- plotSemiAutoAggBy()
       aggTarget <- input$y
       aggMeth <- input$plotAggMeth
-      semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
-      #print('-----')
-      #print(paste0('aggBy: ', paste0(aggBy, collapse=', ')))
-      #print(paste0('nrow: ', nrow(semiAutoAggDF)))
       
-      #print(head(semiAutoAggDF))
-      semiAutoAggDF
+      vars <- c(aggBy, aggTarget)
+      if (all(vars %in% colnames(dataset()))) {
+        semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+        semiAutoAggDF        
+      }
     } 
   }
 })

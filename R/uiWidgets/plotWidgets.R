@@ -181,6 +181,7 @@ output$plotAddAggByCtrl <- renderUI({
 ## xlim control
 output$xlimCtrl <- renderUI({
   if (is.null(input$x)) return()
+  if (is.null(y())) return()
   if (is.null(dataset())) return()  # optional?
   if (is.null(input$semiAutoAgg)) return()  # optional?
   if (input$x %in% finalDFNumericVars()) {
@@ -198,6 +199,7 @@ output$xlimCtrl <- renderUI({
 ## ylim control
 ## note: ylim() is NOT applicable to histograms
 output$ylimCtrl <- renderUI({
+  if (is.null(input$x)) return()
   if (is.null(y())) return()
   if (is.null(dataset())) return()
   if (is.null(input$semiAutoAgg)) return()
@@ -209,7 +211,6 @@ output$ylimCtrl <- renderUI({
   
   if (y %in% finalDFNumericVars()) {
     if (is.null(yRange())) return()
-    print(yRange())
     sliderInput("ylim", label="Y Range Filter",
                 min=yRange()[1], max=yRange()[2], value=yRange(), round=FALSE)
   } else if (y %in% finalDFFactorVars()) {

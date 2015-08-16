@@ -161,6 +161,8 @@ cleanPlotAggBy <- function(x, y, aggBy) {
   aggBy <- c(x, aggBy)
   aggBy <- unique(aggBy)
   nonAggBy <- c('None', 'none', '.')
+  
+  ## remove nonAggBy from aggBy
   aggBy <- setdiff(aggBy, nonAggBy)
   
   if (x != y)
