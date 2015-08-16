@@ -66,6 +66,11 @@ nrows <- reactive({
   nrow(finalDF())
 })
 
+finalDFVars <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  colnames(dataset)
+})
+
 finalDFFactorVars <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   getFactorVarNames(dataset)
@@ -85,17 +90,22 @@ xRange <- reactive({
 
 # yRange <- reactive({
 #   dataset <- finalDF(); if (is.null(dataset)) return()
-#   if (is.null(input$y)) return()
-#   if (input$y %in% finalDFNumericVars())
-#     range(dataset[input$y], na.rm=TRUE)
+#   y <- y()
+#   if (is.null(y)) return()
+#   if (y %in% finalDFNumericVars())
+#     range(dataset[[y]], na.rm=TRUE)
 # })
 
+## work-around for sliderInput rounding mal-function
 yRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   y <- y()
   if (is.null(y)) return()
   if (y %in% finalDFNumericVars())
-    range(dataset[[y]], na.rm=TRUE)
+    range <- range(dataset[[y]], na.rm=TRUE)
+  range[1] <- range[1] - 1
+  range[2] <- range[2] + 1
+  range
 })
 
 xFactorVarUniqVals <- reactive({
@@ -105,14 +115,6 @@ xFactorVarUniqVals <- reactive({
     unique(as.character(dataset[[input$x]]))
   }
 })
-
-# yFactorVarUniqVals <- reactive({
-#   dataset <- finalDF(); if (is.null(dataset)) return()
-#   if (is.null(input$y)) return()
-#   if (input$y %in% finalDFFactorVars()) {
-#     unique(as.character(dataset[[input$y]]))
-#   }
-# })
 
 yFactorVarUniqVals <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()

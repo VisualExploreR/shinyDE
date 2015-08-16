@@ -1,21 +1,13 @@
 ## x options reactive
 xOpts <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  xOpts <- names(dataset)
-  #    if (!is.null(input$plotType)) 
-  #      if (input$plotType=='line') 
-  #        xOpts <- setdiff(xOpts, input$color)
-  xOpts
+  names(dataset)
 })
 
 ## y options reactive
 yOpts <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  yOpts <- names(dataset)
-  #    if (!is.null(input$plotType)) 
-  #      if (input$plotType=='line') 
-  #        yOpts <- setdiff(yOpts, c(input$x, input$color))
-  yOpts
+  names(dataset)
 })
 
 ## color options reactive
@@ -282,8 +274,6 @@ pathPtsOverlayWidgetsLoaded <- reactive({
   checkWidgetsLoaded(input, wgtCtrls)    
 })
 
-
-
 ## plot reactive
 plotInput <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
@@ -313,38 +303,31 @@ plotInput <- reactive({
   xlim <- input$xlim
   ylim <- input$ylim
   treatAsFacVarCol <- input$treatAsFacVarCol
-  semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
   plotAggMeth <- input$plotAggMeth
+  semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
   
   ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
   if (!generalWidgetsLoaded()) return() 
   if (!(x %in% xOpts())) return()
   
   ## ensure proper variable names (in case of semi-automatic aggregation)
-  #y <- ensureProperVarName(colnames(dataset), var=y, y=y)
-  yOrig <- y
   y <- y()
-
-#   print(dataset)
-#   print(paste('x:', x))
-#   print(paste('original y:', yOrig))
-#   print(paste('new y:', y))
-#   print('----')
-  
-  color <- ensureProperVarName(colnames(dataset), var=color, y=y)
-  size <- ensureProperVarName(colnames(dataset), var=size, y=y)
+  color <- ensureProperVarName2(var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  size <- ensureProperVarName2(var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  #color <- ensureProperVarName(colnames(dataset), var=color, y=y)
+  #size <- ensureProperVarName(colnames(dataset), var=size, y=y)
   
   ## scatter plot
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
-    if (!(yOrig %in% yOpts())) return()
+    if (!(y %in% finalDFVars())) return()
     p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
 
   ## line plot
   else if (plotType=='line') {
     if (!lineWidgetsLoaded()) return()
-    if (!(y %in% yOpts())) return()
+    if (!(y %in% finalDFVars())) return()
     p <- plotLine(dataset, x, y, color, alpha, xlim, ylim)
 
     ## line plot with points overlay
@@ -356,7 +339,7 @@ plotInput <- reactive({
   ## bar plot
   else if (plotType=='bar') {
     if (!barWidgetsLoaded()) return()
-    if (!(y %in% yOpts())) return()
+    if (!(y %in% finalDFVars())) return()
     p <- plotBar(dataset, x, y, fill, position, alpha, xlim, ylim)
   }
   
@@ -375,14 +358,14 @@ plotInput <- reactive({
   ## box plot
   else if (plotType=='box') {
     if (!boxWidgetsLoaded()) return()
-    if (!(y %in% yOpts())) return()
+    if (!(y %in% finalDFVars())) return()
     p <- plotBox(dataset, x, y, fill, alpha, xlim, ylim)
   }
   
   ## path plot
   else if (plotType=='path') {
     if (!pathWidgetsLoaded()) return()
-    if (!(y %in% yOpts())) return()
+    if (!(y %in% finalDFVars())) return()
     p <- plotPath(dataset, x, y, alpha, xlim, ylim)
     
     ## path plot with points overlay

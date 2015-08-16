@@ -186,7 +186,7 @@ output$xlimCtrl <- renderUI({
   if (input$x %in% finalDFNumericVars()) {
     if (is.null(xRange())) return()
     sliderInput("xlim", label="X Range Filter",
-                min=xRange()[1], max=xRange()[2], value=xRange())    
+                min=xRange()[1], max=xRange()[2], value=xRange(), round=FALSE)
   } else if (input$x %in% finalDFFactorVars()) {    
     selectInput('xlim', label='X Value Filter', 
                 choices=xFactorVarUniqVals(), 
@@ -209,8 +209,9 @@ output$ylimCtrl <- renderUI({
   
   if (y %in% finalDFNumericVars()) {
     if (is.null(yRange())) return()
+    print(yRange())
     sliderInput("ylim", label="Y Range Filter",
-                min=yRange()[1], max =yRange()[2], value=yRange())
+                min=yRange()[1], max=yRange()[2], value=yRange(), round=FALSE)
   } else if (y %in% finalDFFactorVars()) {
     selectInput('ylim', label='Y Value Filter',
                 choices=yFactorVarUniqVals(), 
