@@ -21,13 +21,13 @@ plotLine <- function(dataset, x, y, color, alpha, xlim, ylim) {
 ## function for scatter plot
 plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim) {
   color <- convertNoneToNULL(color)
-  colorAsFactor <- varNameAsFactorOrNULL(color)  
+  colorAsFactor <- varNameAsFactorOrNULL(color)
   shape <- convertNoneToNULL(shape)
   shapeAsFactor <- varNameAsFactorOrNULL(shape)
   size <- convertNoneToNULL(size)
   jitter <- convertNoneToNULL(jitter)
   smooth <- convertNoneToNULL(smooth)
-    
+  
   if (!is.null(size)) {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
       geom_point(aes_string(shape=shapeAsFactor, size=size), 
@@ -60,12 +60,7 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
   }
   
   ## limiting x and y values
-#   print(x)
-#   print(xlim)
-#   print(y)
-#   print(ylim)
-#   print('----')
-  p <- p + xlim(xlim) + ylim(ylim)
+  p <- p + xlim(xlim) + ylim(ylim)  
   
   return(p)
 }

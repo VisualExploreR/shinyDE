@@ -182,3 +182,33 @@ checkTwoRangesOverlap <- function(range1, range2) {
   upperRange2 <- range2[2]
   return(upperRange1 >= lowerRange2 & lowerRange1 <= upperRange2)
 }
+
+
+## this function takes a dataset, variable name, and variable's limit (e.g. x and xlim)
+## and returns TRUE if that they are compatible;
+## for e.g. if x is a continuous variable, then xlim should be a numeric range;
+## for e.g. if y is a factor or character variable, then ylim should be a vector of discrete values;
+## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
+## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
+## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
+## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
+
+checkVarAndLimCompatible <- function(dataset, var, lim) {
+  varType <- class(dataset[[var]])
+  limType <- class(lim)
+  
+  if (any(varType %in% 'numeric')) {
+    if (limType=='numeric') {
+      return(TRUE)      
+    }
+  } else if (any(varType %in% c('factor', 'character'))) {
+    if (limType=='character') {
+      return(TRUE)
+    }
+  }
+  
+  print('false')
+  return(FALSE)
+}
+
+

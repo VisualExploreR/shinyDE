@@ -323,6 +323,10 @@ plotInput <- reactive({
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
+
+#     if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+#     if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    
     p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
 
@@ -351,9 +355,9 @@ plotInput <- reactive({
 
     range1 <- range(dataset[[x]], na.rm=TRUE)
     range2 <- xlim
+    if (!checkTwoRangesOverlap(range1, range2)) return()
     
-    if (checkTwoRangesOverlap(range1, range2))
-      p <- plotHistogram(dataset, x, fill, position, binWidth, alpha, xlim)
+    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha, xlim)
   }
     
   ## density plot
