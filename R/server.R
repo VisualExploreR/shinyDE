@@ -4,6 +4,7 @@ library(ggplot2)
 library(dplyr)
 library(DT)
 library(stringr)
+library(shinyBS)
 
 
 ## import functions
@@ -25,6 +26,7 @@ shinyServer(function(input, output, session) {
   source('./reactives/plot.R', local=TRUE)  # plot-related reactives
   
   ## UI controls
+  source('./uiWidgets/generalWidgets.R', local=TRUE)
   source('./uiWidgets/fileWidgets.R', local=TRUE)
   source('./uiWidgets/manAggWidgets.R', local=TRUE)
   source('./uiWidgets/plotWidgets.R', local=TRUE)
@@ -38,8 +40,28 @@ shinyServer(function(input, output, session) {
   })
   
   ## display plot
-  output$plot <- renderPlot({
-    print(plotInput())
-  }, height=700)
+  observeEvent(input$reactive, {
+    updateButton(session, "submit", disabled = input$reactive==TRUE)
+    if (input$reactive) {
+      output$plot <- renderPlot({
+        print(plotInput())
+      }, height=700)
+    } else {  
+      output$plot <- renderPlot({
+        input$submit
+        isolate(print(plotInput()))
+      }, height=700)
+    }
+  })
 
+  observeEvent(input$submit, { 
+    brush <- input$zoom_brush 
+    if (!is.null(brush)) {
+      ranges$x <- c(brush$xmin, brush$xmax)
+      ranges$y <- c(brush$ymin, brush$ymax)
+    } else {
+      ranges$x <- NULL
+      ranges$y <- NULL
+    }
+  }) 
 })

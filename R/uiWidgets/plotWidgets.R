@@ -190,7 +190,7 @@ output$xlimCtrl <- renderUI({
     if (is.null(xRange())) return()
     sliderInput("xlim", label="X Range Filter",
                 min=xRange()[1], max=xRange()[2], value=xRange(), round=FALSE)
-  } else if (input$x %in% finalDFFactorVars()) {    
+  } else if (input$x %in% finalDFFactorVars()) {
     selectInput('xlim', label='X Value Filter', 
                 choices=xFactorVarUniqVals(), 
                 selected=xFactorVarUniqVals(),

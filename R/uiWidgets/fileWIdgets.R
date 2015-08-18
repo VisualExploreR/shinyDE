@@ -37,12 +37,6 @@ output$fileInputSepCtrl <- renderUI({
                ',')  
 })
 
-## dataset drop-down options 
-output$datasetCtrl <- renderUI({
-  selectInput("dataset", "Choose a dataset:", 
-              choices = rawDatasetNames())
-})
-
 ## CSV download button (for UI)
 output$dlBtnCSV <- renderUI({
   downloadButton('dlCSV', 'Download')

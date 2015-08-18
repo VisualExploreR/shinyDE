@@ -323,9 +323,8 @@ plotInput <- reactive({
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-
-#     if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
-#     if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
     
     p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
@@ -334,6 +333,9 @@ plotInput <- reactive({
   else if (plotType=='line') {
     if (!lineWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    
     p <- plotLine(dataset, x, y, color, alpha, xlim, ylim)
 
     ## line plot with points overlay
@@ -346,13 +348,15 @@ plotInput <- reactive({
   else if (plotType=='bar') {
     if (!barWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    
     p <- plotBar(dataset, x, y, fill, position, alpha, xlim, ylim)
   }
   
   ## histogram
   else if (plotType=='histogram') {
     if (!histogramWidgetsLoaded()) return()
-
     range1 <- range(dataset[[x]], na.rm=TRUE)
     range2 <- xlim
     if (!checkTwoRangesOverlap(range1, range2)) return()
@@ -370,6 +374,8 @@ plotInput <- reactive({
   else if (plotType=='box') {
     if (!boxWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
     p <- plotBox(dataset, x, y, fill, alpha, xlim, ylim)
   }
   

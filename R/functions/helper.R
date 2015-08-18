@@ -196,19 +196,17 @@ checkTwoRangesOverlap <- function(range1, range2) {
 checkVarAndLimCompatible <- function(dataset, var, lim) {
   varType <- class(dataset[[var]])
   limType <- class(lim)
+  compatCond <- FALSE
   
   if (any(varType %in% 'numeric')) {
     if (limType=='numeric') {
-      return(TRUE)      
+      compatCond <- TRUE
     }
   } else if (any(varType %in% c('factor', 'character'))) {
     if (limType=='character') {
-      return(TRUE)
+      compatCond <- TRUE
     }
   }
   
-  print('false')
-  return(FALSE)
+  return(compatCond)
 }
-
-
