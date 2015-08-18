@@ -86,5 +86,13 @@ verticalLayout(
   uiOutput('ylimCtrl'),
   
   uiOutput('densBlkLineCondCtrl'),
-  uiOutput('coordFlipCtrl')
+  uiOutput('coordFlipCtrl'),
+  
+  ## enable reactive option
+  uiOutput('reactiveCtrl'),
+  
+  ## reactive vs. upon-manual-submit calculations
+  uiOutput('submitCtrl')
+  
+  
 )

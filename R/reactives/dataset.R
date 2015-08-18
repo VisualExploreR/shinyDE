@@ -1,5 +1,3 @@
-
-
 ## reactive variable for custom (uploadable) dataset file info
 customDatasetFileInfo <- reactive({
   # input$file will be NULL initially. After the user selects

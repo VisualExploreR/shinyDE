@@ -222,3 +222,15 @@ output$ylimCtrl <- renderUI({
                 multiple=T)
   }
 })
+
+
+## reactive plotting option
+output$reactiveCtrl <- renderUI({
+  checkboxInput("reactive", label="Enable reactive plotting") 
+})
+
+
+## upon-manual-submit button
+output$submitCtrl <- renderUI({
+  shinyBS::bsButton("submit", label="Submit", icon=icon("refresh"), type = "action", block=TRUE)
+})
