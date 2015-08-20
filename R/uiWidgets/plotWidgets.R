@@ -45,6 +45,13 @@ output$posCtrl <- renderUI({
     selectInput('position', 'Position', c('None', 'dodge', 'stack'))
 })
 
+## facet grid vs. wrap options
+output$facetMethCtrl <- renderUI({
+  radioButtons('facetMeth', 'Facet Method', 
+               choices=c('grid', 'wrap'), 
+               selected = 'grid', inline = TRUE)
+})
+
 ## row-wise facet-options
 output$facetRowCtrl <- renderUI({
   selectInput('facetRow', 'Facet Row', facetOpts())
@@ -56,7 +63,7 @@ output$facetColCtrl <- renderUI({
 })
 
 ## facet-grid options
-output$facetGridCtrls <- 
+# output$facetGridCtrls
 
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({
@@ -224,13 +231,3 @@ output$ylimCtrl <- renderUI({
 })
 
 
-## reactive plotting option
-output$reactiveCtrl <- renderUI({
-  checkboxInput("reactive", label="Enable reactive plotting") 
-})
-
-
-## upon-manual-submit button
-output$submitCtrl <- renderUI({
-  shinyBS::bsButton("submit", label="Submit", icon=icon("refresh"), type = "action", block=TRUE)
-})

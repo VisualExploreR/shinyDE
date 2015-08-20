@@ -5,6 +5,9 @@ shinyUI(pageWithSidebar(
     ## dataset selection
     uiOutput('datasetCtrl'),
     
+    ## enable reactive option
+    uiOutput('reactiveCtrl'),
+    
     hr(),
     
     ## file input/upload panel
@@ -23,7 +26,10 @@ shinyUI(pageWithSidebar(
     conditionalPanel(
       condition = 'input.conditionedPanels=="plotTab"',
       source('./views/plotCtrlsUI.R', local=TRUE)$value      
-    )  # end of conditionalPanel for plot options
+    ),  # end of conditionalPanel for plot options
+    
+    ## reactive vs. upon-manual-submit calculations
+    uiOutput('submitCtrl')
     
   ),  # end of sidebarPanel
   

@@ -4,3 +4,14 @@ output$datasetCtrl <- renderUI({
               choices = rawDatasetNames())
 })
 
+
+## reactive  option
+output$reactiveCtrl <- renderUI({
+  checkboxInput("reactive", label="Enable reactivity") 
+})
+
+
+## upon-manual-submit button
+output$submitCtrl <- renderUI({
+  shinyBS::bsButton("submit", label="Submit", icon=icon("refresh"), type = "action", block=TRUE)
+})

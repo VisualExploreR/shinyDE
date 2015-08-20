@@ -62,14 +62,23 @@ verticalLayout(
   
   fluidRow(
     column(6,
-           uiOutput('facetRowCtrl')             
+           uiOutput('facetMethCtrl')           
+    ),
+    column(6)
+  ),
+  
+  fluidRow(
+    shinyjs::useShinyjs(),
+    column(6,
+           uiOutput('facetRowCtrl')
     ),
     column(6,
-           uiOutput('facetColCtrl')             
+           uiOutput('facetColCtrl')
     )
   ),
   
   fluidRow(
+    shinyjs::useShinyjs(),
     column(6,
            uiOutput('facetWrapCtrl')
     ),
@@ -86,13 +95,6 @@ verticalLayout(
   uiOutput('ylimCtrl'),
   
   uiOutput('densBlkLineCondCtrl'),
-  uiOutput('coordFlipCtrl'),
-  
-  ## enable reactive option
-  uiOutput('reactiveCtrl'),
-  
-  ## reactive vs. upon-manual-submit calculations
-  uiOutput('submitCtrl')
-  
+  uiOutput('coordFlipCtrl')
   
 )

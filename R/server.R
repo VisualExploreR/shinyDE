@@ -5,6 +5,7 @@ library(dplyr)
 library(DT)
 library(stringr)
 library(shinyBS)
+library(shinyjs)
 
 
 ## import functions
@@ -34,26 +35,39 @@ shinyServer(function(input, output, session) {
   ## download handlers
   source('./reactives/download.R', local=TRUE)
   
-  ## display tabular datatable content
-  output$displayTable <- DT::renderDataTable({
-    DT::datatable(manAggDataset(), filter='bottom')
-  })
-  
-  ## display plot
+  ## display plot and data table
   observeEvent(input$reactive, {
-    updateButton(session, "submit", disabled = input$reactive==TRUE)
+    shinyBS::updateButton(session, "submit", disabled = input$reactive==TRUE)
+
     if (input$reactive) {
+      
+      ## display plot reactively
       output$plot <- renderPlot({
         print(plotInput())
       }, height=700)
-    } else {  
+      
+      ## display data table reactively
+      output$displayTable <- DT::renderDataTable({
+        DT::datatable(manAggDataset(), filter='bottom')
+      })
+      
+    } else {
+      
+      ## display plot upon submit
       output$plot <- renderPlot({
         input$submit
         isolate(print(plotInput()))
       }, height=700)
+      
+      ## display data table upon submit
+      output$displayTable <- DT::renderDataTable({
+        input$submit
+        isolate(DT::datatable(manAggDataset(), filter='bottom'))
+      })
     }
   })
 
+  ## for rectangular highlighting in plot
   observeEvent(input$submit, { 
     brush <- input$zoom_brush 
     if (!is.null(brush)) {
@@ -64,4 +78,25 @@ shinyServer(function(input, output, session) {
       ranges$y <- NULL
     }
   }) 
+  
+  ## 
+#   observeEvent(input$facetMeth=='grid', {
+#     if (is.null(input$facetMeth)) {
+#       #shinyjs::disable('facetWrap')
+#       #shinyjs::toggleState('facetWrap')
+#       print('ha')
+#     } else if (input$facetMeth=='grid') {
+#       #shinyjs::disable('facetWrap')
+#       shinyjs::toggleState('facetWrap')
+#       print('ba')
+#     } else if (input$facetMeth=='wrap') {
+#       #shinyjs::disable('facetCol')
+#       #shinyjs::disable('facetRow')
+#       shinyjs::toggleState('facetCol')
+#       shinyjs::toggleState('facetRow')
+#       print('ka')
+#     }
+#   })
+  
+  
 })
