@@ -63,7 +63,7 @@ output$facetColCtrl <- renderUI({
 })
 
 ## facet-grid options
-# output$facetGridCtrls
+
 
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({

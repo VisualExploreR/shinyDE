@@ -43,3 +43,17 @@
 #         source('./views/pathPlotCtrlsUI.R')$value
 #       )
 
+
+
+#   observeEvent(input$submit, { 
+#     brush <- input$zoom_brush 
+#     if (!is.null(brush)) {
+#       ranges$x <- c(brush$xmin, brush$xmax)
+#       ranges$y <- c(brush$ymin, brush$ymax)
+#     } else {
+#       ranges$x <- NULL
+#       ranges$y <- NULL
+#     }
+#   }) 
+
+

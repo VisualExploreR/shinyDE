@@ -66,37 +66,35 @@ shinyServer(function(input, output, session) {
       })
     }
   })
-
-  ## for rectangular highlighting in plot
-  observeEvent(input$submit, { 
-    brush <- input$zoom_brush 
-    if (!is.null(brush)) {
-      ranges$x <- c(brush$xmin, brush$xmax)
-      ranges$y <- c(brush$ymin, brush$ymax)
-    } else {
-      ranges$x <- NULL
-      ranges$y <- NULL
-    }
-  }) 
   
-  ## 
-#   observeEvent(input$facetMeth=='grid', {
-#     if (is.null(input$facetMeth)) {
-#       #shinyjs::disable('facetWrap')
-#       #shinyjs::toggleState('facetWrap')
-#       print('ha')
-#     } else if (input$facetMeth=='grid') {
-#       #shinyjs::disable('facetWrap')
-#       shinyjs::toggleState('facetWrap')
-#       print('ba')
+#   ## OPTION 1
+#   observeEvent(input$facetMeth %in% c('grid', 'wrap'), {
+#     if (is.null(input$facetMeth)) return()
+#     if (input$facetMeth=='grid') {
+#       shinyjs::enable('facetCol')
+#       shinyjs::enable('facetRow')
+#       shinyjs::disable('facetWrap')
 #     } else if (input$facetMeth=='wrap') {
-#       #shinyjs::disable('facetCol')
-#       #shinyjs::disable('facetRow')
-#       shinyjs::toggleState('facetCol')
-#       shinyjs::toggleState('facetRow')
-#       print('ka')
+#       shinyjs::disable('facetCol')
+#       shinyjs::disable('facetRow')
+#       shinyjs::enable('facetWrap')
+#     }
+#   })
+#   
+#   ## OPTION 2
+#   observeEvent(input$facetCol=='None' & input$facetRow=='None', {
+#     if (is.null(input$facetWrap)) return()
+#     if (input$facetWrap != 'None') {
+#       shinyjs::disable('facetCol')
+#       shinyjs::disable('facetRow')
 #     }
 #   })
   
-  
+  ## when everything is none
+#   isInitFacetState <- reactive({
+#     wgts <- c('facetCol', 'facetRow', 'facetWrap')
+#     if (!checkWidgetsLoaded(input, wgts)) return()
+#     
+#   })
+
 })
