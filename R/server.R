@@ -35,66 +35,7 @@ shinyServer(function(input, output, session) {
   ## download handlers
   source('./reactives/download.R', local=TRUE)
   
-  ## display plot and data table
-  observeEvent(input$reactive, {
-    shinyBS::updateButton(session, "submit", disabled = input$reactive==TRUE)
-
-    if (input$reactive) {
-      
-      ## display plot reactively
-      output$plot <- renderPlot({
-        print(plotInput())
-      }, height=700)
-      
-      ## display data table reactively
-      output$displayTable <- DT::renderDataTable({
-        DT::datatable(manAggDataset(), filter='bottom')
-      })
-      
-    } else {
-      
-      ## display plot upon submit
-      output$plot <- renderPlot({
-        input$submit
-        isolate(print(plotInput()))
-      }, height=700)
-      
-      ## display data table upon submit
-      output$displayTable <- DT::renderDataTable({
-        input$submit
-        isolate(DT::datatable(manAggDataset(), filter='bottom'))
-      })
-    }
-  })
+  ## observed events
+  source('./observeEvents.R', local=TRUE)
   
-#   ## OPTION 1
-#   observeEvent(input$facetMeth %in% c('grid', 'wrap'), {
-#     if (is.null(input$facetMeth)) return()
-#     if (input$facetMeth=='grid') {
-#       shinyjs::enable('facetCol')
-#       shinyjs::enable('facetRow')
-#       shinyjs::disable('facetWrap')
-#     } else if (input$facetMeth=='wrap') {
-#       shinyjs::disable('facetCol')
-#       shinyjs::disable('facetRow')
-#       shinyjs::enable('facetWrap')
-#     }
-#   })
-#   
-#   ## OPTION 2
-#   observeEvent(input$facetCol=='None' & input$facetRow=='None', {
-#     if (is.null(input$facetWrap)) return()
-#     if (input$facetWrap != 'None') {
-#       shinyjs::disable('facetCol')
-#       shinyjs::disable('facetRow')
-#     }
-#   })
-  
-  ## when everything is none
-#   isInitFacetState <- reactive({
-#     wgts <- c('facetCol', 'facetRow', 'facetWrap')
-#     if (!checkWidgetsLoaded(input, wgts)) return()
-#     
-#   })
-
 })

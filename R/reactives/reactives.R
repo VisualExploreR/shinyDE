@@ -146,3 +146,32 @@ y <- reactive({
   y
 })
 
+
+
+
+## conditional: all facet widgets are loaded
+facetWidgetsLoaded <- reactive({
+  wgts <- c('facetCol', 'facetRow', 'facetWrap')
+  return(checkWidgetsLoaded(input, wgts))
+})
+
+## conditional: no facet was selected
+noFacetSelected <- reactive({
+  if (!facetWidgetsLoaded()) return()
+  facetFam <- c(input$facetCol, input$facetRow, input$facetWrap)
+  noFacetSelected <- all('None' == facetFam) | all('' == facetFam)
+  return(noFacetSelected)
+})
+
+## conditional: facet grid was selected
+facetGridSelected <- reactive({
+  if (!facetWidgetsLoaded()) return()
+  return(input$facetCol != 'None' | input$facetRow != 'None')
+})
+
+## conditional: facet wrap was selected
+facetWrapSelected <- reactive({
+  if (!facetWidgetsLoaded()) return()
+  print(input$facetWrap)
+  return(input$facetWrap != 'None')
+})

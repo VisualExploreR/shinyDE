@@ -62,14 +62,6 @@ verticalLayout(
   
   fluidRow(
     column(6,
-           uiOutput('facetMethCtrl')           
-    ),
-    column(6)
-  ),
-  
-  fluidRow(
-    shinyjs::useShinyjs(),
-    column(6,
            uiOutput('facetRowCtrl')
     ),
     column(6,
@@ -78,7 +70,6 @@ verticalLayout(
   ),
   
   fluidRow(
-    shinyjs::useShinyjs(),
     column(6,
            uiOutput('facetWrapCtrl')
     ),

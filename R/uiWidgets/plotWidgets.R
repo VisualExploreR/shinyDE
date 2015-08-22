@@ -45,13 +45,6 @@ output$posCtrl <- renderUI({
     selectInput('position', 'Position', c('None', 'dodge', 'stack'))
 })
 
-## facet grid vs. wrap options
-output$facetMethCtrl <- renderUI({
-  radioButtons('facetMeth', 'Facet Method', 
-               choices=c('grid', 'wrap'), 
-               selected = 'grid', inline = TRUE)
-})
-
 ## row-wise facet-options
 output$facetRowCtrl <- renderUI({
   selectInput('facetRow', 'Facet Row', facetOpts())
@@ -62,22 +55,15 @@ output$facetColCtrl <- renderUI({
   selectInput('facetCol', 'Facet Column', facetOpts())
 })
 
-## facet-grid options
-
-
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({
-  if (is.null(displayFacetWrapCond())) return()
-  if (displayFacetWrapCond()) 
-    selectInput('facetWrap', 'Facet Wrap', facetOpts()) 
+  selectInput('facetWrap', 'Facet Wrap', facetOpts()) 
 })
 
 ## facet scale options
 output$facetScaleCtrl <- renderUI({
-  if (is.null(displayFacetScaleCond())) return()
-  if (displayFacetScaleCond())
-    selectInput('facetScale', 'Facet Scale', 
-                c('None'='none', 'Free X'='free_x', 'Free Y'='y'))  
+  selectInput('facetScale', 'Facet Scale',
+              c('None'='none', 'Free X'='free_x', 'Free Y'='y'))
 })
 
 ## plot type options

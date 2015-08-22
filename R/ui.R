@@ -1,6 +1,10 @@
 shinyUI(pageWithSidebar(
+  
   headerPanel("Data Explorer"),
   sidebarPanel(
+    
+    ## use shinyjs to disable/enable buttons w/ JS
+    shinyjs::useShinyjs(),
     
     ## dataset selection
     uiOutput('datasetCtrl'),

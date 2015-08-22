@@ -34,10 +34,8 @@ fillOpts <- reactive({
 ## facet options reactive
 facetOpts <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  facetOpts <- c(None='.', factorVars())
-  #     if (!is.null(input$plotType)) 
-  #       if (input$plotType=='line')
-  #         facetOpts <- setdiff(facetOpts, c(input$x, input$y))
+  varsUniqValsCntLOE6 <- getVarNamesUniqValsCntLOEN(dataset, 6)
+  facetOpts <- c('None', factorVars(), varsUniqValsCntLOE6)
   facetOpts
 })
 
@@ -49,7 +47,7 @@ sizeOpts <- reactive({
 ## shape options reactive
 shapeOpts <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  varsUniqValsCntLOE6 <- getVarNamesUniqValsCntLOEN(dataset, 6)  
+  varsUniqValsCntLOE6 <- getVarNamesUniqValsCntLOEN(dataset, 6)
   #vars <- setdiff(varsUniqValsCntLOE6, numericVars())
   #c('None', vars)
   c('None', varsUniqValsCntLOE6)
@@ -103,26 +101,6 @@ displayFillCond <- reactive({
 displayPosCond <- reactive({
   if (is.null(input$plotType)) return()
   return (any(input$plotType %in% c('histogram', 'bar')))
-})
-
-## display facet grid condition reactive
-displayFacetGrid <- reactive({
-  if (is.null(input$facetWrap)) return()
-  return 
-})
-
-## display facet wrap condition reactive
-displayFacetWrapCond <- reactive({
-  #if (is.null(input$facetRow) | is.null(input$facetCol)) return()  
-  #if (all(c(input$facetRow, input$facetCol) %in% '.')) {
-  TRUE
-})
-
-## display facet scale condition reactive
-displayFacetScaleCond <- reactive({
-  #if (is.null(input$facetRow) | is.null(input$facetCol) | is.null(input$facetWrap)) return()
-  #if (!all(c(input$facetRow, input$facetCol, input$facetWrap) %in% '.')) {
-  TRUE
 })
 
 ## display size magnifier condition reactive
@@ -391,13 +369,27 @@ plotInput <- reactive({
       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
   }
   
-  ## facet grids
-  facetGrids <- paste(facetRow, '~', facetCol)
-  if (facetGrids != '. ~ .')
-    p <- p + facet_grid(facetGrids) 
+  ## if faceting is selected
+  if (!noFacetSelected()) {
+    
+    facetCol <- ifelse(facetCol=='None', '.', facetCol)
+    facetRow <- ifelse(facetRow=='None', '.', facetRow)
+    facetWrap <- ifelse(facetWrap=='None', '.', facetWrap)
+    
+    ## facet grids
+    if (facetGridSelected()) {
+      facetGrids <- paste(facetRow, '~', facetCol)
+      if (facetGrids != '. ~ .')
+        p <- p + facet_grid(facetGrids)
+    } 
+    
+    ## facet wrap
+    else if (facetWrapSelected()) {
+      # facetWrap <- paste('~', facetWrap)
+    }
+  }
   
-  ## facet wrap
-  # facetWrap <- paste('~', facetWrap)
+  
   
   ## coordinate flip
   if (coordFlip) {
