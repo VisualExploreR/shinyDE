@@ -57,7 +57,7 @@ output$facetColCtrl <- renderUI({
 
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({
-  selectInput('facetWrap', 'Facet Wrap', facetOpts()) 
+  selectInput('facetWrap', 'Facet Wrap', facetOpts())
 })
 
 ## facet scale options

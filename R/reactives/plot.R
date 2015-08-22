@@ -379,18 +379,19 @@ plotInput <- reactive({
     ## facet grids
     if (facetGridSelected()) {
       facetGrids <- paste(facetRow, '~', facetCol)
-      if (facetGrids != '. ~ .')
-        p <- p + facet_grid(facetGrids)
+      p <- p + facet_grid(facetGrids)
     } 
     
     ## facet wrap
     else if (facetWrapSelected()) {
-      # facetWrap <- paste('~', facetWrap)
+      p <- p + facet_wrap(facetWrap)
     }
   }
   
-  
-  
+#   ggplot(mtcars, aes(x=cyl, y=mpg)) + 
+#     geom_point() + 
+#     facet_wrap('cyl')
+#   ?facet_wrap
   ## coordinate flip
   if (coordFlip) {
     p <- p + coord_flip()

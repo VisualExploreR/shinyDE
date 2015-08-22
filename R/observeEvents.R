@@ -33,20 +33,6 @@ observeEvent(input$reactive, {
 
 
 ## disable/enable toggle between facet grid and facet wrap
-# observeEvent(input$facetMeth, {
-#   if (input$facetMeth=='grid') {
-#     shinyjs::enable('facetCol')
-#     shinyjs::enable('facetRow')
-#     shinyjs::disable('facetWrap')
-#   } else if (input$facetMeth=='wrap') {
-#     shinyjs::disable('facetCol')
-#     shinyjs::disable('facetRow')
-#     shinyjs::enable('facetWrap')
-#   }
-# })
-
-
-# ## OPTION 2
 observeEvent(c(input$facetCol, input$facetRow, input$facetWrap), {
   if (noFacetSelected()) {
     enable('facetCol')
@@ -62,17 +48,3 @@ observeEvent(c(input$facetCol, input$facetRow, input$facetWrap), {
     enable('facetWrap')
   }
 })
-
-# observeEvent(facetGridSelected(), {
-#   enable('facetCol')
-#   enable('facetRow')
-#   disable('facetWrap')
-# })
-# 
-# observeEvent(facetWrapSelected(), {
-#   disable('facetCol')
-#   disable('facetRow')
-#   enable('facetWrap')
-# })
-
-
