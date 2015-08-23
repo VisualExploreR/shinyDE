@@ -25,7 +25,7 @@ customDatasetName <- reactive({
 
 ## reactive variable for raw dataset names
 rawDatasetNames <- reactive({
-  c("diamonds", "mtcars", "rock", "pressure", 
+  c("diamonds", "mtcars", "rock", 
     customDatasetName(),
     getLoadedDataFrameNames())
 })
