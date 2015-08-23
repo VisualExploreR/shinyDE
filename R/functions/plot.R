@@ -49,7 +49,7 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
     p <- p + aes_string(color=color)
   }
   
-  ## shaping points
+  ## legend label for point shapes
   if (!is.null(shape)) {
     p <- p + guides(shape = guide_legend(title=shape))
   }
@@ -97,10 +97,17 @@ plotPointsOverlay <- function(plot, shape, size, alpha, jitter, smooth, sizeMag)
 ## function for histogram
 plotHistogram <- function(dataset, x, fill, position, binWidth, alpha, xlim) {
   fill <- convertNoneToNULL(fill)
+  fillAsFactor <- varNameAsFactorOrNULL(fill)
   position <- convertNoneToNULL(position)
   p <- ggplot(dataset, aes_string(x=x)) + 
     geom_histogram(alpha=alpha, position=position, binwidth=binWidth) + 
-    aes_string(fill=fill)
+    aes_string(fill=fillAsFactor)
+  
+  ## legend labeling for fill
+  if (!is.null(fill)) {
+    p <- p + guides(fill = guide_legend(title=fill))
+  }
+  
   p <- p + xlim(xlim)
   return(p)
 }
@@ -109,12 +116,22 @@ plotHistogram <- function(dataset, x, fill, position, binWidth, alpha, xlim) {
 ## function for density plot 
 plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond, xlim) {
   fill <- convertNoneToNULL(fill)
+  fillAsFactor <- varNameAsFactorOrNULL(fill)
+
   p <- ggplot(dataset, aes_string(x=x)) 
   if (densBlkLineCond) {
-    p <- p + geom_density(aes_string(group=fill, fill=fill), alpha=alpha)
+    p <- p + geom_density(aes_string(group=fillAsFactor, fill=fillAsFactor), alpha=alpha)
+    if (!is.null(fill)) 
+      p <- p + guides(group = guide_legend(title=fill),
+                      fill = guide_legend(title=fill))
   } else {
-    p <- p + geom_density(aes_string(group=fill, color=fill, fill=fill), alpha=alpha)
+    p <- p + geom_density(aes_string(group=fillAsFactor, color=fillAsFactor, fill=fillAsFactor), alpha=alpha)
+    if (!is.null(fill))
+      p <- p + guides(group = guide_legend(title=fill),
+                      color = guide_legend(title=fill),
+                      fill = guide_legend(title=fill))
   }
+  
   #p <- p + xlim(xlim)
   return(p)
 }
@@ -123,11 +140,20 @@ plotDensity <- function(dataset, x, fill, alpha, densBlkLineCond, xlim) {
 ## function for bar plot
 plotBar <- function(dataset, x, y, fill, position, alpha, xlim, ylim) {
   fill <- convertNoneToNULL(fill)
+  fillAsFactor <- varNameAsFactorOrNULL(fill)
+  
   position <- convertNoneToNULL(position)
   p <- ggplot(dataset, aes_string(x=x, y=y)) +
     geom_bar(stat='identity', position=position, alpha=alpha) + 
-    aes_string(fill=fill)
+    aes_string(fill=fillAsFactor)
+  
+  ## legend labeling for fill
+  if (!is.null(fill)) {
+    p <- p + guides(fill = guide_legend(title=fill))
+  }
+  
   #p <- p + xlim(xlim) + ylim(ylim)
+  
   return(p)
 }
 
@@ -135,10 +161,19 @@ plotBar <- function(dataset, x, y, fill, position, alpha, xlim, ylim) {
 ## function for box plot
 plotBox <- function(dataset, x, y, fill, alpha, xlim, ylim) {
   fill <- convertNoneToNULL(fill)
+  fillAsFactor <- varNameAsFactorOrNULL(fill)
+  
   p <- ggplot(dataset, aes_string(x=x, y=y)) + 
     geom_boxplot(alpha=alpha) + 
-    aes_string(fill=fill)
+    aes_string(fill=fillAsFactor)
+  
+  ## legend labeling for fill
+  if (!is.null(fill)) {
+    p <- p + guides(fill = guide_legend(title=fill))
+  }
+  
   p <- p + xlim(xlim) + ylim(ylim)
+  
   return(p)
 }
 

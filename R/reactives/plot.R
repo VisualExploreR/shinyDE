@@ -27,7 +27,8 @@ colOpts <- reactive({
 ## fill options reactive
 fillOpts <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  fillOpts <- c('None', factorVars())
+  varsUniqValsCntLOE6 <- getVarNamesUniqValsCntLOEN(dataset, 6)
+  fillOpts <- c('None', factorVars(), varsUniqValsCntLOE6)
   fillOpts      
 })
 
@@ -61,6 +62,7 @@ histMaxBinWidth <- reactive({
   maxBinWidth <- round(diff(range(dataset[[input$x]], na.rm=TRUE)))
   maxBinWidth 
 })
+
 
 ## additional aggregation options reactive
 plotAddAggByOpts <- reactive({
@@ -379,19 +381,23 @@ plotInput <- reactive({
     ## facet grids
     if (facetGridSelected()) {
       facetGrids <- paste(facetRow, '~', facetCol)
-      p <- p + facet_grid(facetGrids)
+      p <- p + facet_grid(facets=facetGrids, scales=facetScale)
     } 
-    
+
     ## facet wrap
     else if (facetWrapSelected()) {
-      p <- p + facet_wrap(facetWrap)
+      p <- p + facet_wrap(facets=facetWrap, scales=facetScale)
     }
   }
   
-#   ggplot(mtcars, aes(x=cyl, y=mpg)) + 
+
+#   ggplot(mtcars, aes(x=hp, y=mpg)) + 
 #     geom_point() + 
-#     facet_wrap('cyl')
-#   ?facet_wrap
+#     facet_grid(facets='. ~ cyl', scales='free_x') + 
+#     xlim(c(50, 380))
+#   
+#   print('---')
+  
   ## coordinate flip
   if (coordFlip) {
     p <- p + coord_flip()

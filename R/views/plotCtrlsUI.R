@@ -5,10 +5,10 @@ verticalLayout(
   
   fluidRow(
     column(6,
-           uiOutput('rawVsManAggCtrl')               
+           uiOutput('rawVsManAggCtrl')
     ),
     column(6,
-           uiOutput('semiAutoAggCtrl')        
+           uiOutput('semiAutoAggCtrl')
     )
   ),
   
@@ -74,7 +74,7 @@ verticalLayout(
            uiOutput('facetWrapCtrl')
     ),
     column(6,
-           uiOutput('facetScaleCtrl')       
+           uiOutput('facetScaleCtrl')
     )
   ),
   

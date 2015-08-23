@@ -63,8 +63,9 @@ output$facetWrapCtrl <- renderUI({
 ## facet scale options
 output$facetScaleCtrl <- renderUI({
   selectInput('facetScale', 'Facet Scale',
-              c('None'='none', 'Free X'='free_x', 'Free Y'='y'))
+              c('None'='fixed', 'Free X'='free_x', 'Free Y'='free_y', 'Free X & Y'='free'))
 })
+
 
 ## plot type options
 output$plotTypeCtrl <- renderUI({
