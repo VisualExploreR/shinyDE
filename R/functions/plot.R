@@ -157,7 +157,6 @@ plotBar <- function(dataset, x, y, fill, position, alpha, xlim, ylim) {
   return(p)
 }
 
-
 ## function for box plot
 plotBox <- function(dataset, x, y, fill, alpha, xlim, ylim) {
   fill <- convertNoneToNULL(fill)

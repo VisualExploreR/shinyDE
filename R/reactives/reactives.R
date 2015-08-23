@@ -140,9 +140,10 @@ y <- reactive({
   if (is.null(input$y)) return()
   if (is.null(input$semiAutoAgg)) return()
   if (is.null(input$plotAggMeth)) return()
+  if (is.null(finalDF())) return()
   
   semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
-  y <- ensureProperVarName2(var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  y <- ensureProperVarName2(colnames=colnames(finalDF()), var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn)
   y
 })
 

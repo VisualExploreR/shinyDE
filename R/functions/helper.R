@@ -102,27 +102,28 @@ ensureProperVarName <- function(colnames, var, y) {
       else 
         var <- origVar      
     }
-  }
+  } 
+  
   return(var)
 }
 
 
 ## second version of ensureProperVarName()
-ensureProperVarName2 <- function(var, aggMeth, semiAutoAggOn) {
+ensureProperVarName2 <- function(colnames, var, aggMeth, semiAutoAggOn) {
   if (tolower(var) %in% c('none', '.')) return(var)
   
-  ## if semi-automatic aggregation is turned on
-  if (semiAutoAggOn) {
-    if (aggMeth=='count')
-      return('count')
-    else
-      return(paste0(var, '_', aggMeth))
+  ## only if original variable is not found in dataset's column names
+  if (!(var %in% colnames)) {
+    ## if semi-automatic aggregation is turned on
+    if (semiAutoAggOn) {
+      if (aggMeth=='count')
+        return('count')
+      else
+        return(paste0(var, '_', aggMeth))
+    }
   } 
   
-  ## if semi-automatic aggregation is NOT turned on
-  else {
-    return(var)
-  }
+  return(var)
 }
 
 
@@ -134,6 +135,7 @@ convertNoneToNULL <- function(var) {
 }
 
 
+## 
 varNameAsFactorOrNULL <- function(var) {
   if (!is.null(var)) 
     ret <- paste0('as.factor(', var, ')')
@@ -141,8 +143,6 @@ varNameAsFactorOrNULL <- function(var) {
     ret <- NULL
   return(ret)
 }
-
-
 
 
 ## function to check if specified widgets are loaded on shiny UI

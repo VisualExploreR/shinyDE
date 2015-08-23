@@ -7,14 +7,35 @@ output$plotAggMethCtrl <- renderUI({
 
 ## x-axis options
 output$xCtrl <- renderUI({
-  selectInput('x', 'X', xOpts())
+  if (is.null(input$dataset)) return()
+  
+  selected <- NULL
+  if (input$dataset=='diamonds') 
+    selected <- 'carat'
+  else if (input$dataset=='mtcars')
+    selected <- 'hp'
+  else if (input$dataset=='rock')
+    selected <- 'area'
+
+  selectInput('x', 'X', choices=xOpts(), selected=selected)
 })
 
 ## y-axis options
 output$yCtrl <- renderUI({
+  if (is.null(input$dataset)) return()
   if (is.null(displayYCond())) return()
-  if (displayYCond())
-    selectInput('y', 'Y', yOpts())
+  if (displayYCond()) {
+    
+    selected <- NULL
+    if (input$dataset=='diamonds')
+      selected <- 'price'
+    else if (input$dataset=='mtcars')
+      selected <- 'mpg'
+    else if (input$dataset=='rock')
+      selected <- 'peri'
+    
+    selectInput('y', 'Y', choices=yOpts(), selected=selected)
+  }
 })
 
 ## color control options
