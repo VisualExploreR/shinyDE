@@ -294,10 +294,16 @@ plotInput <- reactive({
   
   ## ensure proper variable names (in case of semi-automatic aggregation)
   y <- y()
-  color <- ensureProperVarName2(var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
-  size <- ensureProperVarName2(var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  color <- ensureProperVarName2(colnames=colnames(dataset), var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  size <- ensureProperVarName2(colnames=colnames(dataset), var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
   #color <- ensureProperVarName(colnames(dataset), var=color, y=y)
   #size <- ensureProperVarName(colnames(dataset), var=size, y=y)
+  
+  print(colnames(dataset))
+  print(y)
+  print(color)
+  print(size)
+  print('----')
   
   ## scatter plot
   if (plotType=='scatter')  {
