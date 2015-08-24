@@ -139,44 +139,6 @@ finalDF <- reactive({
 })
 
 
-
-
-
-
-
-
-## reactive that returns TRUE if plot utilizes both x and y controls
-isXYCtrlPlot <- reactive({
-  if (is.null(input$plotType)) return()
-  return(input$plotType %in% c('line', 'scatter', 'bar', 'box', 'path'))
-})
-
-
-## reactive that returns a value "discrete" or "continuous"
-xType <- reactive({
-  dataset <- finalDF(); if (is.null(dataset)) return()
-  if (is.null(input$x)) return()
-  if (input$x %in% finalDFNumericVars())
-    xType <- 'continuous'
-  else if (input$x %in% finalDFFactorVars())
-    xType <- 'discrete'
-  return(xType)
-})
-
-
-## reactive that returns a value "discrete" or "continuous"
-yType <- reactive({
-  dataset <- finalDF(); if (is.null(dataset)) return()
-  if (!isXYCtrlPlot()) return()
-  if (is.null(y())) return()
-  if (y() %in% finalDFNumericVars())
-    yType <- 'continuous'
-  else if (y() %in% finalDFFactorVars())
-    yType <- 'discrete'
-  return(yType)
-})
-
-
 ## reactive dataset used for plotting 
 ## (filtered version of finalDF(), using xlim and ylim)
 plotDF <- reactive({

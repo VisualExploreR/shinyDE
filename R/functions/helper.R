@@ -112,7 +112,7 @@ ensureProperVarName <- function(colnames, var, y) {
 ensureProperVarName2 <- function(colnames, var, aggMeth, semiAutoAggOn) {
   if (tolower(var) %in% c('none', '.')) return(var)
   
-  ## only if original variable is not found in dataset's column names
+  ## only if original variable name is not found in dataset's column names
   if (!(var %in% colnames)) {
     ## if semi-automatic aggregation is turned on
     if (semiAutoAggOn) {
@@ -122,6 +122,13 @@ ensureProperVarName2 <- function(colnames, var, aggMeth, semiAutoAggOn) {
         return(paste0(var, '_', aggMeth))
     }
   } 
+
+  ## if original variable name is found in dataset's column names
+  else {
+    varAgg <- paste0(var, '_', aggMeth)
+    if (varAgg %in% colnames)
+      return(varAgg)
+  }
   
   return(var)
 }

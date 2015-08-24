@@ -185,21 +185,3 @@ plotPath <- function(dataset, x, y, alpha, xlim, ylim) {
   #p <- p + xlim(xlim) + ylim(ylim)
   return(p)
 }
-
-
-###### FACET WRAP RESEARCH
-#     df <- mtcars
-#     aggBy <- 'cyl'
-#     aggTarget <- 'mpg'
-#     aggMeth <- 'mean'
-#     tuck <- aggregate(df, aggBy, aggTarget, aggMeth)
-
-#     ggplot(tuck, aes(x=aggBy, y=mpg_mean)) + 
-#       geom_point() +
-#       geom_line(aes(group=1)) + 
-#       facetWrap(~cyl)
-
-# 
-#     if (facetWrap != '~ .')
-#       p <- p + facetWrap(facetWrap)
-
