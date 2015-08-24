@@ -8,7 +8,7 @@ plotLine <- function(dataset, x, y, color, alpha, xlim, ylim) {
     p <- p + geom_line(aes_string(group=color), alpha=alpha)
   }
   
-  p <- p + xlim(xlim) + ylim(ylim)
+  #p <- p + xlim(xlim) + ylim(ylim)
   
   if (color != 'None') {
     p <- p + aes_string(color=color)
@@ -60,7 +60,7 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
   }
   
   ## limiting x and y values
-  p <- p + xlim(xlim) + ylim(ylim)  
+  #p <- p + xlim(xlim) + ylim(ylim)  
   
   return(p)
 }
@@ -108,7 +108,8 @@ plotHistogram <- function(dataset, x, fill, position, binWidth, alpha, xlim) {
     p <- p + guides(fill = guide_legend(title=fill))
   }
   
-  p <- p + xlim(xlim)
+  #p <- p + xlim(xlim)
+  
   return(p)
 }
 
@@ -171,7 +172,7 @@ plotBox <- function(dataset, x, y, fill, alpha, xlim, ylim) {
     p <- p + guides(fill = guide_legend(title=fill))
   }
   
-  p <- p + xlim(xlim) + ylim(ylim)
+  #p <- p + xlim(xlim) + ylim(ylim)
   
   return(p)
 }
@@ -181,7 +182,7 @@ plotBox <- function(dataset, x, y, fill, alpha, xlim, ylim) {
 plotPath <- function(dataset, x, y, alpha, xlim, ylim) {
   p <- ggplot(dataset, aes_string(x=x, y=y)) +
     geom_path(alpha=alpha)
-  p <- p + xlim(xlim) + ylim(ylim)
+  #p <- p + xlim(xlim) + ylim(ylim)
   return(p)
 }
 

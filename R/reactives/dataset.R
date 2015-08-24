@@ -124,19 +124,86 @@ semiAutoAggDF <- reactive({
 })
 
 ## reactive variable for final dataset
-finalDF <- reactive({  
+finalDF <- reactive({
   if (is.null(input$semiAutoAgg)) return()
   
   ## semi-automatic aggregation (if enabled)
   if (input$semiAutoAgg=='allowed') {
     semiAutoAggDF()
-  } 
+  }
   
   ## natural dataset (raw or manually aggregated dataset)
   else if (input$semiAutoAgg=='disabled') {
     dataset()
-  }  
+  } 
 })
 
 
+
+
+
+
+
+
+## reactive that returns TRUE if plot utilizes both x and y controls
+isXYCtrlPlot <- reactive({
+  if (is.null(input$plotType)) return()
+  return(input$plotType %in% c('line', 'scatter', 'bar', 'box', 'path'))
+})
+
+
+## reactive that returns a value "discrete" or "continuous"
+xType <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  if (is.null(input$x)) return()
+  if (input$x %in% finalDFNumericVars())
+    xType <- 'continuous'
+  else if (input$x %in% finalDFFactorVars())
+    xType <- 'discrete'
+  return(xType)
+})
+
+
+## reactive that returns a value "discrete" or "continuous"
+yType <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  if (!isXYCtrlPlot()) return()
+  if (is.null(y())) return()
+  if (y() %in% finalDFNumericVars())
+    yType <- 'continuous'
+  else if (y() %in% finalDFFactorVars())
+    yType <- 'discrete'
+  return(yType)
+})
+
+
+## reactive dataset used for plotting 
+## (filtered version of finalDF(), using xlim and ylim)
+plotDF <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+
+  ## subset with xlim filter
+  x <- input$x; if(is.null(x)) return()
+  xlim <- input$xlim; if (is.null(xlim)) return()
+  if (is.null(xType())) return()
+  if (xType()=='continuous') {
+    dataset <- dataset[dataset[[x]] >= xlim[1] & dataset[[x]] <= xlim[2], ]
+  } else if (xType()=='discrete') {
+    dataset <- dataset[dataset[[x]] %in% xlim, ]
+  }
+  
+  ## subset with ylim filter (if applicable)
+  if (isXYCtrlPlot()) {
+    y <- y(); if (is.null(y)) return()
+    ylim <- input$ylim; if (is.null(ylim)) return()
+    if (is.null(yType())) return()
+    if (yType()=='continuous') {
+      dataset <- dataset[dataset[[y]] >= ylim[1] & dataset[[y]] <= ylim[2], ]
+    } else if (yType()=='discrete') {
+      dataset <- dataset[dataset[[y]] %in% ylim, ]
+    }
+  }
+
+  return(dataset)
+})
 

@@ -107,7 +107,7 @@ xRange <- reactive({
 #     range(dataset[[y]], na.rm=TRUE)
 # })
 
-## work-around for round error in sliderInput
+## work-around for rounding error in sliderInput
 yRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   y <- y()

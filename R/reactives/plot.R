@@ -258,9 +258,11 @@ pathPtsOverlayWidgetsLoaded <- reactive({
 
 ## plot reactive
 plotInput <- reactive({
-  dataset <- finalDF(); if (is.null(dataset)) return()
+  
+  ## load dataset to use (already subsetted/filtered)
+  dataset <- plotDF(); if (is.null(dataset)) return()
 
-  ## control variables
+  ## load variables from control widgets
   semiAutoAggSet <- input$semiAutoAgg=='allowed'
   plotType <- input$plotType
   x <- input$x
@@ -387,15 +389,7 @@ plotInput <- reactive({
       p <- p + facet_wrap(facets=facetWrap, scales=facetScale)
     }
   }
-  
 
-#   ggplot(mtcars, aes(x=hp, y=mpg)) + 
-#     geom_point() + 
-#     facet_grid(facets='. ~ cyl', scales='free_x') + 
-#     xlim(c(50, 380))
-#   
-#   print('---')
-  
   ## coordinate flip
   if (coordFlip) {
     p <- p + coord_flip()

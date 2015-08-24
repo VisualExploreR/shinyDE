@@ -13,7 +13,7 @@ output$xCtrl <- renderUI({
   if (input$dataset=='diamonds') 
     selected <- 'carat'
   else if (input$dataset=='mtcars')
-    selected <- 'hp'
+    selected <- 'mpg'
   else if (input$dataset=='rock')
     selected <- 'area'
 
@@ -30,7 +30,7 @@ output$yCtrl <- renderUI({
     if (input$dataset=='diamonds')
       selected <- 'price'
     else if (input$dataset=='mtcars')
-      selected <- 'mpg'
+      selected <- 'hp'
     else if (input$dataset=='rock')
       selected <- 'peri'
     
