@@ -52,9 +52,6 @@ verticalLayout(
   ),
   
   fluidRow(
-    column(6, 
-           uiOutput('jitCtrl')
-    ),
     column(6,
            uiOutput('smthCtrl')
     )
@@ -85,6 +82,7 @@ verticalLayout(
   uiOutput('xlimCtrl'),
   uiOutput('ylimCtrl'),
   
+  uiOutput('jitCtrl'),
   uiOutput('densBlkLineCondCtrl'),
   uiOutput('coordFlipCtrl')
   

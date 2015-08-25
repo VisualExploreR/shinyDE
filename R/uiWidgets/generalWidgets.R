@@ -7,7 +7,7 @@ output$datasetCtrl <- renderUI({
 
 ## reactive  option
 output$reactiveCtrl <- renderUI({
-  checkboxInput("reactive", label="Enable reactivity") 
+  checkboxInput("reactive", label="Enable reactivity", value=TRUE)
 })
 
 

@@ -25,8 +25,12 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
   shape <- convertNoneToNULL(shape)
   shapeAsFactor <- varNameAsFactorOrNULL(shape)
   size <- convertNoneToNULL(size)
-  jitter <- convertNoneToNULL(jitter)
   smooth <- convertNoneToNULL(smooth)
+  
+  if (jitter) 
+    jitter <- 'jitter' 
+  else 
+    jitter <- NULL
   
   if (!is.null(size)) {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
@@ -70,8 +74,12 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, alp
 plotPointsOverlay <- function(plot, shape, size, alpha, jitter, smooth, sizeMag) {
   shape <- convertNoneToNULL(shape)
   size <- convertNoneToNULL(size)
-  jitter <- convertNoneToNULL(jitter)
   smooth <- convertNoneToNULL(smooth)
+  
+  if (jitter) 
+    jitter <- 'jitter' 
+  else 
+    jitter <- NULL
   
   ## 
   if (!is.null(size)) {

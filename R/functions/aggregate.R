@@ -130,10 +130,12 @@ calcShare <- function(df, shareOf, shareTarget, nRndDeci=2, displayPerc=TRUE) {
 
 
 
-
-
 ## RESEARCH: AGGREGATION OF DATASET WITH MISSING VALUES
-# DF <- read.csv('../data/diamonds_missing_vals.csv', na.strings=c('', ' '), stringsAsFactors=TRUE)
+# DF <- read.csv('../data/diamonds_missing_vals.csv', na.strings=c('', ' '), stringsAsFactors=FALSE)
+# DF$cut <- as.factor(DF$cut)
+# DF$color <- as.factor(DF$color)
+# DF$clarity <- as.factor(DF$clarity)
+
 # df <- DF
 # aggBy <- 'cut'
 # aggTarget <- 'carat'

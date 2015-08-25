@@ -112,10 +112,8 @@ output$alphaCtrl <- renderUI({
 ## jitter options
 output$jitCtrl <- renderUI({
   if (is.null(displayJitCond())) return()  
-  if (displayJitCond()) {
-    selectInput('jitter', 'Jitter Effect', 
-                c('None'='None', 'Jitter'='jitter'))
-  }
+  if (displayJitCond())
+    checkboxInput('jitter', 'Apply jitter effect', value=FALSE)
 })
 
 ## geom smoothing options

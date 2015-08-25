@@ -54,18 +54,22 @@ rawDataset <- reactive({
   }
 })
 
+# x <- aggregate(df, 'cut', 'carat', 'mean', nRndDeci=2)
+
 ## manually aggregated dataset
 manAggDataset <- reactive({
   ## if all fields for manual aggregation are filled in
   if (!is.null(input$aggBy) & !is.null(input$aggTarget) & !is.null(input$aggMeth)) {
     ## return manually aggregated dataset
-    aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)
+    df <- aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)
   } 
   
   ## else, return raw dataset  
   else {
-    rawDataset()
+    df <- rawDataset()
   }
+
+  df
 })
 
 ## raw or aggregated dataset
@@ -81,7 +85,7 @@ dataset <- reactive({
   else if (input$rawVsManAgg=='manAgg') {
     dataset <- manAggDataset()
   }
-  
+
   dataset
 })
 

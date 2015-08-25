@@ -298,9 +298,6 @@ plotInput <- reactive({
   y <- y()
   color <- ensureProperVarName2(colnames=colnames(dataset), var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
   size <- ensureProperVarName2(colnames=colnames(dataset), var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
-
-  colnames <- c('carat', 'carat_sum')
-  
   
   ## scatter plot
   if (plotType=='scatter')  {
