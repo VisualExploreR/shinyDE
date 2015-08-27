@@ -54,8 +54,6 @@ rawDataset <- reactive({
   }
 })
 
-# x <- aggregate(df, 'cut', 'carat', 'mean', nRndDeci=2)
-
 ## manually aggregated dataset
 manAggDataset <- reactive({
   ## if all fields for manual aggregation are filled in
@@ -148,27 +146,27 @@ finalDF <- reactive({
 plotDF <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
 
-  ## subset with xlim filter
-  x <- input$x; if(is.null(x)) return()
-  xlim <- input$xlim; if (is.null(xlim)) return()
-  if (is.null(xType())) return()
-  if (xType()=='continuous') {
-    dataset <- dataset[dataset[[x]] >= xlim[1] & dataset[[x]] <= xlim[2], ]
-  } else if (xType()=='discrete') {
-    dataset <- dataset[dataset[[x]] %in% xlim, ]
-  }
-  
-  ## subset with ylim filter (if applicable)
-  if (isXYCtrlPlot()) {
-    y <- y(); if (is.null(y)) return()
-    ylim <- input$ylim; if (is.null(ylim)) return()
-    if (is.null(yType())) return()
-    if (yType()=='continuous') {
-      dataset <- dataset[dataset[[y]] >= ylim[1] & dataset[[y]] <= ylim[2], ]
-    } else if (yType()=='discrete') {
-      dataset <- dataset[dataset[[y]] %in% ylim, ]
-    }
-  }
+#   ## subset with xlim filter
+#   x <- input$x; if(is.null(x)) return()
+#   xlim <- input$xlim; if (is.null(xlim)) return()
+#   if (is.null(xType())) return()
+#   if (xType()=='continuous') {
+#     dataset <- dataset[dataset[[x]] >= xlim[1] & dataset[[x]] <= xlim[2], ]
+#   } else if (xType()=='discrete') {
+#     dataset <- dataset[dataset[[x]] %in% xlim, ]
+#   }
+#   
+#   ## subset with ylim filter (if applicable)
+#   if (isXYCtrlPlot()) {
+#     y <- y(); if (is.null(y)) return()
+#     ylim <- input$ylim; if (is.null(ylim)) return()
+#     if (is.null(yType())) return()
+#     if (yType()=='continuous') {
+#       dataset <- dataset[dataset[[y]] >= ylim[1] & dataset[[y]] <= ylim[2], ]
+#     } else if (yType()=='discrete') {
+#       dataset <- dataset[dataset[[y]] %in% ylim, ]
+#     }
+#   }
 
   return(dataset)
 })

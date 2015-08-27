@@ -20,7 +20,7 @@ colOpts <- reactive({
   } else if (input$plotType %in% c('line', 'path')) {
     colOpts <- c('None', factorVars())
   }
-
+  
   colOpts
 })
 
@@ -79,7 +79,7 @@ displayYCond <- reactive({
   display <- TRUE
   return (!(input$plotType %in% c('histogram', 'density')))
 })
-  
+
 ## display color condition reactive
 displayColCond <- reactive({
   if (is.null(input$plotType)) return()
@@ -182,10 +182,8 @@ displayBinWidthCond <- reactive({
 ## display density blakc line condition reactive
 displayDensBlkLineCond <- reactive({
   if (is.null(input$plotType)) return()
-  if (is.null(input$showAdvCtrlWgts)) return()
-  return (input$plotType=='density' & input$showAdvCtrlWgts)
+  return (input$plotType=='density')
 })
-
 
 ## display points overlay checkbox condition reactive
 displayPtsOverlayCond <- reactive({
@@ -227,141 +225,71 @@ displayYlim <- reactive({
 
 
 #### widgets loaded conditional reactives
-
-## universal widgets
-universalBaseWidgets <- c('plotType', 'x')
-#universalAdvWidgets <- c('facetRow', 'facetCol', 'facetWrap', 'facetScale', 'alpha', 'coordFlip', 'xlim')
-universalAdvWidgets <- c('facetRow', 'facetCol', 'facetWrap', 'facetScale', 'alpha', 'coordFlip')
-universalFullWidgets <- c(universalBaseWidgets, universalAdvWidgets)
-
-scatterBaseWidgets <- c(universalBaseWidgets, 'y', 'color', 'treatAsFacVarCol', 'shape', 'size', 'smooth')
-#scatterAdvWidgets <- c(universalAdvWidgets, 'sizeMag', 'jitter', 'ylim')
-scatterAdvWidgets <- c(universalAdvWidgets, 'sizeMag', 'jitter')
-scatterFullWidgets <- c(scatterBaseWidgets, scatterAdvWidgets)
-
-lineBaseWidgets <- c(universalBaseWidgets, 'y', 'color')
-#lineAdvWidgets <- c(universalAdvWidgets, 'ylim')
-lineAdvWidgets <- c(universalAdvWidgets)
-lineFullWidgets <- c(lineBaseWidgets, lineAdvWidgets)
-
-barBaseWidgets <- c(universalBaseWidgets, 'y', 'fill', 'position')
-#barAdvWidgets <- c(universalAdvWidgets, 'ylim')
-barAdvWidgets <- c(universalAdvWidgets)
-barFullWidgets <- c(barBaseWidgets, barAdvWidgets)
-
-histogramBaseWidgets <- c(universalBaseWidgets, 'fill', 'position', 'binWidth')
-histogramAdvWidgets <- c(universalAdvWidgets)
-histogramFullWidgets <- c(histogramBaseWidgets, histogramAdvWidgets)
-
-densityBaseWidgets <- c('fill', 'color')
-densityAdvWidgets <- c(universalAdvWidgets, 'densBlkLineCond')
-densityFullWidgets <- c(densityBaseWidgets, densityAdvWidgets)
-
-boxBaseWidgets <- c('y', 'fill')
-#boxAdvWidgets <- c(universalAdvWidgets, 'ylim')
-boxAdvWidgets <- c(universalAdvWidgets)
-boxFullWidgets <- c(boxBaseWidgets, boxAdvWidgets)
-
-pathBaseWidgets <- c('y')
-#pathAdvWidgets <- c(universalAdvWidgets, 'ylim')
-pathAdvWidgets <- c(universalAdvWidgets)
-pathFullWidgets <- c(pathBaseWidgets, pathAdvWidgets)
-
-
-## universal widgets loaded
-universalWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, universalFullWidgets)
-  else
-    checkWidgetsLoaded(input, universalBaseWidgets)
+generalWidgetsLoaded <- reactive({
+  wgtCtrls <- c('x', 'facetRow', 'facetCol', 'color', 'plotType', 'alpha', 'coordFlip', 'semiAutoAgg', 'plotAggMeth')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
-## scatter plot widgets loaded
 scatterWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, scatterFullWidgets)
-  else
-    checkWidgetsLoaded(input, scatterBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('y', 'color', 'treatAsFacVarCol', 'shape', 'size', 'sizeMag', 'jitter', 'smooth', 'sizeMag', 'xlim', 'ylim')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
+
 
 lineWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, lineFullWidgets)
-  else
-    checkWidgetsLoaded(input, lineBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('y', 'color')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
-# linePtsOverlayWidgetsLoaded <- reactive({
-#   if (!generalWidgetsLoaded()) return(FALSE)
-#   wgtCtrls <- c('shape', 'size', 'jitter', 'smooth', 'ptsOverlayCond')
-#   checkWidgetsLoaded(input, wgtCtrls)
-# })
+linePtsOverlayWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('shape', 'size', 'jitter', 'smooth', 'ptsOverlayCond')
+  checkWidgetsLoaded(input, wgtCtrls)
+})
 
-## bar plot widgets loaded
 barWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, barFullWidgets)
-  else
-    checkWidgetsLoaded(input, barBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('y', 'fill', 'position')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
-## histogram widgets loaded
 histogramWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, histogramFullWidgets)
-  else
-    checkWidgetsLoaded(input, histogramBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('fill', 'position', 'binWidth')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
-## density plot widgets loaded
 densityWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, densityFullWidgets)
-  else
-    checkWidgetsLoaded(input, densityBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('fill', 'color', 'densBlkLineCond')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
-## box plot widgets loaded
 boxWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, boxFullWidgets)
-  else
-    checkWidgetsLoaded(input, boxBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('y', 'fill')
+  checkWidgetsLoaded(input, wgtCtrls)
 })
 
-## path plot widgets loaded
 pathWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, pathFullWidgets)
-  else
-    checkWidgetsLoaded(input, pathBaseWidgets)
+  if (!generalWidgetsLoaded()) return(FALSE)
+  checkWidgetsLoaded(input, 'y')
 })
 
-# pathPtsOverlayWidgetsLoaded <- reactive({
-#   if (!generalWidgetsLoaded()) return(FALSE)
-#   wgtCtrls <- c('shape', 'size', 'ptsOverlayCond')
-#   checkWidgetsLoaded(input, wgtCtrls)    
-# })
-
-
-
-
-
+pathPtsOverlayWidgetsLoaded <- reactive({
+  if (!generalWidgetsLoaded()) return(FALSE)
+  wgtCtrls <- c('shape', 'size', 'ptsOverlayCond')
+  checkWidgetsLoaded(input, wgtCtrls)    
+})
 
 ## plot reactive
 plotInput <- reactive({
   
   ## load dataset to use (already subsetted/filtered)
   dataset <- plotDF(); if (is.null(dataset)) return()
-
+  
   ## load variables from control widgets
   semiAutoAggSet <- input$semiAutoAgg=='allowed'
   plotType <- input$plotType
@@ -390,100 +318,108 @@ plotInput <- reactive({
   plotAggMeth <- input$plotAggMeth
   semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
   
-  ## don't plot anything if any of universal control widgets is not loaded
-  if (!universalWidgetsLoaded()) return() 
+  ## don't plot anything if any of the general control pieces are missing (i.e. not loaded)
+  if (!generalWidgetsLoaded()) return() 
   if (!(x %in% xOpts())) return()
-
+  
   ## ensure proper variable names (in case of semi-automatic aggregation)
   y <- y()
   color <- ensureProperVarName2(colnames=colnames(dataset), var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
   size <- ensureProperVarName2(colnames=colnames(dataset), var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
-
+  
   ## scatter plot
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-    p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, smooth, alpha, sizeMag, jitter)
+    p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, alpha, jitter, smooth, sizeMag, xlim, ylim)
   }
-
+  
   ## line plot
   else if (plotType=='line') {
     if (!lineWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-    p <- plotLine(dataset, x, y, color, alpha)
-
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    
+    p <- plotLine(dataset, x, y, color, alpha, xlim, ylim)
+    
     ## line plot with points overlay
-#     if (!linePtsOverlayWidgetsLoaded()) return()
-#     if (ptsOverlayCond)
-#       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
+    if (!linePtsOverlayWidgetsLoaded()) return()
+    if (ptsOverlayCond)
+      p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
   }
   
   ## bar plot
   else if (plotType=='bar') {
     if (!barWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-    p <- plotBar(dataset, x, y, fill, position, alpha)
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    
+    p <- plotBar(dataset, x, y, fill, position, alpha, xlim, ylim)
   }
   
   ## histogram
   else if (plotType=='histogram') {
     if (!histogramWidgetsLoaded()) return()
-    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha)
-  }
+    range1 <- range(dataset[[x]], na.rm=TRUE)
+    range2 <- xlim
+    if (!checkTwoRangesOverlap(range1, range2)) return()
     
+    p <- plotHistogram(dataset, x, fill, position, binWidth, alpha, xlim)
+  }
+  
   ## density plot
   else if (plotType=='density') {
     if (!densityWidgetsLoaded()) return()
-    p <- plotDensity(dataset, x, fill, densBlkLineCond, alpha)
+    p <- plotDensity(dataset, x, fill, alpha, densBlkLineCond, xlim)
   }    
   
   ## box plot
   else if (plotType=='box') {
     if (!boxWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-    p <- plotBox(dataset, x, y, fill, alpha)
+    #if (!checkVarAndLimCompatible(dataset, x, xlim)) return()
+    #if (!checkVarAndLimCompatible(dataset, y, ylim)) return()
+    p <- plotBox(dataset, x, y, fill, alpha, xlim, ylim)
   }
   
   ## path plot
   else if (plotType=='path') {
     if (!pathWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-    p <- plotPath(dataset, x, y, alpha)
+    p <- plotPath(dataset, x, y, alpha, xlim, ylim)
     
-#     ## path plot with points overlay
-#     if (!pathPtsOverlayWidgetsLoaded()) return()
-#     if (ptsOverlayCond)
-#       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
+    ## path plot with points overlay
+    if (!pathPtsOverlayWidgetsLoaded()) return()
+    if (ptsOverlayCond)
+      p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
   }
   
-  ## plot advanced controls
-  if (input$showAdvCtrlWgts) {
-
-    ## if faceting is selected
-    if (!noFacetSelected()) {
-      
-      facetCol <- ifelse(facetCol=='None', '.', facetCol)
-      facetRow <- ifelse(facetRow=='None', '.', facetRow)
-      facetWrap <- ifelse(facetWrap=='None', '.', facetWrap)
-      
-      ## facet grids
-      if (facetGridSelected()) {
-        facetGrids <- paste(facetRow, '~', facetCol)
-        p <- p + facet_grid(facets=facetGrids, scales=facetScale)
-      } 
-      
-      ## facet wrap
-      else if (facetWrapSelected()) {
-        p <- p + facet_wrap(facets=facetWrap, scales=facetScale)
-      }
-    }
-
-    ## coordinate flip
-    if (coordFlip) {
-      p <- p + coord_flip()
+  ## if faceting is selected
+  if (!noFacetSelected()) {
+    
+    facetCol <- ifelse(facetCol=='None', '.', facetCol)
+    facetRow <- ifelse(facetRow=='None', '.', facetRow)
+    facetWrap <- ifelse(facetWrap=='None', '.', facetWrap)
+    
+    ## facet grids
+    if (facetGridSelected()) {
+      facetGrids <- paste(facetRow, '~', facetCol)
+      p <- p + facet_grid(facets=facetGrids, scales=facetScale)
+    } 
+    
+    ## facet wrap
+    else if (facetWrapSelected()) {
+      p <- p + facet_wrap(facets=facetWrap, scales=facetScale)
     }
   }
-    
+  
+  ## coordinate flip
+  if (coordFlip) {
+    p <- p + coord_flip()
+  }
+  
   ## return
   p
 })

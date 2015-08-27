@@ -34,17 +34,19 @@ observeEvent(input$reactive, {
 
 ## disable/enable toggle between facet grid and facet wrap
 observeEvent(c(input$facetCol, input$facetRow, input$facetWrap), {
-  if (noFacetSelected()) {
-    enable('facetCol')
-    enable('facetRow')
-    enable('facetWrap')
-  } else if (facetGridSelected()) {
-    enable('facetCol')
-    enable('facetRow')
-    disable('facetWrap')
-  } else if (facetWrapSelected()) {
-    disable('facetCol')
-    disable('facetRow')
-    enable('facetWrap')
+  if (input$showAdvCtrlWgts) {
+    if (noFacetSelected()) {
+      enable('facetCol')
+      enable('facetRow')
+      enable('facetWrap')
+    } else if (facetGridSelected()) {
+      enable('facetCol')
+      enable('facetRow')
+      disable('facetWrap')
+    } else if (facetWrapSelected()) {
+      disable('facetCol')
+      disable('facetRow')
+      enable('facetWrap')
+    } 
   }
 })

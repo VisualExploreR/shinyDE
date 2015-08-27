@@ -1,7 +1,6 @@
 ## plot options
 verticalLayout(
   uiOutput('plotTypeCtrl'),
-  uiOutput('ptsOverlayCondCtrl'),
   
   fluidRow(
     column(6,
@@ -42,6 +41,8 @@ verticalLayout(
     )
   ),
   
+  uiOutput('ptsOverlayCondCtrl'),
+  
   fluidRow(
     column(6, 
            uiOutput('sizeCtrl')
@@ -56,6 +57,9 @@ verticalLayout(
            uiOutput('smthCtrl')
     )
   ),
+
+  uiOutput('binWidthCtrl'),
+  uiOutput('showAdvCtrlWgtsCtrl'),
   
   fluidRow(
     column(6,
@@ -75,15 +79,13 @@ verticalLayout(
     )
   ),
   
+  uiOutput('densBlkLineCondCtrl'),
+  uiOutput('jitCtrl'),
+  
   uiOutput('plotAddAggByCtrl'),
-  uiOutput('binWidthCtrl'),
   uiOutput('alphaCtrl'),
   uiOutput('sizeMagCtrl'),
   uiOutput('xlimCtrl'),
   uiOutput('ylimCtrl'),
-  
-  uiOutput('jitCtrl'),
-  uiOutput('densBlkLineCondCtrl'),
   uiOutput('coordFlipCtrl')
-  
 )
