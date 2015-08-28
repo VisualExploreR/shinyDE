@@ -71,292 +71,6 @@ plotAddAggByOpts <- reactive({
 })
 
 
-
-#### display conditional reactives
-## display y condition reactive
-displayYCond <- reactive({
-  if (is.null(input$plotType)) return()  
-  display <- TRUE
-  return (!(input$plotType %in% c('histogram', 'density')))
-})
-  
-## display color condition reactive
-displayColCond <- reactive({
-  if (is.null(input$plotType)) return()
-  return (any(input$plotType %in% c('line', 'scatter', 'path'))) 
-})
-
-## display treat-as-a-factor-variable (for color) condition reactive
-displayTreatAsFacVarColCond <- reactive({
-  if (is.null(input$plotType)) return()
-  return (any(input$plotType %in% c('scatter'))) 
-})
-
-## display fill condition reactive
-displayFillCond <- reactive({
-  if (is.null(input$plotType)) return()
-  return (any(input$plotType %in% c('box', 'histogram', 'bar', 'density')))
-})
-
-
-## display position condition reactive
-displayPosCond <- reactive({
-  if (is.null(input$plotType)) return()
-  return (any(input$plotType %in% c('histogram', 'bar')))
-})
-
-## display shape condition reactive
-displayShapeCond <- reactive({
-  if (is.null(input$plotType)) return()  
-  display <- FALSE
-  if (input$plotType=='scatter') {
-    display <- TRUE
-  } else if (any(input$plotType %in% c('line', 'path'))) {
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) display <- TRUE
-  }
-  display
-})
-
-## display size condition reactive
-displaySizeCond <- reactive({
-  if (is.null(input$plotType)) return()  
-  display <- FALSE
-  if (input$plotType=='scatter') {
-    display <- TRUE
-  } else if (any(input$plotType %in% c('line', 'path'))) {
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) display <- TRUE
-  }
-  display
-})
-
-## display smooth condition reactive
-displaySmthCond <- reactive({
-  if (is.null(input$plotType)) return()  
-  display <- FALSE
-  if (input$plotType=='scatter') {
-    display <- TRUE
-  } else if (input$plotType=='line') {
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) display <- TRUE
-  }
-  display  
-})
-
-## display jitter condition reactive (belongs to advanced control widgets)
-displayJitCond <- reactive({
-  if (is.null(input$plotType)) return()
-  if (is.null(input$showAdvCtrlWgts)) return()
-  display <- FALSE
-  if (input$plotType=='scatter') {
-    display <- input$showAdvCtrlWgts
-  } else if (input$plotType=='line') {
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) display <- input$showAdvCtrlWgts
-  }
-  display
-})
-
-## display size magnifier condition reactive (belongs to advanced control widgets)
-displaySizeMagCond <- reactive({
-  if (is.null(input$plotType)) return()
-  if (is.null(input$showAdvCtrlWgts)) return()
-  display <- FALSE
-  if (input$plotType=='scatter') {
-    display <- input$showAdvCtrlWgts
-  } else if (any(input$plotType %in% c('line', 'path'))) {    
-    if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) display <- input$showAdvCtrlWgts
-  }
-  display
-})
-
-## display bin width condition reactive
-displayBinWidthCond <- reactive({
-  if (is.null(input$plotType)) return() 
-  if (is.null(input$x)) return()
-  return (input$plotType=='histogram')
-})
-
-## display density blakc line condition reactive
-displayDensBlkLineCond <- reactive({
-  if (is.null(input$plotType)) return()
-  if (is.null(input$showAdvCtrlWgts)) return()
-  return (input$plotType=='density' & input$showAdvCtrlWgts)
-})
-
-
-## display points overlay checkbox condition reactive
-displayPtsOverlayCond <- reactive({
-  if (is.null(input$plotType)) return()
-  return (input$plotType %in% c('line', 'path'))
-})
-
-## display additional aggregation select field condition reactive
-displayPlotAddAggBy <- reactive({
-  if (is.null(input$semiAutoAgg)) return()
-  return (input$semiAutoAgg=='allowed')
-})
-
-## display xlim condition reactive
-displayXlim <- reactive({
-  if (is.null(dataset())) return()
-  if (is.null(input$x)) return()
-  if (is.null(y())) return()
-  if (is.null(input$semiAutoAgg)) return()
-  
-  if (is.null(input$showAdvCtrlWgts)) return()
-  return(input$showAdvCtrlWgts)
-})
-
-## display ylim condition reactive
-displayYlim <- reactive({
-  if (is.null(dataset())) return()
-  if (is.null(input$x)) return()
-  if (is.null(y())) return()
-  if (is.null(input$semiAutoAgg)) return()
-  
-  if (is.null(input$plotType)) return()  
-  if (input$plotType=='histogram') return()
-  
-  if (is.null(input$showAdvCtrlWgts)) return()
-  return(input$showAdvCtrlWgts)
-})
-
-
-
-#### widgets loaded conditional reactives
-
-## universal widgets
-universalBaseWidgets <- c('plotType', 'x')
-#universalAdvWidgets <- c('facetRow', 'facetCol', 'facetWrap', 'facetScale', 'alpha', 'coordFlip', 'xlim')
-universalAdvWidgets <- c('facetRow', 'facetCol', 'facetWrap', 'facetScale', 'alpha', 'coordFlip')
-universalFullWidgets <- c(universalBaseWidgets, universalAdvWidgets)
-
-scatterBaseWidgets <- c(universalBaseWidgets, 'y', 'color', 'treatAsFacVarCol', 'shape', 'size', 'smooth')
-#scatterAdvWidgets <- c(universalAdvWidgets, 'sizeMag', 'jitter', 'ylim')
-scatterAdvWidgets <- c(universalAdvWidgets, 'sizeMag', 'jitter')
-scatterFullWidgets <- c(scatterBaseWidgets, scatterAdvWidgets)
-
-lineBaseWidgets <- c(universalBaseWidgets, 'y', 'color')
-#lineAdvWidgets <- c(universalAdvWidgets, 'ylim')
-lineAdvWidgets <- c(universalAdvWidgets)
-lineFullWidgets <- c(lineBaseWidgets, lineAdvWidgets)
-
-barBaseWidgets <- c(universalBaseWidgets, 'y', 'fill', 'position')
-#barAdvWidgets <- c(universalAdvWidgets, 'ylim')
-barAdvWidgets <- c(universalAdvWidgets)
-barFullWidgets <- c(barBaseWidgets, barAdvWidgets)
-
-histogramBaseWidgets <- c(universalBaseWidgets, 'fill', 'position', 'binWidth')
-histogramAdvWidgets <- c(universalAdvWidgets)
-histogramFullWidgets <- c(histogramBaseWidgets, histogramAdvWidgets)
-
-densityBaseWidgets <- c('fill', 'color')
-densityAdvWidgets <- c(universalAdvWidgets, 'densBlkLineCond')
-densityFullWidgets <- c(densityBaseWidgets, densityAdvWidgets)
-
-boxBaseWidgets <- c('y', 'fill')
-#boxAdvWidgets <- c(universalAdvWidgets, 'ylim')
-boxAdvWidgets <- c(universalAdvWidgets)
-boxFullWidgets <- c(boxBaseWidgets, boxAdvWidgets)
-
-pathBaseWidgets <- c('y')
-#pathAdvWidgets <- c(universalAdvWidgets, 'ylim')
-pathAdvWidgets <- c(universalAdvWidgets)
-pathFullWidgets <- c(pathBaseWidgets, pathAdvWidgets)
-
-
-
-## universal widgets loaded
-universalWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, universalFullWidgets)
-  else
-    checkWidgetsLoaded(input, universalBaseWidgets)
-})
-
-## scatter plot widgets loaded
-scatterWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, scatterFullWidgets)
-  else
-    checkWidgetsLoaded(input, scatterBaseWidgets)
-})
-
-lineWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, lineFullWidgets)
-  else
-    checkWidgetsLoaded(input, lineBaseWidgets)
-})
-
-# linePtsOverlayWidgetsLoaded <- reactive({
-#   if (!generalWidgetsLoaded()) return(FALSE)
-#   wgtCtrls <- c('shape', 'size', 'jitter', 'smooth', 'ptsOverlayCond')
-#   checkWidgetsLoaded(input, wgtCtrls)
-# })
-
-## bar plot widgets loaded
-barWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, barFullWidgets)
-  else
-    checkWidgetsLoaded(input, barBaseWidgets)
-})
-
-## histogram widgets loaded
-histogramWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, histogramFullWidgets)
-  else
-    checkWidgetsLoaded(input, histogramBaseWidgets)
-})
-
-## density plot widgets loaded
-densityWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, densityFullWidgets)
-  else
-    checkWidgetsLoaded(input, densityBaseWidgets)
-})
-
-## box plot widgets loaded
-boxWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, boxFullWidgets)
-  else
-    checkWidgetsLoaded(input, boxBaseWidgets)
-})
-
-## path plot widgets loaded
-pathWidgetsLoaded <- reactive({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
-    checkWidgetsLoaded(input, pathFullWidgets)
-  else
-    checkWidgetsLoaded(input, pathBaseWidgets)
-})
-
-# pathPtsOverlayWidgetsLoaded <- reactive({
-#   if (!generalWidgetsLoaded()) return(FALSE)
-#   wgtCtrls <- c('shape', 'size', 'ptsOverlayCond')
-#   checkWidgetsLoaded(input, wgtCtrls)    
-# })
-
-
-
-
-
-
 ## plot reactive
 plotInput <- reactive({
   
@@ -404,7 +118,7 @@ plotInput <- reactive({
   if (plotType=='scatter')  {
     if (!scatterWidgetsLoaded()) return()
     if (!(y %in% finalDFVars())) return()
-    p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, smooth, alpha, sizeMag, jitter)
+    p <- plotScatter(dataset, x, y, color, treatAsFacVarCol, shape, size, smooth, jitter, alpha, sizeMag)
   }
 
   ## line plot
@@ -414,9 +128,10 @@ plotInput <- reactive({
     p <- plotLine(dataset, x, y, color, alpha)
 
     ## line plot with points overlay
-#     if (!linePtsOverlayWidgetsLoaded()) return()
-#     if (ptsOverlayCond)
-#       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
+    if (!linePtsOverlayWidgetsLoaded()) return()
+    if (ptsOverlayCond) {
+      p <- plotPointsOverlay(p, shape, size, smooth, jitter, alpha, sizeMag)
+    }
   }
   
   ## bar plot
@@ -451,10 +166,10 @@ plotInput <- reactive({
     if (!(y %in% finalDFVars())) return()
     p <- plotPath(dataset, x, y, alpha)
     
-#     ## path plot with points overlay
-#     if (!pathPtsOverlayWidgetsLoaded()) return()
-#     if (ptsOverlayCond)
-#       p <- plotPointsOverlay(p, shape, size, alpha, jitter, smooth, sizeMag)
+    ## path plot with points overlay
+    if (!pathPtsOverlayWidgetsLoaded()) return()
+    if (ptsOverlayCond)
+      p <- plotPointsOverlay(p, shape, size, smooth, jitter, alpha, sizeMag)
   }
   
   ## plot advanced controls

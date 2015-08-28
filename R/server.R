@@ -24,6 +24,8 @@ shinyServer(function(input, output, session) {
   ## reactive variables
   source('./reactives/reactives.R', local=TRUE)  # general/miscellaneous
   source('./reactives/dataset.R', local=TRUE)  # dataset variables
+  source('./reactives/plotWidgetsDisplayCond.R', local=TRUE)  # plot-related reactives
+  source('./reactives/plotWidgetsLoadedCond.R', local=TRUE)  # plot-related reactives
   source('./reactives/plot.R', local=TRUE)  # plot-related reactives
   
   ## UI controls

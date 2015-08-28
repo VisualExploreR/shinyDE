@@ -58,6 +58,7 @@ verticalLayout(
     )
   ),
 
+  uiOutput('jitCtrl'),
   uiOutput('binWidthCtrl'),
   uiOutput('showAdvCtrlWgtsCtrl'),
   
@@ -80,7 +81,6 @@ verticalLayout(
   ),
   
   uiOutput('densBlkLineCondCtrl'),
-  uiOutput('jitCtrl'),
   
   uiOutput('plotAddAggByCtrl'),
   uiOutput('alphaCtrl'),
