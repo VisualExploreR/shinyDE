@@ -29,35 +29,26 @@ plotScatter <- function(dataset, x, y, color, treatAsFacVarCol, shape, size, smo
 
   if (is.null(alpha)) alpha <- 1
   if (is.null(sizeMag)) sizeMag <- 4
+  
+  ## jitter variable's value should be either "jitter" or NULL
   if (!is.null(jitter)) {
     if (jitter) 
       jitter <- 'jitter' 
+    else 
+      jitter <- NULL
   }
 
   if (!is.null(size)) {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
       geom_point(aes_string(shape=shapeAsFactor, size=size), 
-                 alpha=alpha) + 
+                 alpha=alpha, position=jitter) + 
       scale_size(range = c(1, sizeMag))
   } else {
     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
       geom_point(aes_string(shape=shapeAsFactor), 
-                 alpha=alpha, size=sizeMag)
+                 alpha=alpha, position=jitter, size=sizeMag)
   }
   
-#   if (!is.null(size)) {
-#     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
-#       geom_point(aes_string(shape=shapeAsFactor, size=size), 
-#                  alpha=alpha, position=jitter) + 
-#       scale_size(range = c(1, sizeMag))
-#     #scale_size_area(max_size=sizeMag)
-#     #scale_size_continuous(range = c(1, sizeMag))
-#   } else {
-#     p <- ggplot(dataset, aes_string(x=x, y=y)) + 
-#       geom_point(aes_string(shape=shapeAsFactor), 
-#                  alpha=alpha, position=jitter, size=sizeMag)
-#   }
-#   
   ## coloring points
   if (treatAsFacVarCol) {
     p <- p + aes_string(color=colorAsFactor)
