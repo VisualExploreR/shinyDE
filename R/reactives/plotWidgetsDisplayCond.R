@@ -144,8 +144,7 @@ displayXlim <- reactive({
   if (is.null(dataset())) return()
   if (is.null(input$x)) return()
   if (is.null(y())) return()
-  if (is.null(input$semiAutoAgg)) return()
-  
+
   if (is.null(input$showAdvCtrlWgts)) return()
   return(input$showAdvCtrlWgts)
 })
@@ -155,8 +154,7 @@ displayYlim <- reactive({
   if (is.null(dataset())) return()
   if (is.null(input$x)) return()
   if (is.null(y())) return()
-  if (is.null(input$semiAutoAgg)) return()
-  
+
   if (is.null(input$plotType)) return()  
   if (input$plotType=='histogram') return()
   

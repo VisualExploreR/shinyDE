@@ -18,13 +18,6 @@ output$rawVsManAggCtrl <- renderUI({
               c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'))
 })
 
-## semi-automatic aggregation option
-# output$semiAutoAggCtrl <- renderUI({
-#   radioButtons('semiAutoAgg', label = "Semi-auto Aggregation",
-#                choices = list("Allowed" = 'allowed', "Disabled" = 'disabled'),
-#                selected = 'disabled', inline = FALSE)
-# })
-
 ## aggregation method options (for plot view only)
 output$plotAggMethCtrl <- renderUI({
   aggMethOpts <- c('None', 'sum', 'mean', 'count', 'min', 'max', 'median')

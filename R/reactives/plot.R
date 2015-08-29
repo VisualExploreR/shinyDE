@@ -73,11 +73,12 @@ plotAddAggByOpts <- reactive({
 
 ## plot reactive
 plotInput <- reactive({
+
   ## load dataset to use (already subsetted/filtered)
   dataset <- plotDF(); if (is.null(dataset)) return()
   
   if (is.null(semiAutoAggOn())) return()
-  
+
   ## load variables from control widgets
   plotType <- input$plotType
   x <- input$x
@@ -198,7 +199,7 @@ plotInput <- reactive({
       p <- p + coord_flip()
     }
   }
-    
+  
   ## return
   p
 })
