@@ -47,17 +47,15 @@ varsUniqValsCntLOEN <- reactive({
 
 #### variables for finalDF()
 finalDF <- reactive({  
-  if (is.null(input$semiAutoAgg)) return()
+  if (is.null(semiAutoAggOn())) return()
   
   ## semi-automatic aggregation (if enabled)
-  if (input$semiAutoAgg=='allowed') {
+  if (semiAutoAggOn())
     semiAutoAggDF()
-  } 
-  
+
   ## natural dataset (raw or manually aggregated dataset)
-  else if (input$semiAutoAgg=='disabled') {
+  else
     dataset()
-  }  
 })
 
 ## number of rows
@@ -138,12 +136,10 @@ yFactorVarUniqVals <- reactive({
 
 y <- reactive({
   if (is.null(input$y)) return()
-  if (is.null(input$semiAutoAgg)) return()
   if (is.null(input$plotAggMeth)) return()
   if (is.null(finalDF())) return()
-  
-  semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
-  y <- ensureProperVarName2(colnames=colnames(finalDF()), var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  if (is.null(semiAutoAggOn())) return()
+  y <- ensureProperVarName2(colnames=colnames(finalDF()), var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())
   y
 })
 
@@ -186,13 +182,16 @@ isXYCtrlPlot <- reactive({
 })
 
 
-
-
-
 ## reactive that returns a value "discrete" or "continuous"
 xType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (is.null(input$x)) return()
+  
+#   print(input$x)
+#   print(finalDFNumericVars())
+#   print(input$x %in% finalDFNumericVars())
+#   print('-----')
+  
   if (input$x %in% finalDFNumericVars())
     return('continuous')
   else 
@@ -210,3 +209,12 @@ yType <- reactive({
   else
     return('discrete')
 })
+
+
+## conditional reactive: semi-automatic aggregation is on
+semiAutoAggOn <- reactive({
+  if (is.null(input$plotAggMeth)) return()
+  tolower(input$plotAggMeth) != 'none'
+})
+
+

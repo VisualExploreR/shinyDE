@@ -7,15 +7,13 @@ verticalLayout(
            uiOutput('rawVsManAggCtrl')
     ),
     column(6,
-           uiOutput('semiAutoAggCtrl')
+           uiOutput('plotAggMethCtrl')
     )
   ),
   
-  conditionalPanel(
-    condition = 'input.semiAutoAgg=="allowed"',
-    uiOutput('plotAggMethCtrl')
-  ),
-  
+  br(),
+  br(),
+
   fluidRow(
     column(6,
            uiOutput('xCtrl')             
@@ -60,6 +58,7 @@ verticalLayout(
 
   uiOutput('jitCtrl'),
   uiOutput('binWidthCtrl'),
+  uiOutput('plotAddAggByCtrl'),
   uiOutput('showAdvCtrlWgtsCtrl'),
   
   fluidRow(
@@ -82,7 +81,6 @@ verticalLayout(
   
   uiOutput('densBlkLineCondCtrl'),
   
-  uiOutput('plotAddAggByCtrl'),
   uiOutput('alphaCtrl'),
   uiOutput('sizeMagCtrl'),
   uiOutput('xlimCtrl'),

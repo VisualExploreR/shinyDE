@@ -60,12 +60,24 @@ displaySizeCond <- reactive({
 ## display smooth condition reactive
 displaySmthCond <- reactive({
   if (is.null(input$plotType)) return()  
+  if (is.null(xType())) return()
+  if (is.null(yType())) return()
+  
   display <- FALSE
   if (input$plotType=='scatter') {
-    display <- TRUE
+    if (xType()=='continuous') {
+      print('xType evaluated')
+      if (yType()=='continuous') {
+        print('yType evaluated')
+        display <- TRUE   
+      }
+    }
   } else if (input$plotType=='line') {
     if (is.null(input$ptsOverlayCond)) return()
-    if (input$ptsOverlayCond) display <- TRUE
+    if (input$ptsOverlayCond) {
+      if (xType()=='continuous' & yType()=='continuous')
+      display <- TRUE 
+    }
   }
   display  
 })
@@ -123,8 +135,8 @@ displayPtsOverlayCond <- reactive({
 
 ## display additional aggregation select field condition reactive
 displayPlotAddAggBy <- reactive({
-  if (is.null(input$semiAutoAgg)) return()
-  return (input$semiAutoAgg=='allowed')
+  if (is.null(semiAutoAggOn())) return()
+  return (semiAutoAggOn())
 })
 
 ## display xlim condition reactive

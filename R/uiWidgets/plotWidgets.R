@@ -12,18 +12,23 @@ output$plotTypeCtrl <- renderUI({
               multiple = FALSE)
 })
 
-## semi-automatic aggregation option
-output$semiAutoAggCtrl <- renderUI({
-  radioButtons('semiAutoAgg', label = "Semi-auto Aggregation",
-               choices = list("Allowed" = 'allowed', "Disabled" = 'disabled'),
-               selected = 'disabled', inline = FALSE)
+## dataset type options (raw vs. manually aggregated)
+output$rawVsManAggCtrl <- renderUI({
+  selectInput("rawVsManAgg", "Dataset Type",
+              c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'))
 })
+
+## semi-automatic aggregation option
+# output$semiAutoAggCtrl <- renderUI({
+#   radioButtons('semiAutoAgg', label = "Semi-auto Aggregation",
+#                choices = list("Allowed" = 'allowed', "Disabled" = 'disabled'),
+#                selected = 'disabled', inline = FALSE)
+# })
 
 ## aggregation method options (for plot view only)
 output$plotAggMethCtrl <- renderUI({
-  aggMethOpts <- c('sum', 'mean', 'count', 'min', 'max', 'median')
+  aggMethOpts <- c('None', 'sum', 'mean', 'count', 'min', 'max', 'median')
   selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts)
-  #selectInput('plotAggMeth', 'Aggregation Method', choices=c(aggMethOpts, 'None'))
 })
 
 ## x-axis options

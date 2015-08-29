@@ -73,12 +73,12 @@ plotAddAggByOpts <- reactive({
 
 ## plot reactive
 plotInput <- reactive({
-  
   ## load dataset to use (already subsetted/filtered)
   dataset <- plotDF(); if (is.null(dataset)) return()
-
+  
+  if (is.null(semiAutoAggOn())) return()
+  
   ## load variables from control widgets
-  semiAutoAggSet <- input$semiAutoAgg=='allowed'
   plotType <- input$plotType
   x <- input$x
   y <- input$y
@@ -103,7 +103,6 @@ plotInput <- reactive({
   ylim <- input$ylim
   treatAsFacVarCol <- input$treatAsFacVarCol
   plotAggMeth <- input$plotAggMeth
-  semiAutoAggOn <- ifelse(input$semiAutoAgg=='allowed', TRUE, FALSE)
   
   ## don't plot anything if any of universal control widgets is not loaded
   if (!universalWidgetsLoaded()) return() 
@@ -111,8 +110,8 @@ plotInput <- reactive({
 
   ## ensure proper variable names (in case of semi-automatic aggregation)
   y <- y()
-  color <- ensureProperVarName2(colnames=colnames(dataset), var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
-  size <- ensureProperVarName2(colnames=colnames(dataset), var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn)
+  color <- ensureProperVarName2(colnames=colnames(dataset), var=color, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn())
+  size <- ensureProperVarName2(colnames=colnames(dataset), var=size, aggMeth=plotAggMeth, semiAutoAggOn=semiAutoAggOn())
 
   ## scatter plot
   if (plotType=='scatter')  {

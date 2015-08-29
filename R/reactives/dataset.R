@@ -106,38 +106,34 @@ plotSemiAutoAggBy <- reactive({
 
 ## reactive for semi-automatic aggregated dataset
 semiAutoAggDF <- reactive({
-  if (is.null(input$semiAutoAgg)) return()
+  if (is.null(semiAutoAggOn())) return()
   if (is.null(dataset())) return()
-  
-  if (input$semiAutoAgg=='allowed') {  
-    ## if plot aggregation is specified (e.g. sum, mean, max, min)
-    if (input$plotAggMeth != 'None') {
-      aggBy <- plotSemiAutoAggBy()
-      aggTarget <- input$y
-      aggMeth <- input$plotAggMeth
-      
-      vars <- c(aggBy, aggTarget)
-      if (all(vars %in% colnames(dataset()))) {
-        semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
-        semiAutoAggDF        
-      }
-    } 
-  }
+
+  ## if plot aggregation is specified (e.g. sum, mean, max, min)  
+  if (semiAutoAggOn()) {  
+    aggBy <- plotSemiAutoAggBy()
+    aggTarget <- input$y
+    aggMeth <- input$plotAggMeth
+    
+    vars <- c(aggBy, aggTarget)
+    if (all(vars %in% colnames(dataset()))) {
+      semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
+      semiAutoAggDF        
+    }
+  } 
 })
 
 ## reactive variable for final dataset
 finalDF <- reactive({
-  if (is.null(input$semiAutoAgg)) return()
+  if (is.null(semiAutoAggOn())) return()
   
   ## semi-automatic aggregation (if enabled)
-  if (input$semiAutoAgg=='allowed') {
+  if (semiAutoAggOn())
     semiAutoAggDF()
-  }
-  
+
   ## natural dataset (raw or manually aggregated dataset)
-  else if (input$semiAutoAgg=='disabled') {
+  else
     dataset()
-  } 
 })
 
 
