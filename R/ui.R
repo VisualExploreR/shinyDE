@@ -48,13 +48,13 @@ shinyUI(pageWithSidebar(
                          plotOutput("plot", brush=brushOpts(id="zoom_brush", resetOnNew=TRUE)),
                          value='plotTab'
                 ),
-#                 tabPanel("Table", 
-#                          br(),
-#                          uiOutput('dlBtnCSV'),
-#                          br(),
-#                          DT::dataTableOutput("displayTable"),
-#                          value='tableTab'
-#                          ),
+                tabPanel("Table", 
+                         br(),
+                         uiOutput('dlBtnCSV'),
+                         br(),
+                         DT::dataTableOutput("displayTable"),
+                         value='tableTab'
+                         ),
                 tabPanel('Import',
                          value='importTab'
                 ),

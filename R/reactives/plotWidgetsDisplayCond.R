@@ -65,13 +65,8 @@ displaySmthCond <- reactive({
   
   display <- FALSE
   if (input$plotType=='scatter') {
-    if (xType()=='continuous') {
-      print('xType evaluated')
-      if (yType()=='continuous') {
-        print('yType evaluated')
-        display <- TRUE   
-      }
-    }
+    if (xType()=='continuous' & yType()=='continuous')
+        display <- TRUE
   } else if (input$plotType=='line') {
     if (is.null(input$ptsOverlayCond)) return()
     if (input$ptsOverlayCond) {
@@ -116,6 +111,7 @@ displaySizeMagCond <- reactive({
 displayBinWidthCond <- reactive({
   if (is.null(input$plotType)) return() 
   if (is.null(input$x)) return()
+  if (!(input$x %in% finalDFNumericVars())) return()
   return (input$plotType=='histogram')
 })
 

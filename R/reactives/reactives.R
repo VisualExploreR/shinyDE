@@ -25,14 +25,12 @@ origNumericVars <- reactive({
 ## processed dataset factor variables
 factorVars <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  #dataset <- finalDF(); if (is.null(dataset)) return()
   getFactorVarNames(dataset)
 })
 
 ## processed dataset numeric variables
 numericVars <- reactive({
   dataset <- dataset(); if (is.null(dataset)) return()
-  #dataset <- finalDF(); if (is.null(dataset)) return()
   getNumericVarNames(dataset)
 })
 
@@ -186,16 +184,12 @@ isXYCtrlPlot <- reactive({
 xType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (is.null(input$x)) return()
-  
-#   print(input$x)
-#   print(finalDFNumericVars())
-#   print(input$x %in% finalDFNumericVars())
-#   print('-----')
-  
-  if (input$x %in% finalDFNumericVars())
+
+  if (input$x %in% finalDFNumericVars()) {
     return('continuous')
-  else 
+  } else {
     return('discrete')
+  }
 })
 
 
@@ -204,10 +198,12 @@ yType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (!isXYCtrlPlot()) return()
   if (is.null(y())) return()
-  if (y() %in% finalDFNumericVars())
+  
+  if (y() %in% finalDFNumericVars()) {
     return('continuous')
-  else
+  } else {
     return('discrete')
+  }
 })
 
 
