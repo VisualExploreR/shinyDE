@@ -1,17 +1,23 @@
 ## function for line plot
 plotLine <- function(dataset, x, y, color, alpha=NULL) {
+  color <- convertNoneToNULL(color)
+  colorAsFactor <- varNameAsFactorOrNULL(color)
+  
   if (is.null(alpha)) alpha <- 1
   
   p <- ggplot(dataset, aes_string(x=x, y=y))
-  if (x==color | color=='None') {
+  
+  if (is.null(color)) {
     p <- p + geom_line(aes(group=1), alpha=alpha)
-  }
-  else {
+  } else if (x==color) {
+    p <- p + geom_line(aes(group=1), alpha=alpha)
+  } else {
     p <- p + geom_line(aes_string(group=color), alpha=alpha)
   }
 
-  if (color != 'None') {
-    p <- p + aes_string(color=color)
+  if (!is.null(color)) {
+    p <- p + aes_string(color=colorAsFactor) + 
+      guides(color = guide_legend(title=color))
   }
   
   return(p)

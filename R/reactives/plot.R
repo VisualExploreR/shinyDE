@@ -18,7 +18,9 @@ colOpts <- reactive({
   if (input$plotType=='scatter') {
     colOpts <- c('None', names(dataset()))
   } else if (input$plotType %in% c('line', 'path')) {
-    colOpts <- c('None', factorVars())
+    #colOpts <- c('None', factorVars())
+    varsUniqValsCntLOE6 <- getVarNamesUniqValsCntLOEN(dataset, 6)
+    colOpts <- c('None', factorVars(), varsUniqValsCntLOE6)
   }
 
   colOpts
