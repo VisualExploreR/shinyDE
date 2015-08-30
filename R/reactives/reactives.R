@@ -167,7 +167,6 @@ facetGridSelected <- reactive({
 ## conditional: facet wrap was selected
 facetWrapSelected <- reactive({
   if (!facetWidgetsLoaded()) return(FALSE)
-  print(input$facetWrap)
   return(input$facetWrap != 'None')
 })
 
