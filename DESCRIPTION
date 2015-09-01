@@ -7,3 +7,8 @@ Author: Eugene Dubossarsky <eugene@presciient.com>, Howard Song <feelosophy13@gm
 Maintainer: Eugene Dubossarsky <eugene@presciient.com>, Howard Song <feelosophy13@gmail.com>
 Description: The package is intended for both technical and non-technical users to create interactive data visualizations through a web browser GUI without writing any code.
 License: What license is it under?
+Depends: R (>= 3.1.0), shiny (>= 0.12.1), ggplot2 (>= 1.0.0), dplyr(>= 0.4.1),
+        DT(>= 0.1), stringr(>= 0.6.2), shinyBS(>= 0.61), shinyjs (>= 0.1.0)
+        
+        
+
