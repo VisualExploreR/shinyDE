@@ -2,6 +2,7 @@
 \alias{visualToolkit}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
+VisualToolkit
 %%  ~~function to do ... ~~
 }
 \description{
