@@ -10,8 +10,8 @@
 
 ## import functions
 source('./functions/helper.R')
-source('./functions/plot.R', local=T)
-source('./functions/aggregate.R', local=T)
+source('./functions/plot.R')
+source('./functions/aggregate.R')
 
 
 ## file size options

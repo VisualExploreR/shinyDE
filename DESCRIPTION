@@ -2,9 +2,12 @@ Package: visualToolkit
 Type: Package
 Title: The package allows interactive visualization of data through a web browser GUI.
 Version: 1.0
-Date: 2015-07-19
-Author: Eugene Dubossarsky <eugene@presciient.com>, Howard Song <feelosophy13@gmail.com>
-Maintainer: Eugene Dubossarsky <eugene@presciient.com>, Howard Song <feelosophy13@gmail.com>
+Date: 2015-09-5
+Authors@R: c(person("Eugene", "Dubossarsky", role=c("aut", "cph", "cre"),email="eugene@presciient.com"),
+	     person("Howard", "Song", role="aut",comment="Developer"),
+	     person("Susan", "Wang", role="ctb",comment="Project Manager"),
+	     person("Jason", "Widjaja", role="ctb",comment="Vignette"),
+	     person("Jose", "Magana", role="ctb",comment="Package Manager and documentation"))
 Description: The package is intended for both technical and non-technical users to create interactive data visualizations through a web browser GUI without writing any code.
 License: What license is it under?
 Depends: R (>= 3.1.0), shiny (>= 0.12.1), ggplot2 (>= 1.0.0), dplyr(>= 0.4.1),

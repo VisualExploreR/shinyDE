@@ -1,54 +1,38 @@
 \name{visualToolkit}
 \alias{visualToolkit}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-VisualToolkit
-%%  ~~function to do ... ~~
-}
+\title{Launch the application on your default web browser.}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+
+  VisualToolkit is the command that launches a Browser based User Interface that gives 
+  access to the package functionality for data exploration via many different types of 
+  plots that the user will be able   to customize. You can expect to have most of the 
+  flexibility existing on the ggplot2 package and being able to benefit from it without 
+  having to write a single line of code.
+  
 }
 \usage{
 visualToolkit()
 }
-%- maybe also 'usage' for other objects documented here.
 \details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+
+ Currently some of the graphs that can be generated include:
+ scatterplot, lineplot, barplot, histogram, densityplot, boxplot, pathplot
+ 
+ Also, the package allows to generate tables and perform aggregate operations specifying 
+ the by and target columns and the operation to be applied (min, max, count, ...).
+ 
+ The user can import it´s own data files, specifiying the header, separator and quote options.
+
 }
 \references{
-%% ~put references to the literature/web site here ~
+A reference
 }
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
+\author{ Eugene Dubossarsky \\ eugene@presciient.com }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function () 
-{
-    runApp(system.file(app[1], package = "visualToolkit"))
-  }
+visualToolkit()
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ ~ggplot2 }
+\keyword{ ~user interface }
+\keyword{ ~web based }
+\keyword{ ~shiny }% __ONLY ONE__ keyword per line
