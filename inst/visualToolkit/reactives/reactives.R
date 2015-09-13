@@ -44,17 +44,6 @@ varsUniqValsCntLOEN <- reactive({
 
 
 #### variables for finalDF()
-finalDF <- reactive({  
-  if (is.null(semiAutoAggOn())) return()
-  
-  ## semi-automatic aggregation (if enabled)
-  if (semiAutoAggOn())
-    semiAutoAggDF()
-
-  ## natural dataset (raw or manually aggregated dataset)
-  else
-    dataset()
-})
 
 ## number of rows
 nrows <- reactive({
@@ -132,21 +121,13 @@ yFactorVarUniqVals <- reactive({
   }
 })
 
-y <- reactive({
-  if (is.null(input$y)) return()
-  if (is.null(input$plotAggMeth)) return()
-  if (is.null(finalDF())) return()
-  if (is.null(semiAutoAggOn())) return()
-  y <- ensureProperVarName2(colnames=colnames(finalDF()), var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())
-  y
-})
 
 
 
-
+####
 ## conditional: facet widgets are loaded
 facetWidgetsLoaded <- reactive({
-  wgts <- c('facetCol', 'facetRow', 'facetWrap')
+  wgts <- c('facetCol', 'facetRow', 'facetWrap', 'facetScale')
   return(checkWidgetsLoaded(input, wgts))
 })
 
@@ -208,7 +189,7 @@ yType <- reactive({
 
 ## conditional reactive: semi-automatic aggregation is on
 semiAutoAggOn <- reactive({
-  if (is.null(input$plotAggMeth)) return()
+  if (is.null(input$plotAggMeth)) return(FALSE)
   tolower(input$plotAggMeth) != 'none'
 })
 

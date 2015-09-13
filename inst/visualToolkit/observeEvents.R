@@ -34,7 +34,7 @@ observeEvent(input$reactive, {
 
 ## disable/enable toggle between facet grid and facet wrap
 observeEvent(c(input$facetCol, input$facetRow, input$facetWrap), {
-  if (input$showAdvCtrlWgts) {
+  if (input$showFacetWgts) {
     if (noFacetSelected()) {
       enable('facetCol')
       enable('facetRow')

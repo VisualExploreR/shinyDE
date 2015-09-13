@@ -14,14 +14,20 @@ output$plotTypeCtrl <- renderUI({
 
 ## dataset type options (raw vs. manually aggregated)
 output$rawVsManAggCtrl <- renderUI({
-  selectInput("rawVsManAgg", "Dataset Type",
-              c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'))
+  if (is.null(displayRawVsManAgg())) return()
+  if (displayRawVsManAgg()) {
+    selectInput("rawVsManAgg", "Dataset Type",
+                c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'))
+  }
 })
 
 ## aggregation method options (for plot view only)
 output$plotAggMethCtrl <- renderUI({
-  aggMethOpts <- c('None', 'sum', 'mean', 'count', 'min', 'max', 'median')
-  selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts)
+  if (is.null(displayPlotAggMeth())) return()
+  if (displayPlotAggMeth()) {
+    aggMethOpts <- c('None', 'sum', 'mean', 'count', 'min', 'max', 'median')
+    selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts) 
+  }
 })
 
 ## x-axis options
@@ -44,7 +50,6 @@ output$yCtrl <- renderUI({
   if (is.null(input$dataset)) return()
   if (is.null(displayYCond())) return()
   if (displayYCond()) {
-    
     selected <- NULL
     if (input$dataset=='diamonds')
       selected <- 'price'
@@ -98,7 +103,7 @@ output$smthCtrl <- renderUI({
   if (displaySmthCond()) {
     if (all(c(input$x, input$y) %in% numericVars())) {
       selectInput('smooth', 'Smoothing Effect', 
-                  c('None'='None', 'Linear'='lm', 'Auto'='auto'))
+                  c('None'='None', 'Linear'='lm', 'Non-linear'='auto'))
     }
   } 
 })
@@ -142,38 +147,31 @@ output$ptsOverlayCondCtrl <- renderUI({
 
 
 
-
-
-## show advanced options
-output$showAdvCtrlWgtsCtrl <- renderUI({
-  checkboxInput('showAdvCtrlWgts', 'Show advanced control widgets', value=FALSE)
-})
-
 ## row-wise facet options
 output$facetRowCtrl <- renderUI({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
+  if (is.null(input$showFacetWgts)) return()
+  if (input$showFacetWgts)
     selectInput('facetRow', 'Facet Row', facetOpts())
 })
 
 ## column-wise facet options
 output$facetColCtrl <- renderUI({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
+  if (is.null(input$showFacetWgts)) return()
+  if (input$showFacetWgts)
     selectInput('facetCol', 'Facet Column', facetOpts())
 })
 
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
+  if (is.null(input$showFacetWgts)) return()
+  if (input$showFacetWgts)
     selectInput('facetWrap', 'Facet Wrap', facetOpts())
 })
 
 ## facet scale options
 output$facetScaleCtrl <- renderUI({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
+  if (is.null(input$showFacetWgts)) return()
+  if (input$showFacetWgts)
     selectInput('facetScale', 'Facet Scale',
                 c('None'='fixed', 'Free X'='free_x', 
                   'Free Y'='free_y', 'Free X & Y'='free'))
@@ -181,8 +179,8 @@ output$facetScaleCtrl <- renderUI({
 
 ## alpha (opacity) options
 output$alphaCtrl <- renderUI({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
+  if (is.null(input$showAesWgts)) return()
+  if (input$showAesWgts)
     sliderInput("alpha", label = "Opacity",
                 min=0, max=1, value=1, step=0.1)
 })
@@ -198,8 +196,8 @@ output$sizeMagCtrl <- renderUI({
 
 ## coordinate flip options 
 output$coordFlipCtrl <- renderUI({
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (input$showAdvCtrlWgts)
+  if (is.null(input$showAesWgts)) return()
+  if (input$showAesWgts)
     checkboxInput('coordFlip', 'Flip X and Y coordinates.', value = FALSE)
 })
 
@@ -219,10 +217,10 @@ output$xlimCtrl <- renderUI({
   if (displayXlim()) {
     if (input$x %in% finalDFNumericVars()) {
       if (is.null(xRange())) return()
-      sliderInput("xlim", label="X Range Filter",
+      sliderInput("xlim", label="X Range",
                   min=xRange()[1], max=xRange()[2], value=xRange(), round=FALSE)
     } else if (input$x %in% finalDFFactorVars()) {
-      selectInput('xlim', label='X Value Filter', 
+      selectInput('xlim', label='X Value', 
                   choices=xFactorVarUniqVals(), 
                   selected=xFactorVarUniqVals(),
                   multiple=T)
@@ -251,3 +249,35 @@ output$ylimCtrl <- renderUI({
 })
 
 
+
+
+#### show/hide checkbox widgets
+## show aesthetic controls
+output$showAesWgtsCtrl <- renderUI({
+  checkboxInput('showAesWgts', 'Show aesthetics widgets', value=FALSE)
+})
+
+## show facet controls
+output$showFacetWgtsCtrl <- renderUI({
+  checkboxInput('showFacetWgts', 'Show facet widgets', value=FALSE)
+})
+
+## show X & Y range controls
+output$showXYRangeWgtsCtrl <- renderUI({
+  checkboxInput('showXYRangeWgts', 'Show range widgets', value=FALSE)
+})
+
+## show aggregation controls
+output$showPlotAggWgtCtrl <- renderUI({
+  checkboxInput('showPlotAggWgt', 'Show plot aggregation widget', value=FALSE)
+})
+
+## show theme controls
+output$showThemeWgtsCtrl <- renderUI({
+  checkboxInput('showThemeWgts', 'Show theme widgets', value=FALSE)
+})
+
+## show dataset type and plot aggregation method controls
+output$showDSTypeAndPlotAggWgtsCtrl <- renderUI({
+  checkboxInput('showDSTypeAndPlotAggWgts', 'Show dataset type and aggregation widgets', value=FALSE)
+})

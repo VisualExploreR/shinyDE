@@ -85,31 +85,7 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
 
 ## this function modifies and ensures proper variable name
 ## for semi-automatic aggregation dataset column names
-ensureProperVarName <- function(colnames, var, y) {
-  if (tolower(var) %in% c('none', '.')) return(var)
-  origVar <- var
-  
-  ## only if original variable is not found in dataset's column names
-  if (!(var %in% colnames)) {
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
-    var <- colnames[grepl(var, colnames)]
-
-    ## if no match found
-    if (length(var)==0L) {
-      if (('count' %in% colnames))
-        var <- 'count'
-      else 
-        var <- origVar      
-    }
-  } 
-  
-  return(var)
-}
-
-
-## second version of ensureProperVarName()
-ensureProperVarName2 <- function(colnames, var, aggMeth, semiAutoAggOn) {
+ensureProperVarName <- function(colnames, var, aggMeth, semiAutoAggOn) {
   if (tolower(var) %in% c('none', '.')) return(var)
   
   ## only if original variable name is not found in dataset's column names
