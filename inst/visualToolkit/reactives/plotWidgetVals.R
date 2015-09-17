@@ -48,7 +48,7 @@ color <- reactive({
   if (is.null(input$color)) return()
   if (is.null(plotAggMeth())) return()
   if (is.null(semiAutoAggOn())) return()
-  col <- ensureProperVarName(colnames=colnames(dataset), var=input$color, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())  
+  col <- ensureProperVarName(colnames=colnames(dataset), var=input$color, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())  
   col <- convertNoneToNULL(col)
   col
 })
@@ -70,9 +70,9 @@ size <- reactive({
   dataset <- plotDF()
   if (is.null(dataset)) return()
   if (is.null(input$size)) return()
-  if (is.null(input$plotAggMeth)) return()
+  if (is.null(plotAggMeth())) return()
   if (is.null(semiAutoAggOn())) return()
-  sz <- ensureProperVarName(colnames=colnames(dataset), var=input$size, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())
+  sz <- ensureProperVarName(colnames=colnames(dataset), var=input$size, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())
   sz <- convertNoneToNULL(sz)
   sz
 })

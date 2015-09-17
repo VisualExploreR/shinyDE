@@ -33,7 +33,7 @@ plotScatter <- function(dataset, ls) {
       geom_point(aes_string(shape=ls$shapeAsFactor), 
                  alpha=ls$alpha, position=ls$jitter, size=ls$sizeMag)
   }
-  
+
   ## coloring points
   if (ls$treatAsFacVarCol) {
     p <- p + aes_string(color=ls$colorAsFactor)
