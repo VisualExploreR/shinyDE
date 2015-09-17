@@ -1,3 +1,30 @@
+#### file paths to cache widget values
+datasetNameCacheFilePath <- './_input_cache/datasetName'
+plotTypeCacheFilePath <- './_input_cache/plotType'
+plotAggMethCacheFilePath <- './_input_cache/plotAggMeth'
+xCacheFilePath <- './_input_cache/x'
+yCacheFilePath <- './_input_cache/y'
+colorCacheFilePath <- './_input_cache/color'
+treatAsFacVarColCacheFilePath <- './_input_cache/treatAsFacVarCol'
+sizeCacheFilePath <- './_input_cache/size'
+fillCacheFilePath <- './_input_cache/fill'
+positionCacheFilePath <- './_input_cache/position'
+jitterCacheFilePath <- './_input_cache/jitter'
+alphaCacheFilePath <- './_input_cache/alpha'
+sizeMagCacheFilePath <- './_input_cache/sizeMag'
+densBlkLineCondCacheFilePath <- './_input_cache/densBlkLineCond'
+shapeCacheFilePath <- './_input_cache/shape'
+smoothCacheFilePath <- './_input_cache/smooth'
+coordFlipCacheFilePath <- './_input_cache/coordFlip'
+binWidthCacheFilePath <- './_input_cache/binWidth'
+ptsOverlayCondCacheFilePath <- './_input_cache/ptsOverlayCond'
+facetRowCacheFilePath <- './_input_cache/facetRow'
+facetColCacheFilePath <- './_input_cache/facetCol'
+facetWrapCacheFilePath <- './_input_cache/facetWrap'
+facetScaleCacheFilePath <- './_input_cache/facetScale'
+xlimCacheFilePath <- './_input_cache/xlim'
+ylimCacheFilePath <- './_input_cache/ylim'
+
 
 #### current widget values
 
@@ -10,44 +37,43 @@ datasetName <- reactive({
 ## plot type 
 plotType <- reactive({
   if (is.null(input$plotType)) return()
+  dput(input$plotType, file=plotTypeCacheFilePath)
   input$plotType
 })
 
 ## plot agg method
 plotAggMeth <- reactive({
   if (is.null(input$plotAggMeth)) return('none')
+  dput(input$plotAggMeth, file=plotAggMethCacheFilePath)
   input$plotAggMeth
-})
-
-## raw or man agg dataset type
-rawOrManAgg <- reactive({
-  if (is.null(input$rawVsManAgg)) return()
-  input$rawVsManAgg
 })
 
 ## x
 x <- reactive({
   if (is.null(input$x)) return()
+  dput(input$x, file=xCacheFilePath)
   input$x
 })
 
-## y 
+## y (XXX)
 y <- reactive({
   if (is.null(input$y)) return()
   if (is.null(plotAggMeth())) return()
   if (is.null(finalDF())) return()
   if (is.null(semiAutoAggOn())) return()
-  retval <- ensureProperVarName(colnames=colnames(finalDF()), var=input$y, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())
+  dput(input$y, file=yCacheFilePath)
+  retval <- ensureProperVarName(colnames=colnames(finalDF()), var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())
   retval
 })
 
-## color 
+## color (XXX)
 color <- reactive({
   dataset <- plotDF()
   if (is.null(dataset)) return()
   if (is.null(input$color)) return()
   if (is.null(plotAggMeth())) return()
   if (is.null(semiAutoAggOn())) return()
+  dput(input$color, file=colorCacheFilePath)
   col <- ensureProperVarName(colnames=colnames(dataset), var=input$color, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())  
   col <- convertNoneToNULL(col)
   col
@@ -62,24 +88,27 @@ colorAsFactor <- reactive({
 ## treat as factor variable (for color)
 treatAsFacVarCol <- reactive({
   if (is.null(input$treatAsFacVarCol)) return(FALSE)
+  dput(input$treatAsFacVarCol, file=treatAsFacVarColCacheFilePath)
   input$treatAsFacVarCol
 })
 
-## size
+## size (XXX)
 size <- reactive({
   dataset <- plotDF()
   if (is.null(dataset)) return()
   if (is.null(input$size)) return()
   if (is.null(input$plotAggMeth)) return()
   if (is.null(semiAutoAggOn())) return()
+  dput(input$size, file=sizeCacheFilePath)
   sz <- ensureProperVarName(colnames=colnames(dataset), var=input$size, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())
   sz <- convertNoneToNULL(sz)
   sz
 })
 
-## fill 
+## fill (XXX)
 fill <- reactive({
   if (is.null(input$fill)) return()
+  dput(input$fill, file=fillCacheFilePath)
   convertNoneToNULL(input$fill)
 })
 
@@ -89,16 +118,21 @@ fillAsFactor <- reactive({
   varNameAsFactorOrNULL(fill())  
 })
 
-## position 
+## position (XXX)
 position <- reactive({
   if (is.null(input$position)) return('None')
+  dput(input$position, file=positionCacheFilePath)
   convertNoneToNULL(input$position)
 })
 
-## jitter 
+#### CONTINUE HERE!!!
+
+## jitter (XXX)
 ## should return either "jitter" or NULL
 jitter <- reactive({
   if (is.null(input$jitter)) return()
+  dput(input$jiter, file=jitterCacheFilePath)
+  
   jit <- input$jitter
   if (jit) 
     jit <- 'jitter' 
@@ -107,14 +141,14 @@ jitter <- reactive({
   jit
 })
 
-## alpha 
+## alpha (XXX)
 alpha <- reactive({
   alp <- input$alpha
   if (is.null(alp)) alp <- 1
   alp
 })
 
-## size magnifier 
+## size magnifier (XXX)
 sizeMag <- reactive({
   sm <- input$sizeMag
   if (is.null(sm)) sm <- 4
@@ -126,12 +160,14 @@ sizeMag <- reactive({
 ## density black line condition
 densBlkLineCond <- reactive({
   if (is.null(input$densBlkLineCond)) return(FALSE)
+  dput(input$densBlkLineCond, file=densBlkLineCondCacheFilePath)
   input$densBlkLineCond
 })
 
 ## shape
 shape <- reactive({
   if (is.null(input$shape)) return()
+  dput(input$shape, file=shapeCacheFilePath)
   convertNoneToNULL(input$shape)
 })
 
@@ -144,48 +180,56 @@ shapeAsFactor <- reactive({
 ## smooth
 smooth <- reactive({
   if (is.null(input$smooth)) return()
+  dput(input$smooth, file=smoothCacheFilePath)
   convertNoneToNULL(input$smooth)
 })
 
 ## coordinate flip
 coordFlip <- reactive({
   if (is.null(input$coordFlip)) return(FALSE)
+  dput(input$coordFlip, file=coordFlipCacheFilePath)
   input$coordFlip
 })
 
 ## bin width
 binWidth <- reactive({
   if (is.null(input$binWidth)) return()
+  dput(input$binWidth, file=binWidthCacheFilePath)
   input$binWidth
 })
 
 ## points overlay condition
 ptsOverlayCond <- reactive({
   if (is.null(input$ptsOverlayCond)) return(FALSE)
+  dput(input$ptsOverlayCond, file=ptsOverlayCondCacheFilePath)
   input$ptsOverlayCond
 })
 
 ## facet row
 facetRow <- reactive({
   if (is.null(input$facetRow)) return('.')
+  dput(input$facetRow, file=facetRowCacheFilePath)
   ifelse(input$facetRow=='None', '.', input$facetRow)
 })
 
 ## facet column
 facetCol <- reactive({
   if (is.null(input$facetCol)) return('.')
+  dput(input$facetCol, file=facetColCacheFilePath)
   ifelse(input$facetCol=='None', '.', input$facetCol)
 })
 
 ## facet wrap
 facetWrap <- reactive({
   if (is.null(input$facetWrap)) return('.')
+  dput(input$facetWrap, file=facetWrapCacheFilePath)
   ifelse(input$facetWrap=='None', '.', input$facetWrap)
 })
 
 ## facet scale
 facetScale <- reactive({
   if (is.null(input$facetScale)) return('none')
+  dput(input$facetScale, file=facetScaleCacheFilePath)
   input$facetScale
 })
 
@@ -198,12 +242,14 @@ facetGrids <- reactive({
 ## xlim
 xlim <- reactive({
   if (is.null(input$xlim)) return()
+  dput(input$xlim, file=xlimCacheFilePath)
   input$xlim
 })
 
 ## ylim
 ylim <- reactive({
   if (is.null(input$ylim)) return()
+  dput(input$ylim, file=ylimCacheFilePath)
   input$ylim
 })
 
@@ -212,154 +258,151 @@ ylim <- reactive({
 
 
 #### cached widget values
-
-## dataset name cache (unnecessary since it's never hidden)
+## dataset name cache
 datasetName_cache <- reactive({
-  if (is.null(input$dataset)) return()
-  input$dataset
+  if (file.exists(datasetNameCacheFilePath)) dget(datasetNameCacheFilePath)
 })
 
-## plot type cache (unnecessary since it's never hidden)
+## plot type cache
 plotType_cache <- reactive({
-  if (is.null(input$plotType)) return()
-  input$plotType
+  if (file.exists(plotTypeCacheFilePath)) dget(plotTypeCacheFilePath)
 })
 
 ## plot agg method cache
 plotAggMeth_cache <- reactive({
   if (is.null(input$plotAggMeth)) return()
-  input$plotAggMeth
+  if (file.exists(plotAggMethCacheFilePath)) dget(plotAggMethCacheFilePath)
 })
 
-## x cache (unnecessary since it's never hidden)
+## x cache
 x_cache <- reactive({
   if (is.null(input$x)) return()
-  input$x
+  if (file.exists(xCacheFilePath)) dget(xCacheFilePath)
 })
 
-## y cache (unnecessary since it's never hidden)
+## y cache
 y_cache <- reactive({
   if (is.null(input$y)) return()
-  input$y
+  if (file.exists(yCacheFilePath)) dget(yCacheFilePath)
 })
 
 ## color cache
 color_cache <- reactive({
   if (is.null(input$color)) return()
-  input$color
+  if (file.exists(colorCacheFilePath)) dget(colorCacheFilePath)
 })
 
 ## treat as factor variable (for color) cache
 treatAsFacVarCol_cache <- reactive({
   if (is.null(input$treatAsFacVarCol)) return()
-  input$treatAsFacVarCol
+  if (file.exists(treatAsFacVarColCacheFilePath)) dget(treatAsFacVarColCacheFilePath)
 })
 
 ## size cache
 size_cache <- reactive({
   if (is.null(input$size)) return()
-  input$size
+  if (file.exists(sizeMagCacheFilePath)) dget(sizeMagCacheFilePath)
 })
 
 ## fill cache
 fill_cache <- reactive({
   if (is.null(input$fill)) return()
-  input$fill
+  if (file.exists(fillCacheFilePath)) dget(fillCacheFilePath)
 })
 
 ## position cache
 position_cache <- reactive({
   if (is.null(input$position)) return()
-  input$position
+  if (file.exists(positionCacheFilePath)) dget(positionCacheFilePath)
 })
 
 ## jitter cache
 jitter_cache <- reactive({
   if (is.null(input$jitter)) return()
-  input$jitter
+  if (file.exists(jitterCacheFilePath)) dget(jitterCacheFilePath)
 })
 
 ## alpha cache
 alpha_cache <- reactive({
   if (is.null(input$alpha)) return()
-  input$alpha
+  if (file.exists(alphaCacheFilePath)) dget(alphaCacheFilePath)
 })
 
 ## size magnifier cache
 sizeMag_cache <- reactive({
   if (is.null(input$sizeMag)) return()
-  input$sizeMag
+  if (file.exists(sizeMagCacheFilePath)) dget(sizeMagCacheFilePath)
 })
 
 ## density black line condition cache
 densBlkLineCond_cache <- reactive({
   if (is.null(input$densBlkLineCond)) return()
-  input$densBlkLineCond
+  if (file.exists(densBlkLineCondCacheFilePath)) dget(densBlkLineCondCacheFilePath)
 })
 
 ## shape cache
 shape_cache <- reactive({
   if (is.null(input$shape)) return()
-  input$shape
+  if (file.exists(shapeCacheFilePath)) dget(shapeCacheFilePath)
 })
 
 ## smooth cache
 smooth_cache <- reactive({
   if (is.null(input$smooth)) return()
-  input$smooth
+  if (file.exists(smoothCacheFilePath)) dget(smoothCacheFilePath)
 })
 
 ## coordinate flip cache
 coordFlip_cache <- reactive({
   if (is.null(input$coordFlip)) return()
-  input$coordFlip
+  if (file.exists(coordFlipCacheFilePath)) dget(coordFlipCacheFilePath)
 })
 
 ## bin width cache
 binWidth_cache <- reactive({
   if (is.null(input$binWidth)) return()
-  input$binWidth
+  if (file.exists(binWidthCacheFilePath)) dget(binWidthCacheFilePath)
 })
 
 ## points overlay condition cache
 ptsOverlayCond_cache <- reactive({
   if (is.null(input$ptsOverlayCond)) return()
-  input$ptsOverlayCond
+  if (file.exists(ptsOverlayCondCacheFilePath)) dget(ptsOverlayCondCacheFilePath)
 })
 
 ## facet row cache
 facetRow_cache <- reactive({
   if (is.null(input$facetRow)) return()
-  input$facetRow
+  if (file.exists(facetRowCacheFilePath)) dget(facetRowCacheFilePath)
 })
 
 ## facet column cache
 facetCol_cache <- reactive({
   if (is.null(input$facetCol)) return()
-  input$facetCol
+  if (file.exists(facetColCacheFilePath)) dget(facetColCacheFilePath)
 })
 
 ## facet wrap cache
 facetWrap_cache <- reactive({
   if (is.null(input$facetWrap)) return()
-  input$facetWrap
+  if (file.exists(facetWrapCacheFilePath)) dget(facetWrapCacheFilePath)
 })
 
 ## facet scale cache
 facetScale_cache <- reactive({
   if (is.null(input$facetScale)) return()
-  input$facetScale
+  if (file.exists(facetScaleCacheFilePath)) dget(facetScaleCacheFilePath)
 })
 
 ## xlim cache
 xlim_cache <- reactive({
   if (is.null(input$xlim)) return()
-  input$xlim
+  if (file.exists(xlimCacheFilePath)) dget(xlimCacheFilePath)
 })
 
 ## ylim cache
 ylim_cache <- reactive({
   if (is.null(input$ylim)) return()
-  input$ylim
+  if (file.exists(ylimCacheFilePath)) dget(ylimCacheFilePath)
 })
 

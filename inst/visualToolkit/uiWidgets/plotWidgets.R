@@ -1,5 +1,6 @@
 ## plot type options
 output$plotTypeCtrl <- renderUI({
+  #selected <- ifelse(is.null(plotType_cache()), 'scatter', plotType_cache())
   selectInput(inputId = "plotType", label = "Plot Type", 
               choices = c('Scatter'='scatter', 'Line'='line',
                           'Bar'='bar', 'Histogram'='histogram', 
@@ -8,8 +9,8 @@ output$plotTypeCtrl <- renderUI({
                           #'Violin'='violin', 
                           #'Image'='image', 
                           #'2-Density', 'density2d'
-              ),
-              multiple = FALSE)
+                          )
+              )
 })
 
 ## dataset type options (raw vs. manually aggregated)
@@ -17,7 +18,8 @@ output$rawVsManAggCtrl <- renderUI({
   if (is.null(displayRawVsManAgg())) return()
   if (displayRawVsManAgg()) {
     selectInput("rawVsManAgg", "Dataset Type",
-                c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'))
+                c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'),
+                rawOrManAgg_cache())
   }
 })
 
@@ -26,22 +28,25 @@ output$plotAggMethCtrl <- renderUI({
   if (is.null(displayPlotAggMeth())) return()
   if (displayPlotAggMeth()) {
     aggMethOpts <- c('None', 'sum', 'mean', 'count', 'min', 'max', 'median')
-    selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts) 
+    selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts, plotAggMeth_cache())
   }
 })
 
 ## x-axis options
 output$xCtrl <- renderUI({
   if (is.null(input$dataset)) return()
-  
-  selected <- NULL
-  if (input$dataset=='diamonds') 
-    selected <- 'carat'
-  else if (input$dataset=='mtcars')
-    selected <- 'mpg'
-  else if (input$dataset=='rock')
-    selected <- 'area'
 
+  if (is.null(x_cache())) {
+    if (input$dataset=='diamonds') 
+      selected <- 'carat'
+    else if (input$dataset=='mtcars')
+      selected <- 'mpg'
+    else if (input$dataset=='rock')
+      selected <- 'area'
+  } else {
+    selected <- x_cache()
+  }
+  
   selectInput('x', 'X', choices=xOpts(), selected=selected)
 })
 
@@ -49,15 +54,19 @@ output$xCtrl <- renderUI({
 output$yCtrl <- renderUI({
   if (is.null(input$dataset)) return()
   if (is.null(displayYCond())) return()
-  if (displayYCond()) {
-    selected <- NULL
+  
+  if (is.null(y_cache())) {
     if (input$dataset=='diamonds')
       selected <- 'price'
     else if (input$dataset=='mtcars')
       selected <- 'hp'
     else if (input$dataset=='rock')
-      selected <- 'peri'
-    
+      selected <- 'peri'      
+  } else {
+    selected <- y_cache()
+  }
+  
+  if (displayYCond()) {
     selectInput('y', 'Y', choices=yOpts(), selected=selected)
   }
 })
@@ -65,36 +74,41 @@ output$yCtrl <- renderUI({
 ## color control options
 output$colCtrl <- renderUI({
   if (is.null(displayColCond())) return()
-  if (displayColCond())
-    selectInput('color', 'Color', colOpts())    
+  if (displayColCond()) {
+    selectInput('color', 'Color', colOpts(), selected=color_cache())
+  }
 })
 
 ## treat-as-a-factor-variable option for color
 output$treatAsFacVarColCtrl <- renderUI({
   if (is.null(displayTreatAsFacVarColCond())) return()
-  if (displayTreatAsFacVarColCond())
-    checkboxInput('treatAsFacVarCol', 'Treat as a factor variable.', value=FALSE)
+  if (displayTreatAsFacVarColCond()) {
+    checkboxInput('treatAsFacVarCol', 'Treat as a factor variable.', value=treatAsFacVarCol_cache())
+  }
 })
 
 ## fill control options
 output$fillCtrl <- renderUI({
   if (is.null(displayFillCond())) return()
-  if (displayFillCond())
-    selectInput('fill', 'Fill', fillOpts())
+  if (displayFillCond()) {
+    selectInput('fill', 'Fill', fillOpts(), fill_cache())
+  }
 })
 
 ## position (stack vs. dodge) control options
 output$posCtrl <- renderUI({
   if (is.null(displayPosCond())) return()
-  if (displayPosCond())
-    selectInput('position', 'Position', c('None', 'dodge', 'stack'))
+  if (displayPosCond()) {
+    selectInput('position', 'Position', c('None', 'dodge', 'stack'), position_cache())
+  }
 })
 
 ## jitter options
 output$jitCtrl <- renderUI({
   if (is.null(displayJitCond())) return()  
-  if (displayJitCond())
-    checkboxInput('jitter', 'Apply jitter effect', value=FALSE)
+  if (displayJitCond()) {
+    checkboxInput('jitter', 'Apply jitter effect', value=jitter_cache())
+  }
 })
 
 ## geom smoothing options
@@ -103,7 +117,8 @@ output$smthCtrl <- renderUI({
   if (displaySmthCond()) {
     if (all(c(input$x, input$y) %in% numericVars())) {
       selectInput('smooth', 'Smoothing Effect', 
-                  c('None'='None', 'Linear'='lm', 'Non-linear'='auto'))
+                  c('None'='None', 'Linear'='lm', 'Non-linear'='auto'),
+                  smooth_cache())
     }
   } 
 })
@@ -111,38 +126,43 @@ output$smthCtrl <- renderUI({
 ## size options
 output$sizeCtrl <- renderUI({
   if (is.null(displaySizeCond())) return()
-  if (displaySizeCond())
-    selectInput('size', 'Size', sizeOpts())        
+  if (displaySizeCond()) {
+    selectInput('size', 'Size', sizeOpts(), size_cache())
+  }
 })
 
 ## shape options
 output$shapeCtrl <- renderUI({
   if (is.null(displayShapeCond())) return()
-  if (displayShapeCond())
-    selectInput('shape', 'Shape', shapeOpts())
+  if (displayShapeCond()) {
+    selectInput('shape', 'Shape', shapeOpts(), shape_cache())
+  }
 })
 
 ## histogram binwidth options
 output$binWidthCtrl <- renderUI({
   if (is.null(displayBinWidthCond())) return()
   if (is.null(histMaxBinWidth())) return()
-  if (displayBinWidthCond())
+  if (displayBinWidthCond()) {
     sliderInput('binWidth', label = "Bin Width",
-                min=1, max=histMaxBinWidth(), value=1, step=1)
+                min=1, max=histMaxBinWidth(), value=binWidth_cache(), step=1) 
+  }
 })
 
 ## density line color options
 output$densBlkLineCondCtrl <- renderUI({
   if (is.null(displayDensBlkLineCond())) return()
-  if (displayDensBlkLineCond())
-    checkboxInput('densBlkLineCond', 'Draw black outline', value = FALSE)
+  if (displayDensBlkLineCond()) {
+    checkboxInput('densBlkLineCond', 'Draw black outline', value=densBlkLineCond_cache())
+  }
 })
 
 ## points overlay options
 output$ptsOverlayCondCtrl <- renderUI({  
   if (is.null(displayPtsOverlayCond())) return()
-  if (displayPtsOverlayCond())
-    checkboxInput('ptsOverlayCond', 'Points Overlay', value=FALSE)
+  if (displayPtsOverlayCond()) { 
+    checkboxInput('ptsOverlayCond', 'Points Overlay', value=ptsOverlayCond_cache())
+  }
 })
 
 
@@ -150,66 +170,76 @@ output$ptsOverlayCondCtrl <- renderUI({
 ## row-wise facet options
 output$facetRowCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
-  if (input$showFacetWgts)
-    selectInput('facetRow', 'Facet Row', facetOpts())
+  if (input$showFacetWgts) {
+    selectInput('facetRow', 'Facet Row', facetOpts(), facetRow_cache())
+  }
 })
 
 ## column-wise facet options
 output$facetColCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
-  if (input$showFacetWgts)
-    selectInput('facetCol', 'Facet Column', facetOpts())
+  if (input$showFacetWgts) {
+    selectInput('facetCol', 'Facet Column', facetOpts(), facetCol_cache())
+  }
 })
 
 ## facet wrap options
 output$facetWrapCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
-  if (input$showFacetWgts)
-    selectInput('facetWrap', 'Facet Wrap', facetOpts())
+  if (input$showFacetWgts) {
+    selectInput('facetWrap', 'Facet Wrap', facetOpts(), facetWrap_cache())
+  }
 })
 
 ## facet scale options
 output$facetScaleCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
-  if (input$showFacetWgts)
+  if (input$showFacetWgts) {
     selectInput('facetScale', 'Facet Scale',
                 c('None'='fixed', 'Free X'='free_x', 
-                  'Free Y'='free_y', 'Free X & Y'='free'))
+                  'Free Y'='free_y', 'Free X & Y'='free'),
+                  facetScale_cache()) 
+  }
 })
 
 ## alpha (opacity) options
 output$alphaCtrl <- renderUI({
   if (is.null(input$showAesWgts)) return()
-  if (input$showAesWgts)
+  if (input$showAesWgts) {
+    value <- ifelse(is.null(alpha_cache()), 1, alpha_cache())
     sliderInput("alpha", label = "Opacity",
-                min=0, max=1, value=1, step=0.1)
+                min=0, max=1, value=value, step=0.1)
+  }
 })
 
 
 ## size magnifier option
 output$sizeMagCtrl <- renderUI({
   if (is.null(displaySizeMagCond())) return()
-  if (displaySizeMagCond()) 
+  if (displaySizeMagCond()) {
+    value <- ifelse(is.null(sizeMag_cache()), 4, sizeMag_cache())
     sliderInput("sizeMag", label="Size Magnifier",
-                min=1, max=25, value=4, step=1)
+                min=1, max=25, value=value, step=1)
+  }
 })
 
 ## coordinate flip options 
 output$coordFlipCtrl <- renderUI({
   if (is.null(input$showAesWgts)) return()
-  if (input$showAesWgts)
-    checkboxInput('coordFlip', 'Flip X and Y coordinates.', value = FALSE)
+  if (input$showAesWgts) {
+    checkboxInput('coordFlip', 'Flip X and Y coordinates.', value=coordFlip_cache())
+  }
 })
-
 
 
 ## additional aggregation by options
-output$plotAddAggByCtrl <- renderUI({
-  if (is.null(displayPlotAddAggBy())) return()
-  if (displayPlotAddAggBy())
-    selectInput('plotAddAggBy', 'Additional Aggregation Variables', 
-                choices=plotAddAggByOpts(), multiple=T)
-})
+# output$plotAddAggByCtrl <- renderUI({
+#   if (is.null(displayPlotAddAggBy())) return()
+#   if (displayPlotAddAggBy()) {
+#     selectInput('plotAddAggBy', 'Additional Aggregation Variables', 
+#                 choices=plotAddAggByOpts(), multiple=T)
+#   }
+# })
 
 ## xlim control
 output$xlimCtrl <- renderUI({
@@ -222,7 +252,7 @@ output$xlimCtrl <- renderUI({
     } else if (input$x %in% finalDFFactorVars()) {
       selectInput('xlim', label='X Value', 
                   choices=xFactorVarUniqVals(), 
-                  selected=xFactorVarUniqVals(),
+                  #selected=xFactorVarUniqVals(),
                   multiple=T)
     }
   }
@@ -242,7 +272,7 @@ output$ylimCtrl <- renderUI({
     } else if (y %in% finalDFFactorVars()) {
       selectInput('ylim', label='Y Value Filter',
                   choices=yFactorVarUniqVals(), 
-                  selected=yFactorVarUniqVals(),
+                  #selected=yFactorVarUniqVals(),
                   multiple=T)
     }
   }

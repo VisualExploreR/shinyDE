@@ -95,10 +95,9 @@ xRange <- reactive({
 ## work-around for rounding error in sliderInput
 yRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  y <- y()
-  if (is.null(y)) return()
-  if (y %in% finalDFNumericVars())
-    range <- range(dataset[[y]], na.rm=TRUE)
+  if (is.null(y())) return()
+  if (y() %in% finalDFNumericVars())
+    range <- range(dataset[[y()]], na.rm=TRUE)
   range[1] <- range[1] - 1
   range[2] <- range[2] + 1
   range
@@ -114,10 +113,9 @@ xFactorVarUniqVals <- reactive({
 
 yFactorVarUniqVals <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  y <- y()
-  if (is.null(y)) return()
-  if (y %in% finalDFFactorVars()) {
-    levels(dataset[[y]])
+  if (is.null(y())) return()
+  if (y() %in% finalDFFactorVars()) {
+    levels(dataset[[y()]])
   }
 })
 
@@ -133,39 +131,39 @@ facetWidgetsLoaded <- reactive({
 
 ## conditional: no facet was selected
 noFacetSelected <- reactive({
-  if (!facetWidgetsLoaded()) return(FALSE)
-  facetFam <- c(input$facetCol, input$facetRow, input$facetWrap)
-  noFacetSelected <- all('None' == facetFam) | all('' == facetFam)
+  if (!facetWidgetsLoaded()) return(TRUE)
+  facetFam <- c(facetCol(), facetRow(), facetWrap())
+  noFacetSelected <- all('None' == facetFam) | all('' == facetFam) | all('.' == facetFam)
   return(noFacetSelected)
 })
 
 ## conditional: facet grid was selected
 facetGridSelected <- reactive({
   if (!facetWidgetsLoaded()) return(FALSE)
-  return(input$facetCol != 'None' | input$facetRow != 'None')
+  return(facetCol() != '.' | facetRow() != '.')
 })
 
 ## conditional: facet wrap was selected
 facetWrapSelected <- reactive({
   if (!facetWidgetsLoaded()) return(FALSE)
-  return(input$facetWrap != 'None')
+  return(facetWrap() != '.')
 })
 
 
 
 ## reactive that returns TRUE if plot utilizes both x and y controls
 isXYCtrlPlot <- reactive({
-  if (is.null(input$plotType)) return()
-  return(input$plotType %in% c('line', 'scatter', 'bar', 'box', 'path'))
+  if (is.null(plotType())) return()
+  return(plotType() %in% c('line', 'scatter', 'bar', 'box', 'path'))
 })
 
 
 ## reactive that returns a value "discrete" or "continuous"
 xType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  if (is.null(input$x)) return()
+  if (is.null(x())) return()
 
-  if (input$x %in% finalDFNumericVars()) {
+  if (x() %in% finalDFNumericVars()) {
     return('continuous')
   } else {
     return('discrete')
@@ -189,8 +187,8 @@ yType <- reactive({
 
 ## conditional reactive: semi-automatic aggregation is on
 semiAutoAggOn <- reactive({
-  if (is.null(input$plotAggMeth)) return(FALSE)
-  tolower(input$plotAggMeth) != 'none'
+  if (is.null(plotAggMeth())) return(FALSE)
+  tolower(plotAggMeth()) != 'none'
 })
 
 
