@@ -29,6 +29,7 @@ shinyServer(function(input, output, session) {
   source('./reactives/plotWidgetOpts.R', local=TRUE)  # plot widget options
   source('./reactives/plotWidgetsDisplayCond.R', local=TRUE)  # plot widgets display condition
   source('./reactives/plotWidgetsLoadedCond.R', local=TRUE)  # plot widgets load conditions
+  source('./reactives/plotWidgetSelectedVals.R', local=TRUE)  # plot widget selected values
   source('./reactives/plot.R', local=TRUE)  # plot
   
   ## UI controls

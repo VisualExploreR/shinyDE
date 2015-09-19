@@ -2,54 +2,72 @@
 
 ## scatter plot inputs
 scatterPlotInputs <- reactive({
-  list(x=x(), y=y(), color=color(), colorAsFactor=colorAsFactor(), treatAsFacVarCol=treatAsFacVarCol(), 
-       shape=shape(), shapeAsFactor=shapeAsFactor(), size=size(), smooth=smooth(), jitter=jitter(), 
-       alpha=alpha(), sizeMag=sizeMag())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), y=y(), color=color(), colorAsFactor=colorAsFactor(), treatAsFacVarCol=treatAsFacVarCol(), 
+              shape=shape(), shapeAsFactor=shapeAsFactor(), size=size(), smooth=smooth(), jitter=jitter(), 
+              alpha=alpha(), sizeMag=sizeMag())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## line plot inputs
 linePlotInputs <- reactive({
-  list(x=x(), y=y(), color=color(), colorAsFactor=colorAsFactor(), alpha=alpha())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), y=y(), color=color(), colorAsFactor=colorAsFactor(), alpha=alpha())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## line points overlay inputs
 linePtsOverlayInputs <- reactive({
-  list(shape=shape(), shapeAsFactor=shapeAsFactor(), size=size(), 
-       smooth=smooth(), jitter=jitter(), alpha=alpha(), sizeMag=sizeMag())
+  if (is.null(plotDF())) return()
+  pil <- list(shape=shape(), shapeAsFactor=shapeAsFactor(), size=size(), 
+              smooth=smooth(), jitter=jitter(), alpha=alpha(), sizeMag=sizeMag())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 
 ## bar plot inputs
 barPlotInputs <- reactive({
-  list(x=x(), y=y(), fill=fill(), fillAsFactor=fillAsFactor(), position=position(), alpha=alpha())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), y=y(), fill=fill(), fillAsFactor=fillAsFactor(), position=position(), alpha=alpha())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## histogram inputs
 histogramInputs <- reactive({
-  list(x=x(), fill=fill(), fillAsFactor=fillAsFactor(), position=position(), 
-       binWidth=binWidth(), alpha=alpha())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), fill=fill(), fillAsFactor=fillAsFactor(), position=position(), 
+              binWidth=binWidth(), alpha=alpha())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## density plot inputs
 densityPlotInputs <- reactive({
-  list(x=x(), fill=fill(), fillAsFactor=fillAsFactor(), 
-       densBlkLineCond=densBlkLineCond(), alpha=alpha())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), fill=fill(), fillAsFactor=fillAsFactor(), 
+              densBlkLineCond=densBlkLineCond(), alpha=alpha())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## box plot inputs
 boxPlotInputs <- reactive({
-  list(x=x(), y=y(), fill=fill(), fillAsFactor=fillAsFactor(), alpha=alpha())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), y=y(), fill=fill(), fillAsFactor=fillAsFactor(), alpha=alpha())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## path plot inputs
 pathPlotInputs <- reactive({
-  list(x=x(), y=y(), alpha=alpha())
+  if (is.null(plotDF())) return()
+  pil <- list(x=x(), y=y(), alpha=alpha())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 ## path points overlay inputs
 pathPtsOverlayInputs <- reactive({
-  list(shape=shape(), shapeAsFactor=shapeAsFactor(), size=size(), smooth=smooth(), 
-       jitter=jitter(), alpha=alpha(), sizeMag=sizeMag())
+  if (is.null(plotDF())) return()
+  pil <- list(shape=shape(), shapeAsFactor=shapeAsFactor(), size=size(), smooth=smooth(), 
+              jitter=jitter(), alpha=alpha(), sizeMag=sizeMag())
+  ensureCorrectPlotInputs(pil, colnames(plotDF()))
 })
 
 

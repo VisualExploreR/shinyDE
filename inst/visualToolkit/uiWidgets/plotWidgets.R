@@ -35,39 +35,15 @@ output$plotAggMethCtrl <- renderUI({
 ## x-axis options
 output$xCtrl <- renderUI({
   if (is.null(input$dataset)) return()
-
-  if (is.null(x_cache())) {
-    if (input$dataset=='diamonds') 
-      selected <- 'carat'
-    else if (input$dataset=='mtcars')
-      selected <- 'mpg'
-    else if (input$dataset=='rock')
-      selected <- 'area'
-  } else {
-    selected <- x_cache()
-  }
-  
-  selectInput('x', 'X', choices=xOpts(), selected=selected)
+  selectInput('x', 'X', choices=xOpts(), selected=x_sel())
 })
 
 ## y-axis options
 output$yCtrl <- renderUI({
   if (is.null(input$dataset)) return()
   if (is.null(displayYCond())) return()
-  
-  if (is.null(y_cache())) {
-    if (input$dataset=='diamonds')
-      selected <- 'price'
-    else if (input$dataset=='mtcars')
-      selected <- 'hp'
-    else if (input$dataset=='rock')
-      selected <- 'peri'      
-  } else {
-    selected <- y_cache()
-  }
-  
   if (displayYCond()) {
-    selectInput('y', 'Y', choices=yOpts(), selected=selected)
+    selectInput('y', 'Y', choices=yOpts(), selected=y_sel())
   }
 })
 
@@ -75,7 +51,7 @@ output$yCtrl <- renderUI({
 output$colCtrl <- renderUI({
   if (is.null(displayColCond())) return()
   if (displayColCond()) {
-    selectInput('color', 'Color', colOpts(), selected=color_cache())
+    selectInput('color', 'Color', colOpts(), selected=color_sel())
   }
 })
 
@@ -91,7 +67,7 @@ output$treatAsFacVarColCtrl <- renderUI({
 output$fillCtrl <- renderUI({
   if (is.null(displayFillCond())) return()
   if (displayFillCond()) {
-    selectInput('fill', 'Fill', fillOpts(), fill_cache())
+    selectInput('fill', 'Fill', fillOpts(), fill_sel())
   }
 })
 
@@ -127,7 +103,7 @@ output$smthCtrl <- renderUI({
 output$sizeCtrl <- renderUI({
   if (is.null(displaySizeCond())) return()
   if (displaySizeCond()) {
-    selectInput('size', 'Size', sizeOpts(), size_cache())
+    selectInput('size', 'Size', sizeOpts(), size_sel())
   }
 })
 
@@ -135,7 +111,7 @@ output$sizeCtrl <- renderUI({
 output$shapeCtrl <- renderUI({
   if (is.null(displayShapeCond())) return()
   if (displayShapeCond()) {
-    selectInput('shape', 'Shape', shapeOpts(), shape_cache())
+    selectInput('shape', 'Shape', shapeOpts(), shape_sel())
   }
 })
 
@@ -171,7 +147,7 @@ output$ptsOverlayCondCtrl <- renderUI({
 output$facetRowCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
   if (input$showFacetWgts) {
-    selectInput('facetRow', 'Facet Row', facetOpts(), facetRow_cache())
+    selectInput('facetRow', 'Facet Row', facetOpts(), facetRow_sel())
   }
 })
 
@@ -179,7 +155,7 @@ output$facetRowCtrl <- renderUI({
 output$facetColCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
   if (input$showFacetWgts) {
-    selectInput('facetCol', 'Facet Column', facetOpts(), facetCol_cache())
+    selectInput('facetCol', 'Facet Column', facetOpts(), facetCol_sel())
   }
 })
 
@@ -187,7 +163,7 @@ output$facetColCtrl <- renderUI({
 output$facetWrapCtrl <- renderUI({
   if (is.null(input$showFacetWgts)) return()
   if (input$showFacetWgts) {
-    selectInput('facetWrap', 'Facet Wrap', facetOpts(), facetWrap_cache())
+    selectInput('facetWrap', 'Facet Wrap', facetOpts(), facetWrap_sel())
   }
 })
 

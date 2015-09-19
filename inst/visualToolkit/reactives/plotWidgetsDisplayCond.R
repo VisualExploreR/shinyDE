@@ -44,7 +44,7 @@ displayPosCond <- reactive({
 displayShapeCond <- reactive({
   if (is.null(input$plotType)) return()  
   if (is.null(input$showAesWgts)) return()
-  display <- input$showAesWgts
+  display <- FALSE
   if (input$plotType=='scatter') {
     display <- input$showAesWgts
   } else if (any(input$plotType %in% c('line', 'path'))) {

@@ -41,14 +41,19 @@ y <- reactive({
   retval
 })
 
+## color original 
+colorOrig <- reactive({
+  if (is.null(input$color)) return()
+  input$color
+})
+
 ## color 
 color <- reactive({
-  dataset <- plotDF()
-  if (is.null(dataset)) return()
+  if (is.null(plotDF())) return()
   if (is.null(input$color)) return()
   if (is.null(plotAggMeth())) return()
   if (is.null(semiAutoAggOn())) return()
-  col <- ensureProperVarName(colnames=colnames(dataset), var=input$color, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())  
+  col <- ensureProperVarName(colnames=colnames(plotDF()), var=input$color, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())  
   col <- convertNoneToNULL(col)
   col
 })
@@ -65,14 +70,19 @@ treatAsFacVarCol <- reactive({
   input$treatAsFacVarCol
 })
 
-## size
+## size original 
+sizeOrig <- reactive({
+  if (is.null(input$size)) return()
+  input$size
+})
+
+## size 
 size <- reactive({
-  dataset <- plotDF()
-  if (is.null(dataset)) return()
+  if (is.null(plotDF())) return()
   if (is.null(input$size)) return()
   if (is.null(plotAggMeth())) return()
   if (is.null(semiAutoAggOn())) return()
-  sz <- ensureProperVarName(colnames=colnames(dataset), var=input$size, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())
+  sz <- ensureProperVarName(colnames=colnames(plotDF()), var=input$size, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())
   sz <- convertNoneToNULL(sz)
   sz
 })
@@ -91,7 +101,7 @@ fillAsFactor <- reactive({
 
 ## position 
 position <- reactive({
-  if (is.null(input$position)) return('None')
+  if (is.null(input$position)) return()
   convertNoneToNULL(input$position)
 })
 
