@@ -184,3 +184,7 @@ displayPlotAggMeth <- reactive({
 })
 
 
+displayThemeWgts <- reactive({
+  if (is.null(input$showThemeWgts)) return()
+  input$showThemeWgts
+})

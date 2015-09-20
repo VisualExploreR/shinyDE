@@ -19,7 +19,7 @@ output$rawVsManAggCtrl <- renderUI({
   if (displayRawVsManAgg()) {
     selectInput("rawVsManAgg", "Dataset Type",
                 c("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'),
-                rawOrManAgg_cache())
+                rawVsManAgg())
   }
 })
 
@@ -28,7 +28,7 @@ output$plotAggMethCtrl <- renderUI({
   if (is.null(displayPlotAggMeth())) return()
   if (displayPlotAggMeth()) {
     aggMethOpts <- c('None', 'sum', 'mean', 'count', 'min', 'max', 'median')
-    selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts, plotAggMeth_cache())
+    selectInput('plotAggMeth', 'Aggregation Method', aggMethOpts, plotAggMeth())
   }
 })
 
@@ -59,7 +59,7 @@ output$colCtrl <- renderUI({
 output$treatAsFacVarColCtrl <- renderUI({
   if (is.null(displayTreatAsFacVarColCond())) return()
   if (displayTreatAsFacVarColCond()) {
-    checkboxInput('treatAsFacVarCol', 'Treat as a factor variable.', value=treatAsFacVarCol_cache())
+    checkboxInput('treatAsFacVarCol', 'Treat as a factor variable.', value=treatAsFacVarCol())
   }
 })
 
@@ -75,7 +75,7 @@ output$fillCtrl <- renderUI({
 output$posCtrl <- renderUI({
   if (is.null(displayPosCond())) return()
   if (displayPosCond()) {
-    selectInput('position', 'Position', c('None', 'dodge', 'stack'), position_cache())
+    selectInput('position', 'Position', c('None', 'dodge', 'stack'), position())
   }
 })
 
@@ -83,7 +83,7 @@ output$posCtrl <- renderUI({
 output$jitCtrl <- renderUI({
   if (is.null(displayJitCond())) return()  
   if (displayJitCond()) {
-    checkboxInput('jitter', 'Apply jitter effect', value=jitter_cache())
+    checkboxInput('jitter', 'Apply jitter effect', value=jitter())
   }
 })
 
@@ -121,7 +121,7 @@ output$binWidthCtrl <- renderUI({
   if (is.null(histMaxBinWidth())) return()
   if (displayBinWidthCond()) {
     sliderInput('binWidth', label = "Bin Width",
-                min=1, max=histMaxBinWidth(), value=binWidth_cache(), step=1) 
+                min=1, max=histMaxBinWidth(), value=binWidth(), step=1) 
   }
 })
 
@@ -129,7 +129,7 @@ output$binWidthCtrl <- renderUI({
 output$densBlkLineCondCtrl <- renderUI({
   if (is.null(displayDensBlkLineCond())) return()
   if (displayDensBlkLineCond()) {
-    checkboxInput('densBlkLineCond', 'Draw black outline', value=densBlkLineCond_cache())
+    checkboxInput('densBlkLineCond', 'Draw black outline', value=densBlkLineCond())
   }
 })
 
@@ -137,7 +137,7 @@ output$densBlkLineCondCtrl <- renderUI({
 output$ptsOverlayCondCtrl <- renderUI({  
   if (is.null(displayPtsOverlayCond())) return()
   if (displayPtsOverlayCond()) { 
-    checkboxInput('ptsOverlayCond', 'Points Overlay', value=ptsOverlayCond_cache())
+    checkboxInput('ptsOverlayCond', 'Points Overlay', value=ptsOverlayCond())
   }
 })
 
@@ -174,7 +174,7 @@ output$facetScaleCtrl <- renderUI({
     selectInput('facetScale', 'Facet Scale',
                 c('None'='fixed', 'Free X'='free_x', 
                   'Free Y'='free_y', 'Free X & Y'='free'),
-                  facetScale_cache()) 
+                  facetScale()) 
   }
 })
 
@@ -182,7 +182,7 @@ output$facetScaleCtrl <- renderUI({
 output$alphaCtrl <- renderUI({
   if (is.null(input$showAesWgts)) return()
   if (input$showAesWgts) {
-    value <- ifelse(is.null(alpha_cache()), 1, alpha_cache())
+    value <- ifelse(is.null(alpha()), 1, alpha())
     sliderInput("alpha", label = "Opacity",
                 min=0, max=1, value=value, step=0.1)
   }
@@ -193,7 +193,7 @@ output$alphaCtrl <- renderUI({
 output$sizeMagCtrl <- renderUI({
   if (is.null(displaySizeMagCond())) return()
   if (displaySizeMagCond()) {
-    value <- ifelse(is.null(sizeMag_cache()), 4, sizeMag_cache())
+    value <- ifelse(is.null(sizeMag()), 4, sizeMag())
     sliderInput("sizeMag", label="Size Magnifier",
                 min=1, max=25, value=value, step=1)
   }
@@ -203,7 +203,7 @@ output$sizeMagCtrl <- renderUI({
 output$coordFlipCtrl <- renderUI({
   if (is.null(input$showAesWgts)) return()
   if (input$showAesWgts) {
-    checkboxInput('coordFlip', 'Flip X and Y coordinates.', value=coordFlip_cache())
+    checkboxInput('coordFlip', 'Flip X and Y coordinates.', value=coordFlip())
   }
 })
 
@@ -254,6 +254,67 @@ output$ylimCtrl <- renderUI({
   }
 })
 
+
+
+
+
+output$plotTitleCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    textInput('plotTitle', 'Plot Title', value=plotTitle())
+})
+
+output$xLabelCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    textInput('xLabel', 'X Label', value=xLabel())
+})
+
+output$yLabelCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    textInput('yLabel', 'Y Label', value=yLabel())
+})
+
+output$labelFontSizeCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    numericInput('labelFontSize', 'Label Font Size', value=labelFontSize(), step=1)
+})
+
+output$labelFontFamilyCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts()) {
+    labelFontFamilyOpts <- c('Calibri TT', 'sans', 'serif', 'mono', 'Times', 'Helvetica', 'Courier')
+    selectInput('labelFontFamily', 'Label Font Family', labelFontFamilyOpts, labelFontFamily())
+  }
+})
+
+output$labelFontFaceCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts()) {
+    labelFontFaceOpts <- c('plain', 'bold', 'italic', 'bold.italic')
+    selectInput('labelFontFace', 'Label Font Face', labelFontFaceOpts, labelFontFace())
+  }
+})
+
+output$labelFontColorCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    colourInput('labelFontColor', 'Label Font Color', value=labelFontColor())
+})
+
+output$hjustCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    numericInput('hjust', 'Horizontal Adjust', value=hjust(), min=-1, max=1, step=0.1)
+})
+
+output$vjustCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    numericInput('vjust', 'Vertical Adjust', value=vjust(), min=-1, max=1, step=0.1)
+})
 
 
 

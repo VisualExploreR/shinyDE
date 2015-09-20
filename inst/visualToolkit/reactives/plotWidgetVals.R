@@ -20,7 +20,7 @@ plotAggMeth <- reactive({
 })
 
 ## raw or man agg dataset type
-rawOrManAgg <- reactive({
+rawVsManAgg <- reactive({
   if (is.null(input$rawVsManAgg)) return()
   input$rawVsManAgg
 })
@@ -131,8 +131,6 @@ sizeMag <- reactive({
   sm
 })
 
-#### FINISH HERE!!!!
-
 ## density black line condition
 densBlkLineCond <- reactive({
   if (is.null(input$densBlkLineCond)) return(FALSE)
@@ -217,6 +215,60 @@ ylim <- reactive({
   input$ylim
 })
 
+## plot title
+plotTitle <- reactive({
+  if (is.null(input$plotTitle)) return()
+  input$plotTitle
+})
+
+## x label
+xLabel <- reactive({
+  if (is.null(input$xLabel)) return()
+  input$xLabel
+})
+
+## y label
+yLabel <- reactive({
+  if (is.null(input$yLabel)) return()
+  input$yLabel
+})
+
+## label font family
+labelFontFamily <- reactive({
+  if (is.null(input$labelFontFamily)) return()
+  input$labelFontFamily
+})
+
+## label font family
+labelFontFace <- reactive({
+  if (is.null(input$labelFontFace)) return()
+  input$labelFontFace
+})
+
+## label font size
+labelFontSize <- reactive({
+  if (is.null(input$labelFontSize)) return(12)
+  input$labelFontSize
+})
+
+## label font color
+labelFontColor <- reactive({
+  if (is.null(input$labelFontColor)) return('black')
+  input$labelFontColor
+})
+
+## hjust
+hjust <- reactive({
+  if (is.null(input$hjust)) return(0)
+  input$hjust
+})
+
+## vjust
+vjust <- reactive({
+  if (is.null(input$vjust)) return(0)
+  input$vjust
+})
+
 
 
 
@@ -239,6 +291,12 @@ plotType_cache <- reactive({
 plotAggMeth_cache <- reactive({
   if (is.null(input$plotAggMeth)) return()
   input$plotAggMeth
+})
+
+## raw or man agg dataset type
+rawVsManAgg_cache <- reactive({
+  if (is.null(input$rawVsManAgg)) return()
+  input$rawVsManAgg
 })
 
 ## x cache (unnecessary since it's never hidden)
