@@ -31,6 +31,12 @@ x <- reactive({
   input$x
 })
 
+## y original 
+yOrig <- reactive({
+  if (is.null(input$y)) return()
+  input$y
+})
+
 ## y 
 y <- reactive({
   if (is.null(input$y)) return()
@@ -105,6 +111,12 @@ position <- reactive({
   convertNoneToNULL(input$position)
 })
 
+## jitter original
+jitterOrig <- reactive({
+  if (is.null(input$jitter)) return()
+  input$jitter
+})
+
 ## jitter 
 ## should return either "jitter" or NULL
 jitter <- reactive({
@@ -117,11 +129,23 @@ jitter <- reactive({
   jit
 })
 
+## alpha original 
+alphaOrig <- reactive({
+  if (is.null(input$alpha)) return()
+  input$alpha
+})
+
 ## alpha 
 alpha <- reactive({
   alp <- input$alpha
   if (is.null(alp)) alp <- 1
   alp
+})
+
+## size magnifier original
+sizeMagOrig <- reactive({
+  if (is.null(input$sizeMag)) return()
+  input$sizeMag
 })
 
 ## size magnifier 
@@ -137,6 +161,12 @@ densBlkLineCond <- reactive({
   input$densBlkLineCond
 })
 
+## shape original 
+shapeOrig <- reactive({
+  if (is.null(input$shape)) return()
+  input$shape
+})
+
 ## shape
 shape <- reactive({
   if (is.null(input$shape)) return()
@@ -147,6 +177,12 @@ shape <- reactive({
 shapeAsFactor <- reactive({
   if (is.null(shape())) return()
   varNameAsFactorOrNULL(shape())
+})
+
+## smooth original 
+smoothOrig <- reactive({
+  if (is.null(input$smooth)) return()
+  input$smooth
 })
 
 ## smooth
@@ -173,16 +209,34 @@ ptsOverlayCond <- reactive({
   input$ptsOverlayCond
 })
 
+## facet row original 
+facetRowOrig <- reactive({
+  if (is.null(input$facetRow)) return()
+  input$facetRow
+})
+
 ## facet row
 facetRow <- reactive({
   if (is.null(input$facetRow)) return('.')
   ifelse(input$facetRow=='None', '.', input$facetRow)
 })
 
+## facet col original 
+facetColOrig <- reactive({
+  if (is.null(input$facetCol)) return()
+  input$facetCol
+})
+
 ## facet column
 facetCol <- reactive({
   if (is.null(input$facetCol)) return('.')
   ifelse(input$facetCol=='None', '.', input$facetCol)
+})
+
+## facet wrap original 
+facetWrapOrig <- reactive({
+  if (is.null(input$facetWrap)) return()
+  input$facetWrap
 })
 
 ## facet wrap
@@ -267,167 +321,5 @@ hjust <- reactive({
 vjust <- reactive({
   if (is.null(input$vjust)) return(0)
   input$vjust
-})
-
-
-
-
-
-#### cached widget values
-
-## dataset name cache (unnecessary since it's never hidden)
-datasetName_cache <- reactive({
-  if (is.null(input$dataset)) return()
-  input$dataset
-})
-
-## plot type cache (unnecessary since it's never hidden)
-plotType_cache <- reactive({
-  if (is.null(input$plotType)) return()
-  input$plotType
-})
-
-## plot agg method cache
-plotAggMeth_cache <- reactive({
-  if (is.null(input$plotAggMeth)) return()
-  input$plotAggMeth
-})
-
-## raw or man agg dataset type
-rawVsManAgg_cache <- reactive({
-  if (is.null(input$rawVsManAgg)) return()
-  input$rawVsManAgg
-})
-
-## x cache (unnecessary since it's never hidden)
-x_cache <- reactive({
-  if (is.null(input$x)) return()
-  input$x
-})
-
-## y cache (unnecessary since it's never hidden)
-y_cache <- reactive({
-  if (is.null(input$y)) return()
-  input$y
-})
-
-## color cache
-color_cache <- reactive({
-  if (is.null(input$color)) return()
-  input$color
-})
-
-## treat as factor variable (for color) cache
-treatAsFacVarCol_cache <- reactive({
-  if (is.null(input$treatAsFacVarCol)) return()
-  input$treatAsFacVarCol
-})
-
-## size cache
-size_cache <- reactive({
-  if (is.null(input$size)) return()
-  input$size
-})
-
-## fill cache
-fill_cache <- reactive({
-  if (is.null(input$fill)) return()
-  input$fill
-})
-
-## position cache
-position_cache <- reactive({
-  if (is.null(input$position)) return()
-  input$position
-})
-
-## jitter cache
-jitter_cache <- reactive({
-  if (is.null(input$jitter)) return()
-  input$jitter
-})
-
-## alpha cache
-alpha_cache <- reactive({
-  if (is.null(input$alpha)) return()
-  input$alpha
-})
-
-## size magnifier cache
-sizeMag_cache <- reactive({
-  if (is.null(input$sizeMag)) return()
-  input$sizeMag
-})
-
-## density black line condition cache
-densBlkLineCond_cache <- reactive({
-  if (is.null(input$densBlkLineCond)) return()
-  input$densBlkLineCond
-})
-
-## shape cache
-shape_cache <- reactive({
-  if (is.null(input$shape)) return()
-  input$shape
-})
-
-## smooth cache
-smooth_cache <- reactive({
-  if (is.null(input$smooth)) return()
-  input$smooth
-})
-
-## coordinate flip cache
-coordFlip_cache <- reactive({
-  if (is.null(input$coordFlip)) return()
-  input$coordFlip
-})
-
-## bin width cache
-binWidth_cache <- reactive({
-  if (is.null(input$binWidth)) return()
-  input$binWidth
-})
-
-## points overlay condition cache
-ptsOverlayCond_cache <- reactive({
-  if (is.null(input$ptsOverlayCond)) return()
-  input$ptsOverlayCond
-})
-
-## facet row cache
-facetRow_cache <- reactive({
-  if (is.null(input$facetRow)) return()
-  input$facetRow
-})
-
-## facet column cache
-facetCol_cache <- reactive({
-  if (is.null(input$facetCol)) return()
-  input$facetCol
-})
-
-## facet wrap cache
-facetWrap_cache <- reactive({
-  if (is.null(input$facetWrap)) return()
-  input$facetWrap
-})
-
-## facet scale cache
-facetScale_cache <- reactive({
-  if (is.null(input$facetScale)) return()
-  input$facetScale
-})
-
-## xlim cache
-xlim_cache <- reactive({
-  if (is.null(input$xlim)) return()
-  input$xlim
-})
-
-## ylim cache
-ylim_cache <- reactive({
-  if (is.null(input$ylim)) return()
-  input$ylim
 })
 

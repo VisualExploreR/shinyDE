@@ -94,7 +94,7 @@ output$smthCtrl <- renderUI({
     if (all(c(input$x, input$y) %in% numericVars())) {
       selectInput('smooth', 'Smoothing Effect', 
                   c('None'='None', 'Linear'='lm', 'Non-linear'='auto'),
-                  smooth_cache())
+                  smoothOrig())
     }
   } 
 })
