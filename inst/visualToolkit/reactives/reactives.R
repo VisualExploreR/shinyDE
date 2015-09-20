@@ -123,6 +123,13 @@ yFactorVarUniqVals <- reactive({
 
 
 ####
+## conditional: plot label widgets loaded
+plotLabelWidgetsLoaded <- reactive({
+  wgts <- c('plotTitle', 'xLabel', 'yLabel')
+  checkWidgetsLoaded(input, wgts)
+})
+
+
 ## conditional: facet widgets are loaded
 facetWidgetsLoaded <- reactive({
   wgts <- c('facetCol', 'facetRow', 'facetWrap', 'facetScale')

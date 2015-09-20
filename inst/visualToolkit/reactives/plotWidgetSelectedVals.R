@@ -37,7 +37,7 @@ y_sel <- reactive({
 
 ## color selected
 color_sel <- reactive({
-  if (!is.null(colorOrig()) & !is.null())
+  if (!is.null(colorOrig()) & !is.null(colOpts()))
     if (colorOrig() %in% colOpts())
       return(colorOrig())      
 })
@@ -92,3 +92,36 @@ facetWrap_sel <- reactive({
       return(facetWrapOrig())
 })
 
+# 
+# ## label font family selected
+# labelFontFamily_sel <- reactive({
+#   if (is.null(labelFontFamily())) return()
+#   labelFontFamily()
+# })
+# 
+# ## label font face selected
+# labelFontFace_sel <- reactive({
+#   if (is.null(labelFontFace())) return()
+#   labelFontFace()
+# })
+# 
+# ## label font size value
+# labelFontSize_val <- reactive({
+#   
+# })
+# 
+# ## label font color value
+# labelFontColor_val <- reactive({
+#   
+# })
+# 
+# ## hjust value
+# # hjust_val <- reactive({
+# #   if (is.n)  
+# # })
+# 
+# ## vjust value
+# vjust_val <- reactive({
+#   if (is.null(vjust())) return()
+#   vjust()
+# })

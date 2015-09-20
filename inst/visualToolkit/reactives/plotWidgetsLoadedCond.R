@@ -60,3 +60,11 @@ pathPtsOverlayWidgetsLoaded <- reactive({
   if (is.null(pathPtsOverlayWidgets())) return()
   checkWidgetsLoaded(input, pathPtsOverlayWidgets())
 })
+
+
+## theme widgets loaded
+themeWidgetsLoaded <- reactive({
+  wgts <- c('plotTitle', 'xLabel', 'yLabel', 'hjust', 'vjust',
+            'labelFontFamily', 'labelFontFace', 'labelFontColor', 'labelFontSize')
+  checkWidgetsLoaded(input, wgts)
+})

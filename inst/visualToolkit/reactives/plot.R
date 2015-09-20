@@ -191,10 +191,6 @@ plotInput <- reactive({
 
     ## facet grids
     if (facetGridSelected()) {
-      
-#       print(facetCol())
-#       print(facetGrids())
-#       print('---')
       p <- p + facet_grid(facets=facetGrids(), scales=facetScale())
     } 
     
@@ -208,6 +204,18 @@ plotInput <- reactive({
   if (coordFlip()) 
     p <- p + coord_flip()
 
+  ## plot labels and their styles
+  if (!is.null(plotTitle())) p <- p + ggtitle(plotTitle())
+  if (!is.null(xLabel())) p <- p + xlab(xLabel())
+  if (!is.null(yLabel())) p <- p + ylab(yLabel())
+  p <- p + 
+    theme(text=element_text(family = labelFontFamily(),
+                            face = labelFontFace(),
+                            color = labelFontColor(),
+                            size = labelFontSize(),
+                            hjust = hjust(),
+                            vjust = vjust()))
+  
   ## return
   p
 })

@@ -137,9 +137,8 @@ alphaOrig <- reactive({
 
 ## alpha 
 alpha <- reactive({
-  alp <- input$alpha
-  if (is.null(alp)) alp <- 1
-  alp
+  if (is.null(input$alpha)) return(1)
+  input$alpha
 })
 
 ## size magnifier original
@@ -150,9 +149,8 @@ sizeMagOrig <- reactive({
 
 ## size magnifier 
 sizeMag <- reactive({
-  sm <- input$sizeMag
-  if (is.null(sm)) sm <- 4
-  sm
+  if (is.null(input$sizeMag)) return(4)
+  input$sizeMag
 })
 
 ## density black line condition
@@ -275,6 +273,10 @@ ylim <- reactive({
   input$ylim
 })
 
+
+
+
+
 ## plot title
 plotTitle <- reactive({
   if (is.null(input$plotTitle)) return()
@@ -307,7 +309,7 @@ labelFontFace <- reactive({
 
 ## label font size
 labelFontSize <- reactive({
-  if (is.null(input$labelFontSize)) return(12)
+  if (is.null(input$labelFontSize)) return(15)
   input$labelFontSize
 })
 
@@ -319,13 +321,21 @@ labelFontColor <- reactive({
 
 ## hjust
 hjust <- reactive({
-  if (is.null(input$hjust)) return(0)
+  if (is.null(input$hjust)) return(0.5)
   input$hjust
 })
 
 ## vjust
 vjust <- reactive({
-  if (is.null(input$vjust)) return(0)
+  if (is.null(input$vjust)) return(0.5)
   input$vjust
 })
+
+
+
+
+
+
+
+
 

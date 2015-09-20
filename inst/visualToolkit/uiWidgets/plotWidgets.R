@@ -1,6 +1,5 @@
 ## plot type options
 output$plotTypeCtrl <- renderUI({
-  #selected <- ifelse(is.null(plotType_cache()), 'scatter', plotType_cache())
   selectInput(inputId = "plotType", label = "Plot Type", 
               choices = c('Scatter'='scatter', 'Line'='line',
                           'Bar'='bar', 'Histogram'='histogram', 
@@ -182,9 +181,9 @@ output$facetScaleCtrl <- renderUI({
 output$alphaCtrl <- renderUI({
   if (is.null(input$showAesWgts)) return()
   if (input$showAesWgts) {
-    value <- ifelse(is.null(alpha()), 1, alpha())
+    #value <- ifelse(is.null(alpha()), 1, alpha())
     sliderInput("alpha", label = "Opacity",
-                min=0, max=1, value=value, step=0.1)
+                min=0, max=1, value=isolate(alpha()), step=0.1)
   }
 })
 
@@ -193,9 +192,9 @@ output$alphaCtrl <- renderUI({
 output$sizeMagCtrl <- renderUI({
   if (is.null(displaySizeMagCond())) return()
   if (displaySizeMagCond()) {
-    value <- ifelse(is.null(sizeMag()), 4, sizeMag())
+    #value <- ifelse(is.null(sizeMag()), 4, sizeMag())
     sliderInput("sizeMag", label="Size Magnifier",
-                min=1, max=25, value=value, step=1)
+                min=1, max=25, value=isolate(sizeMag()), step=1)
   }
 })
 
@@ -256,40 +255,45 @@ output$ylimCtrl <- renderUI({
 
 
 
-
-
+## plot title
 output$plotTitleCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
-  if (displayThemeWgts())
+  if (is.null(input$reactive)) return()
+  if (displayThemeWgts() & !input$reactive) {
     textInput('plotTitle', 'Plot Title', value=plotTitle())
+    #textInput('plotTitle', 'Plot Title')
+  }
 })
 
+## x label
 output$xLabelCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
-  if (displayThemeWgts())
+  if (is.null(input$reactive)) return()
+  if (displayThemeWgts() & !input$reactive) {
     textInput('xLabel', 'X Label', value=xLabel())
+    #textInput('xLabel', 'X Label')
+  }
 })
 
+## y label
 output$yLabelCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
-  if (displayThemeWgts())
-    textInput('yLabel', 'Y Label', value=yLabel())
+  if (is.null(input$reactive)) return()
+  if (displayThemeWgts() & !input$reactive)
+    textInput('yLabel', 'Y Label')#, value=yLabel())
 })
 
-output$labelFontSizeCtrl <- renderUI({
-  if (is.null(displayThemeWgts())) return()
-  if (displayThemeWgts())
-    numericInput('labelFontSize', 'Label Font Size', value=labelFontSize(), step=1)
-})
-
+## label font family 
 output$labelFontFamilyCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (displayThemeWgts()) {
-    labelFontFamilyOpts <- c('Calibri TT', 'sans', 'serif', 'mono', 'Times', 'Helvetica', 'Courier')
+    labelFontFamilyOpts <- c('Calibri', 'sans', 'serif', 'mono', 
+                             'Times', 'Helvetica', 'Courier')
     selectInput('labelFontFamily', 'Label Font Family', labelFontFamilyOpts, labelFontFamily())
   }
 })
 
+## label font face
 output$labelFontFaceCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (displayThemeWgts()) {
@@ -298,22 +302,35 @@ output$labelFontFaceCtrl <- renderUI({
   }
 })
 
+## label font size
+output$labelFontSizeCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts())
+    #numericInput('labelFontSize', 'Label Font Size', value=12, step=1)
+    numericInput('labelFontSize', 'Label Font Size', value=isolate(labelFontSize()), min=7, max=30, step=1)
+})
+
+## label font color
 output$labelFontColorCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (displayThemeWgts())
     colourInput('labelFontColor', 'Label Font Color', value=labelFontColor())
 })
 
+## hjust
 output$hjustCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (displayThemeWgts())
-    numericInput('hjust', 'Horizontal Adjust', value=hjust(), min=-1, max=1, step=0.1)
+    #numericInput('hjust', 'Horizontal Adjust', value=0.5, min=0, max=1, step=0.1)
+    numericInput('hjust', 'Horizontal Adjust', value=isolate(hjust()), min=0, max=1, step=0.1)
 })
 
+## vjust
 output$vjustCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (displayThemeWgts())
-    numericInput('vjust', 'Vertical Adjust', value=vjust(), min=-1, max=1, step=0.1)
+    #numericInput('vjust', 'Vertical Adjust', value=0.5, min=0, max=1, step=0.1)
+    numericInput('vjust', 'Vertical Adjust', value=isolate(vjust()), min=0, max=1, step=0.1)
 })
 
 
@@ -346,5 +363,6 @@ output$showThemeWgtsCtrl <- renderUI({
 
 ## show dataset type and plot aggregation method controls
 output$showDSTypeAndPlotAggWgtsCtrl <- renderUI({
-  checkboxInput('showDSTypeAndPlotAggWgts', 'Show dataset type and aggregation widgets', value=FALSE)
+  checkboxInput('showDSTypeAndPlotAggWgts', 
+                'Show dataset type and aggregation widgets', value=FALSE)
 })
