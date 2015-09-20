@@ -191,6 +191,10 @@ plotInput <- reactive({
 
     ## facet grids
     if (facetGridSelected()) {
+      
+#       print(facetCol())
+#       print(facetGrids())
+#       print('---')
       p <- p + facet_grid(facets=facetGrids(), scales=facetScale())
     } 
     

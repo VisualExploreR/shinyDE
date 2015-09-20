@@ -3,7 +3,7 @@
 x_sel <- reactive({
   if (is.null(input$dataset)) return()
   
-  if (!is.null(x()))
+  if (!is.null(x()) & !is.null(xOpts()))
     if (x() %in% xOpts())
       return(x())
   
@@ -21,7 +21,7 @@ x_sel <- reactive({
 y_sel <- reactive({
   if (is.null(input$dataset)) return()
   
-  if (!is.null(yOrig()))
+  if (!is.null(yOrig()) & !is.null(yOpts()))
     if (yOrig() %in% yOpts())
       return(yOrig())
   
@@ -37,7 +37,7 @@ y_sel <- reactive({
 
 ## color selected
 color_sel <- reactive({
-  if (!is.null(colorOrig()))
+  if (!is.null(colorOrig()) & !is.null())
     if (colorOrig() %in% colOpts())
       return(colorOrig())      
 })
@@ -52,42 +52,42 @@ color_sel <- reactive({
 
 ## fill selected
 fill_sel <- reactive({
-  if (!is.null(fillOrig()))
+  if (!is.null(fillOrig()) & !is.null(fillOpts()))
     if (fillOrig() %in% fillOpts()) 
       return(fillOrig())
 })
 
 ## size selected
 size_sel <- reactive({
-  if (!is.null(sizeOrig()))
+  if (!is.null(sizeOrig()) & !is.null(sizeOpts()))
     if (sizeOrig() %in% sizeOpts())
       return(sizeOrig())
 })
 
 ## shape selected
 shape_sel <- reactive({
-  if (!is.null(shapeOrig()))
+  if (!is.null(shapeOrig()) & !is.null(shapeOpts()))
     if (shapeOrig() %in% shapeOpts())
       return(shapeOrig())
 })
 
 ## facet row selected
 facetRow_sel <- reactive({
-  if (!is.null(facetRowOrig()))
+  if (!is.null(facetRowOrig()) & !is.null(facetOpts()))
     if (facetRowOrig() %in% facetOpts())
       return(facetRowOrig())
 })
 
 ## facet col selected
 facetCol_sel <- reactive({
-  if (!is.null(facetColOrig()))
+  if (!is.null(facetColOrig()) & !is.null(facetOpts()))
     if (facetColOrig() %in% facetOpts())
       return(facetColOrig())
 })
 
 ## facet wrap selected
 facetWrap_sel <- reactive({
-  if (!is.null(facetWrapOrig()))
+  if (!is.null(facetWrapOrig()) & !is.null(facetOpts()))
     if (facetWrapOrig() %in% facetOpts())
       return(facetWrapOrig())
 })

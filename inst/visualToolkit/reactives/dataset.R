@@ -72,6 +72,7 @@ manAggDataset <- reactive({
 
 ## raw or aggregated dataset
 dataset <- reactive({
+
   #if (is.null(input$rawVsManAgg)) return()
   if (is.null(input$rawVsManAgg)) return(rawDataset())
 
@@ -139,8 +140,6 @@ finalDF <- reactive({
 })
 
 
-## reactive dataset used for plotting 
-## (filtered version of finalDF(), using xlim and ylim)
 ## reactive dataset used for plotting 
 ## (filtered version of finalDF(), using xlim and ylim)
 plotDF <- reactive({

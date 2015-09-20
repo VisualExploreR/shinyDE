@@ -217,8 +217,10 @@ facetRowOrig <- reactive({
 
 ## facet row
 facetRow <- reactive({
-  if (is.null(input$facetRow)) return('.')
-  ifelse(input$facetRow=='None', '.', input$facetRow)
+  if (is.null(plotDF()) | is.null(input$facetRow)) return('.')
+  fr <- ifelse(input$facetRow=='None', '.', input$facetRow)
+  if (fr != '.' & fr %in% colnames(plotDF())) return(fr)
+  else return('.')
 })
 
 ## facet col original 
@@ -229,9 +231,11 @@ facetColOrig <- reactive({
 
 ## facet column
 facetCol <- reactive({
-  if (is.null(input$facetCol)) return('.')
-  ifelse(input$facetCol=='None', '.', input$facetCol)
-})
+  if (is.null(plotDF()) | is.null(input$facetCol)) return('.')
+  fc <- ifelse(input$facetCol=='None', '.', input$facetCol)
+  if (fc != '.' & fc %in% colnames(plotDF())) return(fc)
+  else return('.')
+}) 
 
 ## facet wrap original 
 facetWrapOrig <- reactive({
@@ -241,8 +245,10 @@ facetWrapOrig <- reactive({
 
 ## facet wrap
 facetWrap <- reactive({
-  if (is.null(input$facetWrap)) return('.')
-  ifelse(input$facetWrap=='None', '.', input$facetWrap)
+  if (is.null(plotDF()) | is.null(input$facetWrap)) return('.')
+  fw <- ifelse(input$facetWrap=='None', '.', input$facetWrap)
+  if (fw != '.' & fw %in% colnames(plotDF())) return(fw)
+  else return('.')
 })
 
 ## facet scale
