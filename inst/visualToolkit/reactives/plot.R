@@ -226,19 +226,76 @@ plotInput <- reactive({
   
   ## plot themes
   if (!is.null(plotTheme())) {
-    if (plotTheme()=='theme_grey') p <- p + theme_grey()
-    else if (plotTheme()=='theme_bw') p <- p + theme_bw()
-    else if (plotTheme()=='theme_calc') p <- p + theme_calc()
-    else if (plotTheme()=='theme_economist') p <- p + theme_economist()
-    else if (plotTheme()=='theme_few') p <- p + theme_few()
-    else if (plotTheme()=='theme_fivethirtyeight') p <- p + theme_fivethirtyeight()
-    else if (plotTheme()=='theme_gdocs') p <- p + theme_gdocs()
-    else if (plotTheme()=='theme_hc') p <- p + theme_hc()
-    else if (plotTheme()=='theme_pander') p <- p + theme_pander()
-    else if (plotTheme()=='theme_solarized') p <- p + theme_solarized()
-    else if (plotTheme()=='theme_stata') p <- p + theme_stata()
-    else if (plotTheme()=='theme_tufte') p <- p + theme_tufte()
-    else if (plotTheme()=='theme_wsj') p <- p + theme_wsj()
+    if (plotTheme()=='theme_grey')
+      p <- p + theme_grey()
+    else if (plotTheme()=='theme_bw') 
+      p <- p + theme_bw()
+    else if (plotTheme()=='theme_calc') {
+      p <- p + theme_calc()
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_color_calc()
+    }
+    else if (plotTheme()=='theme_economist') {
+      p <- p + theme_economist() + scale_colour_economist()
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_color_calc()
+    }
+    else if (plotTheme()=='theme_few') {
+      p <- p + theme_few()
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_few()      
+    }
+    else if (plotTheme()=='theme_fivethirtyeight') {
+      p <- p + theme_fivethirtyeight() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_fivethirtyeight()      
+    }
+    else if (plotTheme()=='theme_gdocs') {
+      p <- p + theme_gdocs() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_gdocs()
+    }
+    else if (plotTheme()=='theme_hc') {
+      p <- p + theme_hc() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_hc()
+    }
+    else if (plotTheme()=='theme_pander') {
+      p <- p + theme_pander() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_pander()      
+    } 
+    else if (plotTheme()=='theme_solarized') {
+      p <- p + theme_solarized() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_solarized()      
+    }
+    else if (plotTheme()=='theme_stata') {
+      p <- p + theme_stata() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_stata()      
+    }
+    else if (plotTheme()=='theme_tufte') {
+      p <- p + theme_tufte() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_tufte()      
+    }
+    else if (plotTheme()=='theme_wsj') {
+      p <- p + theme_wsj() 
+      if (!is.null(colorType()))
+        if (colorType()=='discrete')
+          p <- p + scale_colour_wsj()      
+    }
   }
     
   

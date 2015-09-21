@@ -183,7 +183,6 @@ yType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (!isXYCtrlPlot()) return()
   if (is.null(y())) return()
-  
   if (y() %in% finalDFNumericVars()) {
     return('continuous')
   } else {
@@ -191,6 +190,16 @@ yType <- reactive({
   }
 })
 
+## reactive that returns a value "discrete" or "continuous"
+colorType <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  if (is.null(color())) return()
+  if (color() %in% finalDFNumericVars()) {
+    return('continuous')
+  } else {
+    return('discrete')
+  }
+})
 
 ## conditional reactive: semi-automatic aggregation is on
 semiAutoAggOn <- reactive({

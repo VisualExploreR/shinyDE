@@ -339,8 +339,8 @@ output$vjustCtrl <- renderUI({
 output$plotThemeCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (displayThemeWgts()) {
-    themes <- c('Black and White' = 'theme_bw', 
-                'Grey' = 'theme_grey', 
+    themes <- c('Grey' = 'theme_grey', 
+                'Black and White' = 'theme_bw', 
                 'LibreOffice Calc' = 'theme_calc',
                 'The Economist' = 'theme_economist',
                 'Stephen Few' = 'theme_few',
