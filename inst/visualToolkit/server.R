@@ -6,6 +6,7 @@ library(DT)
 library(stringr)
 library(shinyBS)
 library(shinyjs)
+library(ggthemes)
 
 
 ## import functions

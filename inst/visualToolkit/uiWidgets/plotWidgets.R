@@ -260,7 +260,7 @@ output$plotTitleCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (is.null(input$reactive)) return()
   if (displayThemeWgts() & !input$reactive) {
-    textInput('plotTitle', 'Plot Title', value=plotTitle())
+    textInput('plotTitle', 'Plot Title', value=isolate(plotTitle()))
     #textInput('plotTitle', 'Plot Title')
   }
 })
@@ -270,7 +270,7 @@ output$xLabelCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (is.null(input$reactive)) return()
   if (displayThemeWgts() & !input$reactive) {
-    textInput('xLabel', 'X Label', value=xLabel())
+    textInput('xLabel', 'X Label', value=isolate(xLabel()))
     #textInput('xLabel', 'X Label')
   }
 })
@@ -279,8 +279,10 @@ output$xLabelCtrl <- renderUI({
 output$yLabelCtrl <- renderUI({
   if (is.null(displayThemeWgts())) return()
   if (is.null(input$reactive)) return()
-  if (displayThemeWgts() & !input$reactive)
-    textInput('yLabel', 'Y Label')#, value=yLabel())
+  if (displayThemeWgts() & !input$reactive) {
+    textInput('yLabel', 'Y Label', value=isolate(yLabel()))
+    #textInput('yLabel', 'Y Label')
+  }
 })
 
 ## label font family 
@@ -333,6 +335,26 @@ output$vjustCtrl <- renderUI({
     numericInput('vjust', 'Vertical Adjust', value=isolate(vjust()), min=0, max=1, step=0.1)
 })
 
+## plot theme
+output$plotThemeCtrl <- renderUI({
+  if (is.null(displayThemeWgts())) return()
+  if (displayThemeWgts()) {
+    themes <- c('Black and White' = 'theme_bw', 
+                'Grey' = 'theme_grey', 
+                'LibreOffice Calc' = 'theme_calc',
+                'The Economist' = 'theme_economist',
+                'Stephen Few' = 'theme_few',
+                '538' = 'theme_fivethirtyeight', 
+                'Google Docs' = 'theme_gdocs', 
+                'HighCharts' = 'theme_hc', 
+                'pander' = 'theme_pander', 
+                'solarized' = 'theme_solarized', 
+                'Stata' = 'theme_stata', 
+                'Tufte' = 'theme_tufte', 
+                'Wall Street Journal' = 'theme_wsj')
+    selectInput('plotTheme', 'Plot Themes', themes) 
+  }
+})
 
 
 #### show/hide checkbox widgets

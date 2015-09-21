@@ -204,10 +204,18 @@ plotInput <- reactive({
   if (coordFlip()) 
     p <- p + coord_flip()
 
-  ## plot labels and their styles
-  if (!is.null(plotTitle())) p <- p + ggtitle(plotTitle())
-  if (!is.null(xLabel())) p <- p + xlab(xLabel())
-  if (!is.null(yLabel())) p <- p + ylab(yLabel())
+  ## plot labels 
+  if (!is.null(plotTitle()))
+    if (plotTitle() != '')
+      p <- p + ggtitle(plotTitle())
+  if (!is.null(xLabel()))
+    if (xLabel() != '')
+      p <- p + xlab(xLabel())
+  if (!is.null(yLabel())) 
+    if (yLabel() != '')
+      p <- p + ylab(yLabel())
+  
+  ## plot label styles
   p <- p + 
     theme(text=element_text(family = labelFontFamily(),
                             face = labelFontFace(),
@@ -215,6 +223,24 @@ plotInput <- reactive({
                             size = labelFontSize(),
                             hjust = hjust(),
                             vjust = vjust()))
+  
+  ## plot themes
+  if (!is.null(plotTheme())) {
+    if (plotTheme()=='theme_grey') p <- p + theme_grey()
+    else if (plotTheme()=='theme_bw') p <- p + theme_bw()
+    else if (plotTheme()=='theme_calc') p <- p + theme_calc()
+    else if (plotTheme()=='theme_economist') p <- p + theme_economist()
+    else if (plotTheme()=='theme_few') p <- p + theme_few()
+    else if (plotTheme()=='theme_fivethirtyeight') p <- p + theme_fivethirtyeight()
+    else if (plotTheme()=='theme_gdocs') p <- p + theme_gdocs()
+    else if (plotTheme()=='theme_hc') p <- p + theme_hc()
+    else if (plotTheme()=='theme_pander') p <- p + theme_pander()
+    else if (plotTheme()=='theme_solarized') p <- p + theme_solarized()
+    else if (plotTheme()=='theme_stata') p <- p + theme_stata()
+    else if (plotTheme()=='theme_tufte') p <- p + theme_tufte()
+    else if (plotTheme()=='theme_wsj') p <- p + theme_wsj()
+  }
+    
   
   ## return
   p

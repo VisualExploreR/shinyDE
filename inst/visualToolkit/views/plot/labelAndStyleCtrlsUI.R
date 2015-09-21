@@ -35,6 +35,8 @@ verticalLayout(
     column(6,
            uiOutput('vjustCtrl')
     )
-  )
+  ),
+  
+  uiOutput('plotThemeCtrl')
 )
 

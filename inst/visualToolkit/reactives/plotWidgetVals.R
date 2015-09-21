@@ -331,7 +331,11 @@ vjust <- reactive({
   input$vjust
 })
 
-
+## plot theme
+plotTheme <- reactive({
+  if (is.null(input$plotTheme)) return('theme_grey')
+  input$plotTheme
+})
 
 
 
