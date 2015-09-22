@@ -34,7 +34,7 @@ observeEvent(input$reactive, {
 
 ## disable/enable toggle between facet grid and facet wrap
 observeEvent(c(input$facetCol, input$facetRow, input$facetWrap), {
-  if (input$showAdvCtrlWgts) {
+  if (input$showFacetWgts) {
     if (noFacetSelected()) {
       enable('facetCol')
       enable('facetRow')
@@ -50,3 +50,22 @@ observeEvent(c(input$facetCol, input$facetRow, input$facetWrap), {
     } 
   }
 })
+
+## disable plot title, x and y label text fields when reactivity is enabled
+# observeEvent(c(input$plotTitle, input$xLabel, input$yLabel), {
+#   if (input$showThemeWgts) {
+#     if (plotLabelWidgetsLoaded()) {
+#       if (input$reactive) {
+#         print('hi')
+#         disable('plotTitle')
+#         disable('xLabel')
+#         disable('yLabel')
+#       } else {
+#         print('bye')
+#         enable('plotTitle')
+#         enable('xLabel')
+#         enable('yLabel')
+#       }
+#     }
+#   }
+# })

@@ -6,6 +6,7 @@ library(DT)
 library(stringr)
 library(shinyBS)
 library(shinyjs)
+library(ggthemes)
 
 
 ## import functions
@@ -24,9 +25,13 @@ shinyServer(function(input, output, session) {
   ## reactive variables
   source('./reactives/reactives.R', local=TRUE)  # general/miscellaneous
   source('./reactives/dataset.R', local=TRUE)  # dataset variables
-  source('./reactives/plotWidgetsDisplayCond.R', local=TRUE)  # plot-related reactives
-  source('./reactives/plotWidgetsLoadedCond.R', local=TRUE)  # plot-related reactives
-  source('./reactives/plot.R', local=TRUE)  # plot-related reactives
+  source('./reactives/plotWidgetVals.R', local=TRUE)  # plot widget values
+  source('./reactives/plotWidgetNames.R', local=TRUE)  # plot widget names
+  source('./reactives/plotWidgetOpts.R', local=TRUE)  # plot widget options
+  source('./reactives/plotWidgetsDisplayCond.R', local=TRUE)  # plot widgets display condition
+  source('./reactives/plotWidgetsLoadedCond.R', local=TRUE)  # plot widgets load conditions
+  source('./reactives/plotWidgetSelectedVals.R', local=TRUE)  # plot widget selected values
+  source('./reactives/plot.R', local=TRUE)  # plot
   
   ## UI controls
   source('./uiWidgets/generalWidgets.R', local=TRUE)

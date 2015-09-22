@@ -85,31 +85,7 @@ getLoadedDataFrameNames <- function(env=.GlobalEnv) {
 
 ## this function modifies and ensures proper variable name
 ## for semi-automatic aggregation dataset column names
-ensureProperVarName <- function(colnames, var, y) {
-  if (tolower(var) %in% c('none', '.')) return(var)
-  origVar <- var
-  
-  ## only if original variable is not found in dataset's column names
-  if (!(var %in% colnames)) {
-    
-    ## this step will do the following: e.g. y=='mpg' to y=='mpg_mean'
-    var <- colnames[grepl(var, colnames)]
-
-    ## if no match found
-    if (length(var)==0L) {
-      if (('count' %in% colnames))
-        var <- 'count'
-      else 
-        var <- origVar      
-    }
-  } 
-  
-  return(var)
-}
-
-
-## second version of ensureProperVarName()
-ensureProperVarName2 <- function(colnames, var, aggMeth, semiAutoAggOn) {
+ensureProperVarName <- function(colnames, var, aggMeth, semiAutoAggOn) {
   if (tolower(var) %in% c('none', '.')) return(var)
   
   ## only if original variable name is not found in dataset's column names
@@ -191,6 +167,26 @@ checkTwoRangesOverlap <- function(range1, range2) {
 }
 
 
+## this function ensures correct plot inputs for an updated dataset
+ensureCorrectPlotInputs <- function(plotInputsList, colnames) {
+  for (name in names(plotInputsList)) {
+    if (!is.null(plotInputsList[[name]])) {
+      if (any(name %in% c('x', 'y', 'facetRow', 'facetCol', 'facetWrap'))) {
+        if (!(plotInputsList[[name]] %in% colnames)) {
+          plotInputsList[name] <- list(NULL)
+        }
+      } else if (any(name %in% c('color', 'size', 'shape'))) {
+        if (!(plotInputsList[[name]] %in% colnames)) {
+          asFactorName <- paste0(name, 'AsFactor')
+          plotInputsList[name] <- plotInputsList[asFactorName] <- list(NULL)
+        }
+      }
+    }
+  }
+  return(plotInputsList)
+}
+
+
 ## this function takes a dataset, variable name, and variable's limit (e.g. x and xlim)
 ## and returns TRUE if that they are compatible;
 ## for e.g. if x is a continuous variable, then xlim should be a numeric range;
@@ -217,3 +213,6 @@ checkVarAndLimCompatible <- function(dataset, var, lim) {
   
   return(compatCond)
 }
+
+
+

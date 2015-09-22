@@ -72,7 +72,9 @@ manAggDataset <- reactive({
 
 ## raw or aggregated dataset
 dataset <- reactive({
-  if (is.null(input$rawVsManAgg)) return()
+
+  #if (is.null(input$rawVsManAgg)) return()
+  if (is.null(input$rawVsManAgg)) return(rawDataset())
 
   ## raw dataset
   if (input$rawVsManAgg == 'raw') {
@@ -125,7 +127,8 @@ semiAutoAggDF <- reactive({
 
 ## reactive variable for final dataset
 finalDF <- reactive({
-  if (is.null(semiAutoAggOn())) return()
+  if (is.null(dataset())) return()
+  if (is.null(semiAutoAggOn())) return(dataset())
   
   ## semi-automatic aggregation (if enabled)
   if (semiAutoAggOn())
@@ -141,33 +144,29 @@ finalDF <- reactive({
 ## (filtered version of finalDF(), using xlim and ylim)
 plotDF <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-
-  ## no subsetting if advanced control widgets are not displayed (since no xlim and ylim widgets are available in UI)
-  if (is.null(input$showAdvCtrlWgts)) return()
-  if (!input$showAdvCtrlWgts) return(dataset) 
   
-  ## subset with xlim filter
-  x <- input$x; if(is.null(x)) return()
-  xlim <- input$xlim; if (is.null(xlim)) return()
-  if (is.null(xType())) return()
-  if (xType()=='continuous') {
-    dataset <- dataset[dataset[[x]] >= xlim[1] & dataset[[x]] <= xlim[2], ]
-  } else if (xType()=='discrete') {
-    dataset <- dataset[dataset[[x]] %in% xlim, ]
+  ## subset with xlim filter (if applicable)
+  if (!is.null(xlim())) {
+    x <- input$x; if(is.null(x)) return()
+    if (is.null(xType())) return()
+    if (xType()=='continuous')
+      dataset <- dataset[dataset[[x]] >= xlim()[1] & dataset[[x]] <= xlim()[2], ]
+    else if (xType()=='discrete')
+      dataset <- dataset[dataset[[x]] %in% xlim(), ]
   }
   
   ## subset with ylim filter (if applicable)
-  if (isXYCtrlPlot()) {
-    y <- y(); if (is.null(y)) return()
-    ylim <- input$ylim; if (is.null(ylim)) return()
-    if (is.null(yType())) return()
-    if (yType()=='continuous') {
-      dataset <- dataset[dataset[[y]] >= ylim[1] & dataset[[y]] <= ylim[2], ]
-    } else if (yType()=='discrete') {
-      dataset <- dataset[dataset[[y]] %in% ylim, ]
+  if (!is.null(ylim())) {
+    if (isXYCtrlPlot()) {
+      y <- y(); if (is.null(y)) return()
+      if (is.null(yType())) return()
+      if (yType()=='continuous')
+        dataset <- dataset[dataset[[y]] >= ylim()[1] & dataset[[y]] <= ylim()[2], ]
+      else if (yType()=='discrete')
+        dataset <- dataset[dataset[[y]] %in% ylim(), ]
     }
   }
-
+  
   return(dataset)
 })
 

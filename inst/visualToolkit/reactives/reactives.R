@@ -44,17 +44,6 @@ varsUniqValsCntLOEN <- reactive({
 
 
 #### variables for finalDF()
-finalDF <- reactive({  
-  if (is.null(semiAutoAggOn())) return()
-  
-  ## semi-automatic aggregation (if enabled)
-  if (semiAutoAggOn())
-    semiAutoAggDF()
-
-  ## natural dataset (raw or manually aggregated dataset)
-  else
-    dataset()
-})
 
 ## number of rows
 nrows <- reactive({
@@ -106,10 +95,9 @@ xRange <- reactive({
 ## work-around for rounding error in sliderInput
 yRange <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  y <- y()
-  if (is.null(y)) return()
-  if (y %in% finalDFNumericVars())
-    range <- range(dataset[[y]], na.rm=TRUE)
+  if (is.null(y())) return()
+  if (y() %in% finalDFNumericVars())
+    range <- range(dataset[[y()]], na.rm=TRUE)
   range[1] <- range[1] - 1
   range[2] <- range[2] + 1
   range
@@ -125,67 +113,64 @@ xFactorVarUniqVals <- reactive({
 
 yFactorVarUniqVals <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  y <- y()
-  if (is.null(y)) return()
-  if (y %in% finalDFFactorVars()) {
-    levels(dataset[[y]])
+  if (is.null(y())) return()
+  if (y() %in% finalDFFactorVars()) {
+    levels(dataset[[y()]])
   }
 })
 
-y <- reactive({
-  if (is.null(input$y)) return()
-  if (is.null(input$plotAggMeth)) return()
-  if (is.null(finalDF())) return()
-  if (is.null(semiAutoAggOn())) return()
-  y <- ensureProperVarName2(colnames=colnames(finalDF()), var=input$y, aggMeth=input$plotAggMeth, semiAutoAggOn=semiAutoAggOn())
-  y
+
+
+
+####
+## conditional: plot label widgets loaded
+plotLabelWidgetsLoaded <- reactive({
+  wgts <- c('plotTitle', 'xLabel', 'yLabel')
+  checkWidgetsLoaded(input, wgts)
 })
-
-
 
 
 ## conditional: facet widgets are loaded
 facetWidgetsLoaded <- reactive({
-  wgts <- c('facetCol', 'facetRow', 'facetWrap')
+  wgts <- c('facetCol', 'facetRow', 'facetWrap', 'facetScale')
   return(checkWidgetsLoaded(input, wgts))
 })
 
 ## conditional: no facet was selected
 noFacetSelected <- reactive({
-  if (!facetWidgetsLoaded()) return(FALSE)
-  facetFam <- c(input$facetCol, input$facetRow, input$facetWrap)
-  noFacetSelected <- all('None' == facetFam) | all('' == facetFam)
+  if (!facetWidgetsLoaded()) return(TRUE)
+  facetFam <- c(facetCol(), facetRow(), facetWrap())
+  noFacetSelected <- all('None' == facetFam) | all('' == facetFam) | all('.' == facetFam)
   return(noFacetSelected)
 })
 
 ## conditional: facet grid was selected
 facetGridSelected <- reactive({
   if (!facetWidgetsLoaded()) return(FALSE)
-  return(input$facetCol != 'None' | input$facetRow != 'None')
+  return(facetCol() != '.' | facetRow() != '.')
 })
 
 ## conditional: facet wrap was selected
 facetWrapSelected <- reactive({
   if (!facetWidgetsLoaded()) return(FALSE)
-  print(input$facetWrap)
-  return(input$facetWrap != 'None')
+  return(facetWrap() != '.')
 })
 
 
 
 ## reactive that returns TRUE if plot utilizes both x and y controls
 isXYCtrlPlot <- reactive({
-  if (is.null(input$plotType)) return()
-  return(input$plotType %in% c('line', 'scatter', 'bar', 'box', 'path'))
+  if (is.null(plotType())) return()
+  return(plotType() %in% c('line', 'scatter', 'bar', 'box', 'path'))
 })
 
 
 ## reactive that returns a value "discrete" or "continuous"
 xType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
-  if (is.null(input$x)) return()
+  if (is.null(x())) return()
 
-  if (input$x %in% finalDFNumericVars()) {
+  if (x() %in% finalDFNumericVars()) {
     return('continuous')
   } else {
     return('discrete')
@@ -198,7 +183,6 @@ yType <- reactive({
   dataset <- finalDF(); if (is.null(dataset)) return()
   if (!isXYCtrlPlot()) return()
   if (is.null(y())) return()
-  
   if (y() %in% finalDFNumericVars()) {
     return('continuous')
   } else {
@@ -206,11 +190,21 @@ yType <- reactive({
   }
 })
 
+## reactive that returns a value "discrete" or "continuous"
+colorType <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+  if (is.null(color())) return()
+  if (color() %in% finalDFNumericVars()) {
+    return('continuous')
+  } else {
+    return('discrete')
+  }
+})
 
 ## conditional reactive: semi-automatic aggregation is on
 semiAutoAggOn <- reactive({
-  if (is.null(input$plotAggMeth)) return()
-  tolower(input$plotAggMeth) != 'none'
+  if (is.null(plotAggMeth())) return(FALSE)
+  tolower(plotAggMeth()) != 'none'
 })
 
 
