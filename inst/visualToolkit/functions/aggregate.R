@@ -1,23 +1,3 @@
-#### useful links
-## dplyr aggregation
-# http://stackoverflow.com/questions/21644848/summarizing-multiple-columns-with-dplyr
-# http://stackoverflow.com/questions/27975124/pass-arguments-to-dplyr-functions
-# http://stackoverflow.com/questions/21208801/group-by-multiple-columns-in-dplyr-using-string-vector-input
-
-## shiny reactive variable persistence
-# https://github.com/jcheng5/shiny-resume/pull/1
-# http://stackoverflow.com/questions/25306519/shiny-saving-url-state-subpages-and-tabs
-# http://stackoverflow.com/questions/25749749/shiny-ui-save-the-changes-in-the-inputs
-# https://github.com/trestletech/shinyStore/blob/master/inst/examples/01-persist/ui.R
-
-## datatable
-# http://rstudio.github.io/DT/server.html
-
-## progress bar
-# http://shiny.rstudio.com/articles/progress.html
-
-
-
 
 ## this function renames column names of aggregate df
 renameAggColNames <- function(df, aggBy, aggTarget, aggMeth) {
@@ -63,45 +43,53 @@ aggregate <- function(df, aggBy, aggTarget, aggMeth, nRndDeci=2) {
   
   ## conditional to perform median later
   medInAggMeth <- 'median' %in% aggMeth
-  
+
   ## select non-problematic aggregation methods
   aggMeth <- setdiff(aggMeth, c('count', 'median'))
-  
+
   ## convert character vector to list of symbols
   dots <- lapply(aggBy, as.symbol)
 
   ## group data
   grp <- dplyr::group_by_(df, .dots=dots)
 
-  ## perform non-problematic aggregation by column
-  aggMethNaRm <- appendNaRmToAggMeth(aggMeth)
-  agg <- dplyr::summarise_each(grp, funs_(aggMethNaRm ))
-
-  ## convert to data frame
-  agg <- as.data.frame(agg)
-  
-  ## rename column names
-  agg <- renameAggColNames(agg, aggBy, aggTarget, aggMeth)
+  agg <- NULL
+  if (length(aggMeth) != 0) {
+    ## perform non-problematic aggregation by column
+    aggMethNaRm <- appendNaRmToAggMeth(aggMeth)
+    agg <- dplyr::summarise_each(grp, funs_(aggMethNaRm ))
+    
+    ## convert to data frame
+    agg <- as.data.frame(agg)
+    
+    ## rename column names
+    agg <- renameAggColNames(agg, aggBy, aggTarget, aggMeth)
+  }
 
   ## attach aggregate counts if requested
   if (cntInAggMeth) {
     cnt <- dplyr::summarise(grp, count=n())
-    agg$count <- cnt$count
+    if (is.null(agg))
+      agg <- cnt
+    else
+      agg$count <- cnt$count
   }
-  
+
   ## perform median aggregation by column
   if (medInAggMeth) {
     medAgg <- dplyr::summarise_each(grp, ~ median(., na.rm=TRUE))
     nMedAggCol <- length(aggBy)
     ncol <- ncol(medAgg)
     colnames(medAgg) <- c(aggBy, paste0(colnames(medAgg)[(nMedAggCol+1):ncol], '_median'))
-    agg <- merge(agg, medAgg, by=aggBy)
+    if (is.null(agg))
+      agg <- medAgg
+    else
+      agg <- merge(agg, medAgg, by=aggBy)
   }
 
   ## find numeric columns and round
   numericVars <- getNumericVarNames(agg)
-  #agg[numericVars] <- sapply(agg[numericVars], function(x) {round(x, nRndDeci)})
-  
+
   for (numericVar in numericVars) {
     agg[[numericVar]] <- round(agg[[numericVar]], nRndDeci)
   }
