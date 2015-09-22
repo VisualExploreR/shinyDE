@@ -34,7 +34,7 @@ output$plotAggMethCtrl <- renderUI({
 ## x-axis options
 output$xCtrl <- renderUI({
   if (is.null(input$dataset)) return()
-  selectInput('x', 'X', choices=xOpts(), isolate(selected=x_sel()))
+  selectInput('x', 'X', choices=xOpts(), selected=isolate(x_sel()))
 })
 
 ## y-axis options

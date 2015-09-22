@@ -215,15 +215,6 @@ plotInput <- reactive({
     if (yLabel() != '')
       p <- p + ylab(yLabel())
   
-  ## plot label styles
-  p <- p + 
-    theme(text=element_text(family = labelFontFamily(),
-                            face = labelFontFace(),
-                            color = labelFontColor(),
-                            size = labelFontSize(),
-                            hjust = hjust(),
-                            vjust = vjust()))
-  
   ## plot themes
   if (!is.null(plotTheme())) {
     if (plotTheme()=='theme_grey')
@@ -297,6 +288,16 @@ plotInput <- reactive({
           p <- p + scale_colour_wsj()      
     }
   }
+    
+    ## plot label styles
+    p <- p + 
+      theme(text=element_text(family = labelFontFamily(),
+                              face = labelFontFace(),
+                              color = labelFontColor(),
+                              size = labelFontSize(),
+                              hjust = hjust(),
+                              vjust = vjust()))
+    
     
   
   ## return
