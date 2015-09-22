@@ -44,6 +44,8 @@ Optionally:
 
 *Note: The 'jitter' effect is often used to enhance visual interpretability when dealing with a larger data sets with many overlapping data points. In this case, jittering would surface the relative densiry of points around each overlapping data point.
 
+Please refer to Appendix A further down this page for recommendations for the use of individual visual idioms.
+
 ### 3. Advanced Faceting and Interactivity
 
 Click on the 'Show advanced control widgets' to display controls for presenting a multi-plot data visualisation. 
@@ -72,3 +74,48 @@ The other advanced control widgets are largely self-explanatory.
 A 'Submit' button and an 'Enable reactivity' checkbox at the bottom of the toolbar caters to user preferences. By default, the visualisation refreshes whenever there is a change to the dataset or any input widget. 
 
 However, it may be advantageous at times to only generate the visualisation once multiple visualisation parameters have been tweaked (e.g. in the case of large datasets that take a while to render). In this case, the 'Enable reactivity' checkbox should be unchecked, and multiple changes can be made before clicking on the 'Submit' button.
+
+### Appendix A: Guide to Choice of Visual Idiom
+
+
+Idiom:         | Scatterplots
+-------------  | ------------ 
+Data:          | Two quantitative value attributes   
+Encoding:      | Express values with horizontal and vertical spatial position and point marks
+Task:          | Find trends, outliers, distribution, correlation; locate clusters
+Scale          | Hundreds of items
+
+
+
+Idiom:         | Bar Charts
+-------------  | ------------ 
+Data:          | One quantitative value attributes, one categorical key attribute
+Encoding:      | Express value attribute with aligned vertical position, separate key attribute with horizonal position
+Task:          | Lookup and compare values
+Scale          | Dozens to hundreds of levels
+
+
+Idiom:         | Stacked Bar Charts
+-------------  | ------------ 
+Data:          | Multidimensional table: one quantitative value attributes, two categorical key attributes
+Encoding:      | Bar with length-coded subcomponents of value attribute for each category of secondary key attribute. Separate bars by category of primary key attribute.
+Task:          | Part-to-whole relationship, lookup values, find trends
+Scale          | Main axis: Dozens to hundreds of levels. Stacks: Several to one dozen 
+
+
+Idiom:         | Line Charts
+-------------  | ------------ 
+Data:          | One quantitative value attribute, one ordered key attribute
+Encoding:      | Dot chart with connection marks between dots 
+Task:          | Show trends
+Scale          | Hundreds of levels
+
+
+Idiom:         | Scatterplot Matrix (SPLOM)
+-------------  | ------------ 
+Data:          | Two quantitative value attributes for each plot, one categoric variable for row facet and one categoric variable for column facet
+Encoding:      | Scatterplots in 2D matrix alignment
+Task:          | Find correlation, trends, outliers
+Scale          | Attributes: one dozen. Items: dozens to hundreds
+
+
