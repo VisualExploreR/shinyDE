@@ -4,26 +4,14 @@ library(ggplot2)
 library(dplyr)
 library(DT)
 library(stringr)
+library(shinyBS)
+library(shinyjs)
 
 
 ## import functions
 source('./functions/helper.R')
 source('./functions/plot.R')
 source('./functions/aggregate.R')
-
-
-
-## FOR DEVELOPMENT ONLY ##
-mtcars$cyl <- as.factor(mtcars$cyl)
-mtcars$am <- as.factor(mtcars$am)
-mtcars$gear <- as.factor(mtcars$gear)
-
-# df <- read.csv('./data/diamonds_missing_vals.csv', stringsAsFactors=F)
-# df$cut <- as.factor(df$cut)
-# df$color <- as.factor(df$color)
-# df$clarity <- as.factor(df$clarity)
-## FOR DEVELOPMENT ONLY ## 
-
 
 
 ## file size options
@@ -36,9 +24,12 @@ shinyServer(function(input, output, session) {
   ## reactive variables
   source('./reactives/reactives.R', local=TRUE)  # general/miscellaneous
   source('./reactives/dataset.R', local=TRUE)  # dataset variables
+  source('./reactives/plotWidgetsDisplayCond.R', local=TRUE)  # plot-related reactives
+  source('./reactives/plotWidgetsLoadedCond.R', local=TRUE)  # plot-related reactives
   source('./reactives/plot.R', local=TRUE)  # plot-related reactives
   
   ## UI controls
+  source('./uiWidgets/generalWidgets.R', local=TRUE)
   source('./uiWidgets/fileWidgets.R', local=TRUE)
   source('./uiWidgets/manAggWidgets.R', local=TRUE)
   source('./uiWidgets/plotWidgets.R', local=TRUE)
@@ -46,14 +37,7 @@ shinyServer(function(input, output, session) {
   ## download handlers
   source('./reactives/download.R', local=TRUE)
   
-  ## display tabular datatable content
-  output$displayTable <- DT::renderDataTable({
-    DT::datatable(manAggDataset(), filter='bottom')
-  })
+  ## observed events
+  source('./observeEvents.R', local=TRUE)
   
-  ## display plot
-  output$plot <- renderPlot({
-    print(plotInput())
-  }, height=700)
-
 })

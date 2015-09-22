@@ -16,13 +16,6 @@ output$aggMethCtrl <- renderUI({
   selectInput('aggMeth', 'Aggregation Method', choices=aggMethOpts, multiple=T)
 })
 
-## dataset type options (raw vs. manually aggregated)
-output$rawVsManAggCtrl <- renderUI({
-  radioButtons("rawVsManAgg", label = "Dataset Type",
-               choices = list("Raw Dataset" = 'raw', "Manually Aggregated" = 'manAgg'), 
-               selected = 'raw', inline=F)
-})
-
 
 ## aggregation share of
 # output$shareOfCtrl <- renderUI({

@@ -1,5 +1,3 @@
-
-
 ## reactive variable for custom (uploadable) dataset file info
 customDatasetFileInfo <- reactive({
   # input$file will be NULL initially. After the user selects
@@ -27,7 +25,7 @@ customDatasetName <- reactive({
 
 ## reactive variable for raw dataset names
 rawDatasetNames <- reactive({
-  c("diamonds", "mtcars", "rock", "pressure", 
+  c("diamonds", "mtcars", "rock", 
     customDatasetName(),
     getLoadedDataFrameNames())
 })
@@ -61,13 +59,15 @@ manAggDataset <- reactive({
   ## if all fields for manual aggregation are filled in
   if (!is.null(input$aggBy) & !is.null(input$aggTarget) & !is.null(input$aggMeth)) {
     ## return manually aggregated dataset
-    aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)
+    df <- aggregate(rawDataset(), input$aggBy, input$aggTarget, input$aggMeth)
   } 
   
   ## else, return raw dataset  
   else {
-    rawDataset()
+    df <- rawDataset()
   }
+
+  df
 })
 
 ## raw or aggregated dataset
@@ -83,7 +83,7 @@ dataset <- reactive({
   else if (input$rawVsManAgg=='manAgg') {
     dataset <- manAggDataset()
   }
-  
+
   dataset
 })
 
@@ -98,7 +98,7 @@ plotSemiAutoAggByBase <- reactive({
 
 ## reactive for semi-automatic aggregate by
 ## base + additional aggregate-by fields
-plotSemiAutoAggBy <- reactive({
+plotSemiAutoAggBy <- reactive({  
   aggBy <- c(plotSemiAutoAggByBase(), input$plotAddAggBy)
   aggBy <- cleanPlotAggBy(input$x, input$y, aggBy)
   aggBy
@@ -106,40 +106,68 @@ plotSemiAutoAggBy <- reactive({
 
 ## reactive for semi-automatic aggregated dataset
 semiAutoAggDF <- reactive({
-  if (is.null(input$semiAutoAgg)) return()
-  if (is.null(dataset())) return()  
-  
-  if (input$semiAutoAgg=='allowed') {  
-    ## if plot aggregation is specified (e.g. sum, mean, max, min)
-    if (input$plotAggMeth != 'None') {
-      #aggBy <- input$x
-      aggBy <- plotSemiAutoAggBy()
-      aggTarget <- input$y
-      aggMeth <- input$plotAggMeth
+  if (is.null(semiAutoAggOn())) return()
+  if (is.null(dataset())) return()
+
+  ## if plot aggregation is specified (e.g. sum, mean, max, min)  
+  if (semiAutoAggOn()) {  
+    aggBy <- plotSemiAutoAggBy()
+    aggTarget <- input$y
+    aggMeth <- input$plotAggMeth
+    
+    vars <- c(aggBy, aggTarget)
+    if (all(vars %in% colnames(dataset()))) {
       semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
-      #print('-----')
-      #print(paste0('aggBy: ', paste0(aggBy, collapse=', ')))
-      #print(paste0('nrow: ', nrow(semiAutoAggDF)))
-      
-      semiAutoAggDF
-    } 
-  }
+      semiAutoAggDF        
+    }
+  } 
 })
 
 ## reactive variable for final dataset
-finalDF <- reactive({  
-  if (is.null(input$semiAutoAgg)) return()
+finalDF <- reactive({
+  if (is.null(semiAutoAggOn())) return()
   
   ## semi-automatic aggregation (if enabled)
-  if (input$semiAutoAgg=='allowed') {
+  if (semiAutoAggOn())
     semiAutoAggDF()
-  } 
-  
+
   ## natural dataset (raw or manually aggregated dataset)
-  else if (input$semiAutoAgg=='disabled') {
+  else
     dataset()
-  }  
 })
 
 
+## reactive dataset used for plotting 
+## (filtered version of finalDF(), using xlim and ylim)
+plotDF <- reactive({
+  dataset <- finalDF(); if (is.null(dataset)) return()
+
+  ## no subsetting if advanced control widgets are not displayed (since no xlim and ylim widgets are available in UI)
+  if (is.null(input$showAdvCtrlWgts)) return()
+  if (!input$showAdvCtrlWgts) return(dataset) 
+  
+  ## subset with xlim filter
+  x <- input$x; if(is.null(x)) return()
+  xlim <- input$xlim; if (is.null(xlim)) return()
+  if (is.null(xType())) return()
+  if (xType()=='continuous') {
+    dataset <- dataset[dataset[[x]] >= xlim[1] & dataset[[x]] <= xlim[2], ]
+  } else if (xType()=='discrete') {
+    dataset <- dataset[dataset[[x]] %in% xlim, ]
+  }
+  
+  ## subset with ylim filter (if applicable)
+  if (isXYCtrlPlot()) {
+    y <- y(); if (is.null(y)) return()
+    ylim <- input$ylim; if (is.null(ylim)) return()
+    if (is.null(yType())) return()
+    if (yType()=='continuous') {
+      dataset <- dataset[dataset[[y]] >= ylim[1] & dataset[[y]] <= ylim[2], ]
+    } else if (yType()=='discrete') {
+      dataset <- dataset[dataset[[y]] %in% ylim, ]
+    }
+  }
+
+  return(dataset)
+})
 

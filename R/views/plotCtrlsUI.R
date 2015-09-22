@@ -1,22 +1,19 @@
 ## plot options
 verticalLayout(
   uiOutput('plotTypeCtrl'),
-  uiOutput('ptsOverlayCondCtrl'),
   
   fluidRow(
     column(6,
-           uiOutput('rawVsManAggCtrl')               
+           uiOutput('rawVsManAggCtrl')
     ),
     column(6,
-           uiOutput('semiAutoAggCtrl')        
+           uiOutput('plotAggMethCtrl')
     )
   ),
   
-  conditionalPanel(
-    condition = 'input.semiAutoAgg=="allowed"',
-    uiOutput('plotAggMethCtrl')
-  ),
-  
+  br(),
+  br(),
+
   fluidRow(
     column(6,
            uiOutput('xCtrl')             
@@ -42,6 +39,8 @@ verticalLayout(
     )
   ),
   
+  uiOutput('ptsOverlayCondCtrl'),
+  
   fluidRow(
     column(6, 
            uiOutput('sizeCtrl')
@@ -52,20 +51,22 @@ verticalLayout(
   ),
   
   fluidRow(
-    column(6, 
-           uiOutput('jitCtrl')
-    ),
     column(6,
            uiOutput('smthCtrl')
     )
   ),
+
+  uiOutput('jitCtrl'),
+  uiOutput('binWidthCtrl'),
+  uiOutput('plotAddAggByCtrl'),
+  uiOutput('showAdvCtrlWgtsCtrl'),
   
   fluidRow(
     column(6,
-           uiOutput('facetRowCtrl')             
+           uiOutput('facetRowCtrl')
     ),
     column(6,
-           uiOutput('facetColCtrl')             
+           uiOutput('facetColCtrl')
     )
   ),
   
@@ -74,17 +75,15 @@ verticalLayout(
            uiOutput('facetWrapCtrl')
     ),
     column(6,
-           uiOutput('facetScaleCtrl')       
+           uiOutput('facetScaleCtrl')
     )
   ),
   
-  uiOutput('plotAddAggByCtrl'),
-  uiOutput('binWidthCtrl'),
+  uiOutput('densBlkLineCondCtrl'),
+  
   uiOutput('alphaCtrl'),
   uiOutput('sizeMagCtrl'),
   uiOutput('xlimCtrl'),
   uiOutput('ylimCtrl'),
-
-  uiOutput('densBlkLineCondCtrl'),
   uiOutput('coordFlipCtrl')
 )
