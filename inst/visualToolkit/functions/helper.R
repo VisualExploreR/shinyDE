@@ -187,32 +187,35 @@ ensureCorrectPlotInputs <- function(plotInputsList, colnames) {
 }
 
 
+## this function removes elements that are not part of a dataset's column variables
+rmElemsNotInDatasetCols <- function(elems, dataset) {
+  validElems <- elems[elems %in% colnames(dataset)]
+  return(validElems)
+}
+
+
 ## this function takes a dataset, variable name, and variable's limit (e.g. x and xlim)
 ## and returns TRUE if that they are compatible;
 ## for e.g. if x is a continuous variable, then xlim should be a numeric range;
 ## for e.g. if y is a factor or character variable, then ylim should be a vector of discrete values;
 ## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
-## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
-## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
-## MODIFY THIS FUNCTION FOR CASES WHEN VARIABLE IS LOGICAL!!!
-
-checkVarAndLimCompatible <- function(dataset, var, lim) {
-  varType <- class(dataset[[var]])
-  limType <- class(lim)
-  compatCond <- FALSE
-  
-  if (any(varType %in% 'numeric')) {
-    if (limType=='numeric') {
-      compatCond <- TRUE
-    }
-  } else if (any(varType %in% c('factor', 'character'))) {
-    if (limType=='character') {
-      compatCond <- TRUE
-    }
-  }
-  
-  return(compatCond)
-}
+# checkVarAndLimCompatible <- function(dataset, var, lim) {
+#   varType <- class(dataset[[var]])
+#   limType <- class(lim)
+#   compatCond <- FALSE
+#   
+#   if (any(varType %in% 'numeric')) {
+#     if (limType=='numeric') {
+#       compatCond <- TRUE
+#     }
+#   } else if (any(varType %in% c('factor', 'character'))) {
+#     if (limType=='character') {
+#       compatCond <- TRUE
+#     }
+#   }
+#   
+#   return(compatCond)
+# }
 
 
 

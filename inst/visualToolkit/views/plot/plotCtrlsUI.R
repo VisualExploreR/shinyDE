@@ -14,9 +14,8 @@ verticalLayout(
   source('./views/plot/aesCtrlsUI.R', local=TRUE)$value,
   source('./views/plot/facetCtrlsUI.R', local=TRUE)$value,
   source('./views/plot/xyRangeCtrlsUI.R', local=TRUE)$value,
-  source('./views/plot/datasetTypeCtrlsUI.R', local=TRUE)$value,
+  source('./views/plot/DSTypeAndPlotAggCtrlsUI.R', local=TRUE)$value,
   source('./views/plot/labelAndStyleCtrlsUI.R', loca=TRUE)$value,
-  #uiOutput('plotAddAggByCtrl')
   
   ## widgets to show/hide advanced control widgets
   uiOutput('showAesWgtsCtrl'),

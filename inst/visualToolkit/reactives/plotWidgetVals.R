@@ -13,18 +13,6 @@ plotType <- reactive({
   input$plotType
 })
 
-## plot agg method
-plotAggMeth <- reactive({
-  if (is.null(input$plotAggMeth)) return('none')
-  input$plotAggMeth
-})
-
-## raw or man agg dataset type
-rawVsManAgg <- reactive({
-  if (is.null(input$rawVsManAgg)) return()
-  input$rawVsManAgg
-})
-
 ## x
 x <- reactive({
   if (is.null(input$x)) return()
@@ -91,6 +79,12 @@ size <- reactive({
   sz <- ensureProperVarName(colnames=colnames(plotDF()), var=input$size, aggMeth=plotAggMeth(), semiAutoAggOn=semiAutoAggOn())
   sz <- convertNoneToNULL(sz)
   sz
+})
+
+## fill original
+fillOrig <- reactive({
+  if (is.null(input$fill)) return()
+  input$fill
 })
 
 ## fill 
@@ -338,7 +332,23 @@ plotTheme <- reactive({
 })
 
 
+## plot agg method
+plotAggMeth <- reactive({
+  if (is.null(input$plotAggMeth)) return('none')
+  input$plotAggMeth
+})
 
+## raw or man agg dataset type
+rawVsManAgg <- reactive({
+  if (is.null(input$rawVsManAgg)) return()
+  input$rawVsManAgg
+})
+
+## plot additional aggregation-by
+plotAddAggBy <- reactive({
+  if (is.null(input$plotAddAggBy)) return()
+  input$plotAddAggBy
+})
 
 
 

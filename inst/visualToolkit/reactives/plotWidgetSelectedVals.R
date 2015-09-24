@@ -92,3 +92,9 @@ facetWrap_sel <- reactive({
       return(facetWrapOrig())
 })
 
+## plot addition aggregation-by
+plotAddAggBy_sel <- reactive({
+  if (!is.null(plotAddAggBy()) & !is.null(plotAddAggByOpts()))
+    if (all(plotAddAggBy() %in% plotAddAggByOpts()))
+      return(plotAddAggBy())
+})

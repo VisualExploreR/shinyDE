@@ -6,5 +6,7 @@ verticalLayout(
     column(6,
            uiOutput('plotAggMethCtrl')
     )
-  )
+  ),
+  
+  uiOutput('plotAddAggByCtrl')
 )

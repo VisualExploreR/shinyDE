@@ -143,8 +143,9 @@ displayPtsOverlayCond <- reactive({
 
 ## display additional aggregation select field condition reactive
 displayPlotAddAggBy <- reactive({
+  if (is.null(input$showDSTypeAndPlotAggWgts)) return()
   if (is.null(semiAutoAggOn())) return()
-  return (semiAutoAggOn())
+  return (input$showDSTypeAndPlotAggWgts & semiAutoAggOn())
 })
 
 ## display xlim condition reactive

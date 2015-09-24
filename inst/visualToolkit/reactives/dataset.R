@@ -101,8 +101,10 @@ plotSemiAutoAggByBase <- reactive({
 ## reactive for semi-automatic aggregate by
 ## base + additional aggregate-by fields
 plotSemiAutoAggBy <- reactive({  
+  if (is.null(dataset())) return()
   aggBy <- c(plotSemiAutoAggByBase(), input$plotAddAggBy)
   aggBy <- cleanPlotAggBy(input$x, input$y, aggBy)
+  aggBy <- rmElemsNotInDatasetCols(aggBy, dataset())
   aggBy
 })
 
@@ -112,7 +114,9 @@ semiAutoAggDF <- reactive({
   if (is.null(dataset())) return()
 
   ## if plot aggregation is specified (e.g. sum, mean, max, min)  
-  if (semiAutoAggOn()) {  
+  if (semiAutoAggOn()) {
+    if (is.null(plotSemiAutoAggBy())) return()
+    
     aggBy <- plotSemiAutoAggBy()
     aggTarget <- input$y
     aggMeth <- input$plotAggMeth
@@ -120,7 +124,7 @@ semiAutoAggDF <- reactive({
     vars <- c(aggBy, aggTarget)
     if (all(vars %in% colnames(dataset()))) {
       semiAutoAggDF <- aggregate(dataset(), aggBy=aggBy, aggTarget=input$y, aggMeth=input$plotAggMeth)
-      semiAutoAggDF        
+      semiAutoAggDF 
     }
   } 
 })

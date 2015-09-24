@@ -205,14 +205,15 @@ output$coordFlipCtrl <- renderUI({
 })
 
 
-## additional aggregation by options
-# output$plotAddAggByCtrl <- renderUI({
-#   if (is.null(displayPlotAddAggBy())) return()
-#   if (displayPlotAddAggBy()) {
-#     selectInput('plotAddAggBy', 'Additional Aggregation Variables', 
-#                 choices=plotAddAggByOpts(), multiple=T)
-#   }
-# })
+# additional aggregation by options
+output$plotAddAggByCtrl <- renderUI({
+  if (is.null(displayPlotAddAggBy())) return()
+  if (displayPlotAddAggBy()) {
+    selectInput('plotAddAggBy', 'Additional Aggregation Variables', 
+                choices=plotAddAggByOpts(), multiple=T,
+                selected=isolate(plotAddAggBy_sel()))
+  }
+})
 
 ## xlim control
 output$xlimCtrl <- renderUI({
