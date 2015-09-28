@@ -40,10 +40,13 @@ shinyUI(pageWithSidebar(
   ),  # end of sidebarPanel
   
   mainPanel(
+    #import modal panels
+    source('./views/modals/modalPanels.R',local=TRUE)$value,
+    
     tabsetPanel(type = "tabs",
                 tabPanel("Plot", 
                          br(),
-                         uiOutput('dlBtnPlot'), 
+                         uiOutput('exportPlotCtl'),
                          br(),
                          plotOutput("plot", brush=brushOpts(id="zoom_brush", resetOnNew=TRUE)),
                          value='plotTab'
