@@ -14,6 +14,9 @@ source('./functions/helper.R')
 source('./functions/plot.R')
 source('./functions/aggregate.R')
 
+## import global constants
+source('./global_constants.R')
+
 
 ## file size options
 # by default, the file size limit is 5MB. It can be changed by

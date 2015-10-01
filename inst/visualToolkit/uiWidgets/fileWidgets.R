@@ -42,11 +42,10 @@ output$dlBtnCSV <- renderUI({
   downloadButton('dlCSV', 'Download')
 })
 
-## image download button (for UI)
+# image download button (for UI)
 output$dlBtnPlot <- renderUI({
-  downloadButton('dlPlot', 'Export Plot')
+  downloadButton('dlPlot', 'Download')
 })
-
 
 ## user-defined factor variables control options
 # output$usrDefFacVarsCtrl <- renderUI({
@@ -56,3 +55,34 @@ output$dlBtnPlot <- renderUI({
 #               selected=factorVars(),
 #               multiple=T)
 # })
+
+output$exportPlotCtl <- renderUI({
+  shinyBS::bsButton("exportPlot", label="Export Plot", type = "action", icon = icon("download"))
+})
+
+output$fileTypeCtl <- renderUI({
+  selectInput(inputId = "fileType", label = "File Type", 
+              choices = c('PDF'='.pdf',
+                          'PNG'='.png',
+                          'JPG'='.jpg',
+                          'SVG'='.svg')
+              )
+})
+
+output$fileHeightCtl <- renderUI({
+  numericInput(inputId = "fileHeight", label = "Height (inches)", 
+               value = gcnFileWidthDefault, min = 0, max = gcnFileHeightMax
+               )
+})
+
+output$fileWidthCtl <- renderUI({
+  numericInput(inputId = "fileWidth", label = "Width (inches)", 
+              value = gcnFileHeightDefault, min = 0, max = gcnFileWidthMax
+              )
+})
+
+output$fileDPICtl <- renderUI({
+  numericInput(inputId = "fileDPI", label = "Dots Per Inch", 
+               value = gcnFileDPIDefault, min = 0, max = gcnFileDPIMax
+               )
+})
