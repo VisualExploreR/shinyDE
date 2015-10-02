@@ -63,8 +63,6 @@ histogramWidgets <- reactive({
 ## density plot widgets
 densityWidgets <- reactive({
   wgts <- c('plotType', 'x')
-  if (input$showAesWgts)
-    wgts <- c(wgts, 'fill', 'color', 'densBlkLineCond')
   if (input$showXYRangeWgts)
     wgts <- c(wgts, 'xlim')
   if (input$showFacetWgts)
